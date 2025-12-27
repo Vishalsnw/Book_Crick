@@ -1,14 +1,18 @@
 package com.bollywood.simulator;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -22,14 +26,18 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Player> players = new ArrayList<>();
     private List<String> oscarWinners = new ArrayList<>();
-    private List<MovieRecord> allTimeHighGrossing = new ArrayList<>();
     private int currentYear = 1;
     private String gameState = "START";
-    private Random random = new Random();
+    private final Random random = new Random();
+    private final Gson gson = new Gson();
 
     private TextView titleText, statsText, yearBadge, topMoviesText;
     private Button actionButton;
     private LinearLayout topMoviesSection;
+
+    private static final String PREFS_NAME = "BollywoodPrefs";
+    private static final String KEY_OSCARS = "OscarWinners";
+    private static final String KEY_YEAR = "CurrentYear";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         topMoviesText = findViewById(R.id.topMoviesText);
         actionButton = findViewById(R.id.actionButton);
         topMoviesSection = findViewById(R.id.topMoviesSection);
+
+        loadData();
 
         actionButton.setOnClickListener(v -> handleButtonClick());
         updateUI();
@@ -82,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 p.lastEarnings = earnings;
                 activePlayers.add(p);
                 roundMovies.add(new MovieRecord(p.name, earnings));
-                allTimeHighGrossing.add(new MovieRecord(p.name, earnings));
             }
         }
 
@@ -99,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             Player winner = activePlayers.get(0);
             oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + winner.earnings + ")");
             currentYear++;
+            saveData();
         }
 
         gameState = nextState;
@@ -122,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         if (gameState.equals("WINNER")) {
             Player winner = null;
             for (Player p : players) if (p.active) winner = p;
-            statsText.setText("🏆 OSCAR WINNER: " + winner.name + "\nFinal Balance: ₹" + winner.balance);
+            statsText.setText("🏆 OSCAR WINNER: " + (winner != null ? winner.name : "N/A") + "\nFinal Balance: ₹" + (winner != null ? winner.balance : 0));
             actionButton.setText("Start Next Year");
             return;
         }
@@ -146,6 +156,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         statsText.setText(sb.toString());
+    }
+
+    private void saveData() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_OSCARS, gson.toJson(oscarWinners));
+        editor.putInt(KEY_YEAR, currentYear);
+        editor.apply();
+    }
+
+    private void loadData() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String oscarsJson = prefs.getString(KEY_OSCARS, null);
+        if (oscarsJson != null) {
+            Type type = new TypeToken<ArrayList<String>>() {}.getType();
+            oscarWinners = gson.fromJson(oscarsJson, type);
+        }
+        currentYear = prefs.getInt(KEY_YEAR, 1);
     }
 
     private static class Player {
