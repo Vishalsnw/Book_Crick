@@ -1,4 +1,4 @@
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "python-3.11"]
 [agent]
 expertMode = true
 
@@ -17,6 +17,10 @@ author = "agent"
 task = "workflow.run"
 args = "Build Instructions"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Bollywood Simulator Web"
+
 [[workflows.workflow]]
 name = "Build Instructions"
 author = "agent"
@@ -27,6 +31,18 @@ args = "echo \"Android Native App structure complete. Build with: ./gradlew asse
 
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow]]
+name = "Bollywood Simulator Web"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 -m http.server 5000"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [[ports]]
 localPort = 5000
