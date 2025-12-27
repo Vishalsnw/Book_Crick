@@ -15,15 +15,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Android Build Info"
+args = "Build Instructions"
 
 [[workflows.workflow]]
-name = "Android Build Info"
+name = "Build Instructions"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"Android build system configured. Run './gradlew assembleDebug' in a GitHub Action to build the APK.\" && sleep infinity"
+args = "echo \"Android Native App structure complete. Build with: ./gradlew assembleDebug\" && sleep infinity"
 
 [workflows.workflow.metadata]
 outputType = "console"
