@@ -152,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
                     activePlayers.add(p);
                     roundMovies.add(new MovieRecord(p.name, results.totalEarnings));
                     
-                    Movie movie = new Movie(p.name, results.genre != null ? results.genre : "Unknown", results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
+                    String genreStr = (results.genre != null) ? results.genre : "Unknown";
+                    Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
                     movieArchive.add(movie);
                     
                     PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
@@ -176,8 +177,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Collections.sort(activePlayers, (a, b) -> Integer.compare(b.lastEarnings, a.lastEarnings));
-        for (int i = 0; i < activePlayers.size(); i++) {
-            activePlayers.get(i).active = (i < advanceCount);
+        for (int i = 0; i < Math.min(advanceCount, activePlayers.size()); i++) {
+            activePlayers.get(i).active = true;
+        }
+        for (int i = advanceCount; i < activePlayers.size(); i++) {
+            activePlayers.get(i).active = false;
         }
 
         if (nextState != null && nextState.equals("ROUND 2")) {

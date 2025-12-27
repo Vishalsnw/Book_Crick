@@ -23,7 +23,8 @@ public class Movie implements Serializable {
         String[] titles = {"Mumbai Dreams", "Monsoon Love", "Hidden Secrets", "Midnight Chase", "City Lights",
                            "Silver Screen", "Golden Hour", "Eternal Bond", "Revenge Games", "New Beginning"};
         
-        this.title = titles[((playerName.hashCode() + round + year) % titles.length)] + 
-                     " - " + genres[((playerName.hashCode() + earnings) % genres.length)];
+        int index = Math.abs(playerName.hashCode() + round + year) % titles.length;
+        this.title = titles[index] + 
+                     " - " + genres[Math.abs(playerName.hashCode() + earnings) % genres.length];
     }
 }
