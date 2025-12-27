@@ -177,11 +177,11 @@ public class MainActivity extends AppCompatActivity {
             activePlayers.get(i).active = (i < advanceCount);
         }
 
-        if (gameState.equals("ROUND 2")) {
+        if (nextState.equals("ROUND 2")) {
             showTopMovies(roundMovies, 5, "Top 5 Movies");
         }
 
-        if (gameState.equals("ROUND 3")) {
+        if (nextState.equals("ROUND 3")) {
             showTopMovies(roundMovies, 3, "Top 3 Movies");
         }
 
