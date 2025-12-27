@@ -15,7 +15,9 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,19 +31,24 @@ public class MainActivity extends AppCompatActivity {
     private List<Player> players = new ArrayList<>();
     private List<String> oscarWinners = new ArrayList<>();
     private List<Player> playerHistory = new ArrayList<>();
+    private Map<String, PlayerStats> playerStats = new HashMap<>();
+    private List<Movie> movieArchive = new ArrayList<>();
     private int currentYear = 1;
+    private int currentRound = 1;
     private String gameState = "START";
     private final Random random = new Random();
     private final Gson gson = new Gson();
 
     private TextView titleText, statsText, yearBadge, topMoviesText, eventText;
-    private Button actionButton, oscarButton, incomeButton;
+    private Button actionButton, oscarButton, incomeButton, profileButton, achieveButton;
     private LinearLayout topMoviesSection;
 
     private static final String PREFS_NAME = "BollywoodPrefs";
     private static final String KEY_OSCARS = "OscarWinners";
     private static final String KEY_YEAR = "CurrentYear";
     private static final String KEY_PLAYERS = "PlayerHistory";
+    private static final String KEY_STATS = "PlayerStats";
+    private static final String KEY_MOVIES = "MovieArchive";
     private String lastEvent = "";
 
     @Override
@@ -56,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         actionButton = findViewById(R.id.actionButton);
         oscarButton = findViewById(R.id.oscarButton);
         incomeButton = findViewById(R.id.incomeButton);
+        profileButton = findViewById(R.id.profileButton);
+        achieveButton = findViewById(R.id.achieveButton);
         topMoviesSection = findViewById(R.id.topMoviesSection);
         eventText = findViewById(R.id.eventText);
 
@@ -68,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("players", new ArrayList<>(players));
             startActivity(intent);
         });
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PlayerProfileActivity.class);
+            if (!players.isEmpty()) {
+                intent.putExtra("playerName", players.get(0).name);
+            }
+            startActivity(intent);
+        });
+        achieveButton.setOnClickListener(v -> startActivity(new Intent(this, AchievementsActivity.class)));
         
         updateUI();
     }
@@ -86,8 +103,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startNewYear() {
         players.clear();
+        currentRound = 1;
         
         for (String name : PLAYER_NAMES) {
+            PlayerStats stats = playerStats.getOrDefault(name, new PlayerStats(name));
             Player existingPlayer = findPlayerInHistory(name);
             
             if (existingPlayer != null && existingPlayer.balance > 0) {
@@ -96,11 +115,14 @@ public class MainActivity extends AppCompatActivity {
                 int budget = random.nextInt(91) + 10;
                 players.add(new Player(name, budget, 0));
             }
+            
+            stats.yearsActive++;
+            playerStats.put(name, stats);
         }
         
         gameState = "ROUND1";
         topMoviesSection.setVisibility(View.GONE);
-        lastEvent = "";
+        lastEvent = "🎬 New year begins! Players ready their films...";
         updateUI();
     }
 
@@ -116,23 +138,37 @@ public class MainActivity extends AppCompatActivity {
     private void playRound(int advanceCount, String nextState) {
         List<Player> activePlayers = new ArrayList<>();
         List<MovieRecord> roundMovies = new ArrayList<>();
+        List<String> roundEvents = new ArrayList<>();
 
         for (Player p : players) {
             if (p.active) {
-                int earnings = random.nextInt(101);
+                GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear);
                 
-                if (gameState.equals("ROUND1") && p.loan > 0) {
-                    lastEvent = "📊 Players took loans to start their journey!";
-                    p.balance = -p.loan;
-                    p.earnings = 0;
-                } else {
-                    p.earnings += earnings;
-                    p.balance = p.earnings - p.loan;
-                    p.lastEarnings = earnings;
-                }
+                p.lastEarnings = results.totalEarnings;
+                p.earnings += results.totalEarnings;
+                p.balance = p.earnings - p.loan;
                 
                 activePlayers.add(p);
-                roundMovies.add(new MovieRecord(p.name, earnings));
+                roundMovies.add(new MovieRecord(p.name, results.totalEarnings));
+                
+                Movie movie = new Movie(p.name, results.genre, results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
+                movieArchive.add(movie);
+                
+                PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
+                stats.addMovie(movie);
+                
+                if (GameEngine.checkBankruptcy(p)) {
+                    p.active = false;
+                    stats.bankruptcies++;
+                    roundEvents.add("💥 " + p.name + " filed for bankruptcy!");
+                } else {
+                    String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.indexOf(p), activePlayers.size());
+                    if (achievement != null) {
+                        stats.addAchievement(achievement);
+                    }
+                }
+                
+                playerStats.put(p.name, stats);
             }
         }
 
@@ -149,16 +185,28 @@ public class MainActivity extends AppCompatActivity {
             showTopMovies(roundMovies, 3, "Top 3 Movies");
         }
 
+        if (!roundEvents.isEmpty()) {
+            lastEvent = roundEvents.get(0);
+        }
+
         if (nextState.equals("WINNER")) {
             Player winner = activePlayers.get(0);
             oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + winner.earnings + ")");
+            
+            PlayerStats winnerStats = playerStats.getOrDefault(winner.name, new PlayerStats(winner.name));
+            winnerStats.oscarWins++;
+            winnerStats.addAchievement("🏆 Oscar Winner");
+            playerStats.put(winner.name, winnerStats);
             
             for (Player p : players) {
                 playerHistory.add(new Player(p.name, p.loan, p.balance));
             }
             
             currentYear++;
+            currentRound = 0;
             saveData();
+        } else {
+            currentRound++;
         }
 
         gameState = nextState;
@@ -223,6 +271,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(KEY_OSCARS, gson.toJson(oscarWinners));
         editor.putInt(KEY_YEAR, currentYear);
         editor.putString(KEY_PLAYERS, gson.toJson(playerHistory));
+        editor.putString(KEY_STATS, gson.toJson(playerStats));
+        editor.putString(KEY_MOVIES, gson.toJson(movieArchive));
         editor.apply();
     }
 
@@ -238,6 +288,18 @@ public class MainActivity extends AppCompatActivity {
         if (playerJson != null) {
             Type playerType = new TypeToken<ArrayList<Player>>() {}.getType();
             playerHistory = gson.fromJson(playerJson, playerType);
+        }
+        
+        String statsJson = prefs.getString(KEY_STATS, null);
+        if (statsJson != null) {
+            Type statsType = new TypeToken<HashMap<String, PlayerStats>>() {}.getType();
+            playerStats = gson.fromJson(statsJson, statsType);
+        }
+        
+        String moviesJson = prefs.getString(KEY_MOVIES, null);
+        if (moviesJson != null) {
+            Type moviesType = new TypeToken<ArrayList<Movie>>() {}.getType();
+            movieArchive = gson.fromJson(moviesJson, moviesType);
         }
         
         currentYear = prefs.getInt(KEY_YEAR, 1);
