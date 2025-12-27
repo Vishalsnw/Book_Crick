@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#1A1A1A"
+    android:background="#0A0A0A"
     android:padding="16dp">
 
     <TextView
@@ -12,28 +12,73 @@
         android:layout_height="wrap_content"
         android:text="Bollywood Simulator"
         android:textColor="#FFD700"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:layout_gravity="center"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/yearBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year 1"
+        android:textColor="#FFD700"
+        android:layout_gravity="center"
+        android:background="@drawable/gold_border"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp" />
 
     <Button
         android:id="@+id/actionButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="Start New Year"
         android:backgroundTint="#FFD700"
         android:textColor="#000000"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/topMoviesSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:background="#2D2D2D"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎬 Top 3 Movies"
+            android:textColor="#FFD700"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/topMoviesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="📊 Live Rankings"
+        android:textColor="#FFD700"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="8dp">
         <TextView
             android:id="@+id/statsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:fontFamily="monospace" />
     </ScrollView>
 </LinearLayout>
