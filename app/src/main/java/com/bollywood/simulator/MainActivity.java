@@ -141,34 +141,37 @@ public class MainActivity extends AppCompatActivity {
         List<String> roundEvents = new ArrayList<>();
 
         for (Player p : players) {
-            if (p.active) {
+            if (p != null && p.active) {
                 GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear);
                 
-                p.lastEarnings = results.totalEarnings;
-                p.earnings += results.totalEarnings;
-                p.balance = p.earnings - p.loan;
-                
-                activePlayers.add(p);
-                roundMovies.add(new MovieRecord(p.name, results.totalEarnings));
-                
-                Movie movie = new Movie(p.name, results.genre, results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
-                movieArchive.add(movie);
-                
-                PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
-                stats.addMovie(movie);
-                
-                if (GameEngine.checkBankruptcy(p)) {
-                    p.active = false;
-                    stats.bankruptcies++;
-                    roundEvents.add("💥 " + p.name + " filed for bankruptcy!");
-                } else {
-                    String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.indexOf(p), activePlayers.size());
-                    if (achievement != null) {
-                        stats.addAchievement(achievement);
+                if (results != null) {
+                    p.lastEarnings = results.totalEarnings;
+                    p.earnings += results.totalEarnings;
+                    p.balance = p.earnings - p.loan;
+                    
+                    activePlayers.add(p);
+                    roundMovies.add(new MovieRecord(p.name, results.totalEarnings));
+                    
+                    Movie movie = new Movie(p.name, results.genre != null ? results.genre : "Unknown", results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
+                    movieArchive.add(movie);
+                    
+                    PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
+                    if (stats != null) {
+                        stats.addMovie(movie);
+                        
+                        if (GameEngine.checkBankruptcy(p)) {
+                            p.active = false;
+                            stats.bankruptcies++;
+                            roundEvents.add("💥 " + p.name + " filed for bankruptcy!");
+                        } else {
+                            String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.size() - 1, activePlayers.size());
+                            if (achievement != null) {
+                                stats.addAchievement(achievement);
+                            }
+                        }
+                        playerStats.put(p.name, stats);
                     }
                 }
-                
-                playerStats.put(p.name, stats);
             }
         }
 
@@ -177,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
             activePlayers.get(i).active = (i < advanceCount);
         }
 
-        if (nextState.equals("ROUND 2")) {
+        if (nextState != null && nextState.equals("ROUND 2")) {
             showTopMovies(roundMovies, 5, "Top 5 Movies");
         }
 
-        if (nextState.equals("ROUND 3")) {
+        if (nextState != null && nextState.equals("ROUND 3")) {
             showTopMovies(roundMovies, 3, "Top 3 Movies");
         }
 
