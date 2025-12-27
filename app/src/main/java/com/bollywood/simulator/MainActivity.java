@@ -100,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
             activePlayers.get(i).active = (i < advanceCount);
         }
 
+        if (gameState.equals("ROUND 2")) {
+            showTopMovies(roundMovies, 5, "Top 5 Movies");
+        }
+
         if (gameState.equals("ROUND 3")) {
-            showTopMovies(roundMovies);
+            showTopMovies(roundMovies, 3, "Top 3 Movies");
         }
 
         if (nextState.equals("WINNER")) {
@@ -115,13 +119,15 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void showTopMovies(List<MovieRecord> movies) {
+    private void showTopMovies(List<MovieRecord> movies, int count, String title) {
         Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < Math.min(3, movies.size()); i++) {
+        for (int i = 0; i < Math.min(count, movies.size()); i++) {
             MovieRecord m = movies.get(i);
             sb.append("#").append(i + 1).append(" ").append(m.playerName).append(": ₹").append(m.earnings).append("\n");
         }
+        TextView sectionTitle = (TextView) topMoviesSection.getChildAt(0);
+        sectionTitle.setText("🎬 " + title);
         topMoviesText.setText(sb.toString());
         topMoviesSection.setVisibility(View.VISIBLE);
     }
