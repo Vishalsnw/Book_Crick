@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentYear = 1;
     private int currentRound = 1;
     private String gameState = "START";
+    private GameEngine.IndustryTrend currentTrend = GameEngine.IndustryTrend.NORMAL;
     private final Random random = new Random();
     private final Gson gson = new Gson();
 
@@ -110,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         players.clear();
         currentRound = 1;
         
+        // Set a random trend for the year
+        GameEngine.IndustryTrend[] trends = GameEngine.IndustryTrend.values();
+        currentTrend = trends[random.nextInt(trends.length)];
+        
         for (String name : PLAYER_NAMES) {
             PlayerStats stats = playerStats.getOrDefault(name, new PlayerStats(name));
             Player existingPlayer = findPlayerInHistory(name);
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (Player p : players) {
             if (p != null && p.active) {
-                GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear);
+                GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear, currentTrend);
                 
                 if (results != null) {
                     p.lastEarnings = results.totalEarnings;
@@ -157,10 +162,11 @@ public class MainActivity extends AppCompatActivity {
                     p.balance = p.earnings - p.loan;
                     
                     activePlayers.add(p);
-                    roundMovies.add(new MovieRecord(p.name, results.totalEarnings));
+                    roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
                     
                     String genreStr = (results.genre != null) ? results.genre : "Unknown";
                     Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
+                    movie.starRating = results.starRating;
                     movieArchive.add(movie);
                     
                     PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
@@ -277,9 +283,12 @@ public class MainActivity extends AppCompatActivity {
     private void showTopMovies(List<MovieRecord> movies, int count, String title) {
         Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
+        sb.append("Current Trend: ").append(currentTrend.description).append("\n\n");
         for (int i = 0; i < Math.min(count, movies.size()); i++) {
             MovieRecord m = movies.get(i);
-            sb.append("#").append(i + 1).append(" ").append(m.playerName).append(": ₹").append(m.earnings).append("\n");
+            String stars = String.format("%.1f★", m.rating);
+            sb.append("#").append(i + 1).append(" ").append(m.playerName)
+              .append("\n  ").append(m.cast.name).append(" | ").append(stars).append(" | ₹").append(m.earnings).append("\n");
         }
         TextView sectionTitle = (TextView) topMoviesSection.getChildAt(0);
         sectionTitle.setText("🎬 " + title);
@@ -291,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
         yearBadge.setText("Year " + currentYear);
         
         if (!lastEvent.isEmpty()) {
-            eventText.setText(lastEvent);
+            eventText.setText("NEWS: " + lastEvent + "\n(Trend: " + currentTrend.description + ")");
             eventText.setVisibility(View.VISIBLE);
         } else {
             eventText.setVisibility(View.GONE);
@@ -377,6 +386,10 @@ public class MainActivity extends AppCompatActivity {
     private static class MovieRecord {
         String playerName;
         int earnings;
-        MovieRecord(String name, int earn) { this.playerName = name; this.earnings = earn; }
+        float rating;
+        GameEngine.StarPower cast;
+        MovieRecord(String name, int earn, float rate, GameEngine.StarPower star) { 
+            this.playerName = name; this.earnings = earn; this.rating = rate; this.cast = star;
+        }
     }
 }

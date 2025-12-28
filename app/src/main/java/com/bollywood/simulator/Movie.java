@@ -10,6 +10,7 @@ public class Movie implements Serializable {
     public int year;
     public boolean wasHit;
     public String title;
+    public float starRating;
 
     public Movie(String playerName, String genre, int earnings, int round, int year, boolean wasHit) {
         this.playerName = playerName;
