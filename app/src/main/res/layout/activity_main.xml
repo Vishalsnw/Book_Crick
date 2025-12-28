@@ -169,46 +169,49 @@
         android:id="@+id/oscarAnimationOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E6121212"
+        android:background="#F2121212"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:elevation="20dp"
+        android:elevation="25dp"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:padding="24dp">
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🏆 OSCAR NOMINEES"
             android:textColor="#FFD700"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:maxHeight="400dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
             <TextView
                 android:id="@+id/nomineeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:lineSpacingExtra="8dp"/>
+                android:lineSpacingExtra="10dp"
+                android:paddingBottom="40dp"/>
         </ScrollView>
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(Click anywhere to skip)"
-            android:textColor="#888888"
-            android:textSize="12sp"
-            android:layout_marginTop="16dp"/>
+            android:text="Tap anywhere to continue..."
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"/>
     </LinearLayout>
 </FrameLayout>
 </LinearLayout>
