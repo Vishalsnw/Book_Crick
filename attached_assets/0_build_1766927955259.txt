@@ -1,0 +1,410 @@
+﻿2025-12-28T13:10:25.9760974Z Current runner version: '2.330.0'
+2025-12-28T13:10:25.9785990Z ##[group]Runner Image Provisioner
+2025-12-28T13:10:25.9786989Z Hosted Compute Agent
+2025-12-28T13:10:25.9787588Z Version: 20251211.462
+2025-12-28T13:10:25.9788149Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-28T13:10:25.9788933Z Build Date: 2025-12-11T16:28:49Z
+2025-12-28T13:10:25.9789540Z Worker ID: {1cdf57f1-46c2-411a-957d-85ef861dbee8}
+2025-12-28T13:10:25.9790199Z ##[endgroup]
+2025-12-28T13:10:25.9790843Z ##[group]Operating System
+2025-12-28T13:10:25.9791376Z Ubuntu
+2025-12-28T13:10:25.9791832Z 24.04.3
+2025-12-28T13:10:25.9792328Z LTS
+2025-12-28T13:10:25.9792790Z ##[endgroup]
+2025-12-28T13:10:25.9793528Z ##[group]Runner Image
+2025-12-28T13:10:25.9794225Z Image: ubuntu-24.04
+2025-12-28T13:10:25.9794702Z Version: 20251215.174.1
+2025-12-28T13:10:25.9795722Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-28T13:10:25.9797309Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-28T13:10:25.9798301Z ##[endgroup]
+2025-12-28T13:10:25.9800846Z ##[group]GITHUB_TOKEN Permissions
+2025-12-28T13:10:25.9803034Z Actions: write
+2025-12-28T13:10:25.9803812Z ArtifactMetadata: write
+2025-12-28T13:10:25.9804382Z Attestations: write
+2025-12-28T13:10:25.9804860Z Checks: write
+2025-12-28T13:10:25.9805377Z Contents: write
+2025-12-28T13:10:25.9805862Z Deployments: write
+2025-12-28T13:10:25.9806422Z Discussions: write
+2025-12-28T13:10:25.9806960Z Issues: write
+2025-12-28T13:10:25.9807440Z Metadata: read
+2025-12-28T13:10:25.9807945Z Models: read
+2025-12-28T13:10:25.9808386Z Packages: write
+2025-12-28T13:10:25.9808964Z Pages: write
+2025-12-28T13:10:25.9809485Z PullRequests: write
+2025-12-28T13:10:25.9810099Z RepositoryProjects: write
+2025-12-28T13:10:25.9810750Z SecurityEvents: write
+2025-12-28T13:10:25.9811245Z Statuses: write
+2025-12-28T13:10:25.9811711Z ##[endgroup]
+2025-12-28T13:10:25.9814536Z Secret source: Actions
+2025-12-28T13:10:25.9815261Z Prepare workflow directory
+2025-12-28T13:10:26.0141936Z Prepare all required actions
+2025-12-28T13:10:26.0179562Z Getting action download info
+2025-12-28T13:10:26.4740894Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-28T13:10:26.6039596Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2025-12-28T13:10:27.2652641Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-12-28T13:10:27.5247858Z Complete job name: build
+2025-12-28T13:10:27.5972381Z ##[group]Run actions/checkout@v4
+2025-12-28T13:10:27.5973424Z with:
+2025-12-28T13:10:27.5973885Z   repository: Vishalsnw/Book_Crick
+2025-12-28T13:10:27.5974609Z   token: ***
+2025-12-28T13:10:27.5975032Z   ssh-strict: true
+2025-12-28T13:10:27.5975462Z   ssh-user: git
+2025-12-28T13:10:27.5975903Z   persist-credentials: true
+2025-12-28T13:10:27.5976380Z   clean: true
+2025-12-28T13:10:27.5976826Z   sparse-checkout-cone-mode: true
+2025-12-28T13:10:27.5977383Z   fetch-depth: 1
+2025-12-28T13:10:27.5977813Z   fetch-tags: false
+2025-12-28T13:10:27.5978247Z   show-progress: true
+2025-12-28T13:10:27.5978688Z   lfs: false
+2025-12-28T13:10:27.5979100Z   submodules: false
+2025-12-28T13:10:27.5979550Z   set-safe-directory: true
+2025-12-28T13:10:27.5980274Z ##[endgroup]
+2025-12-28T13:10:27.7116928Z Syncing repository: Vishalsnw/Book_Crick
+2025-12-28T13:10:27.7119871Z ##[group]Getting Git version info
+2025-12-28T13:10:27.7121170Z Working directory is '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-28T13:10:27.7123336Z [command]/usr/bin/git version
+2025-12-28T13:10:27.7217750Z git version 2.52.0
+2025-12-28T13:10:27.7246492Z ##[endgroup]
+2025-12-28T13:10:27.7263739Z Temporarily overriding HOME='/home/runner/work/_temp/d3ddb2d7-832a-4d0d-b992-4adaa4688245' before making global git config changes
+2025-12-28T13:10:27.7266253Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-28T13:10:27.7278740Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-28T13:10:27.7326256Z Deleting the contents of '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-28T13:10:27.7330504Z ##[group]Initializing the repository
+2025-12-28T13:10:27.7335640Z [command]/usr/bin/git init /home/runner/work/Book_Crick/Book_Crick
+2025-12-28T13:10:27.7492565Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-28T13:10:27.7494085Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-28T13:10:27.7495079Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-28T13:10:27.7496170Z hint: call:
+2025-12-28T13:10:27.7496913Z hint:
+2025-12-28T13:10:27.7497606Z hint: 	git config --global init.defaultBranch <name>
+2025-12-28T13:10:27.7498635Z hint:
+2025-12-28T13:10:27.7499657Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-28T13:10:27.7501340Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-28T13:10:27.7502686Z hint:
+2025-12-28T13:10:27.7503698Z hint: 	git branch -m <name>
+2025-12-28T13:10:27.7504546Z hint:
+2025-12-28T13:10:27.7505620Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-28T13:10:27.7507374Z Initialized empty Git repository in /home/runner/work/Book_Crick/Book_Crick/.git/
+2025-12-28T13:10:27.7512998Z [command]/usr/bin/git remote add origin https://github.com/Vishalsnw/Book_Crick
+2025-12-28T13:10:27.7551360Z ##[endgroup]
+2025-12-28T13:10:27.7552645Z ##[group]Disabling automatic garbage collection
+2025-12-28T13:10:27.7556845Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-28T13:10:27.7586888Z ##[endgroup]
+2025-12-28T13:10:27.7588193Z ##[group]Setting up auth
+2025-12-28T13:10:27.7594861Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-28T13:10:27.7626334Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-28T13:10:27.8077177Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-28T13:10:27.8109490Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-28T13:10:27.8338313Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-28T13:10:27.8370555Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-28T13:10:27.8609306Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-28T13:10:27.8645245Z ##[endgroup]
+2025-12-28T13:10:27.8646040Z ##[group]Fetching the repository
+2025-12-28T13:10:27.8654650Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f2bea0e47b0e1e90ecaee600cc9d26397052a0ad:refs/remotes/origin/main
+2025-12-28T13:10:28.3254572Z From https://github.com/Vishalsnw/Book_Crick
+2025-12-28T13:10:28.3256658Z  * [new ref]         f2bea0e47b0e1e90ecaee600cc9d26397052a0ad -> origin/main
+2025-12-28T13:10:28.3287514Z ##[endgroup]
+2025-12-28T13:10:28.3288654Z ##[group]Determining the checkout info
+2025-12-28T13:10:28.3290122Z ##[endgroup]
+2025-12-28T13:10:28.3294758Z [command]/usr/bin/git sparse-checkout disable
+2025-12-28T13:10:28.3363442Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-28T13:10:28.3390107Z ##[group]Checking out the ref
+2025-12-28T13:10:28.3393597Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-28T13:10:28.3533552Z Switched to a new branch 'main'
+2025-12-28T13:10:28.3536298Z branch 'main' set up to track 'origin/main'.
+2025-12-28T13:10:28.3543416Z ##[endgroup]
+2025-12-28T13:10:28.3577982Z [command]/usr/bin/git log -1 --format=%H
+2025-12-28T13:10:28.3601157Z f2bea0e47b0e1e90ecaee600cc9d26397052a0ad
+2025-12-28T13:10:28.3976253Z ##[group]Run actions/setup-java@v4
+2025-12-28T13:10:28.3977400Z with:
+2025-12-28T13:10:28.3978186Z   java-version: 17
+2025-12-28T13:10:28.3979078Z   distribution: temurin
+2025-12-28T13:10:28.3979981Z   cache: gradle
+2025-12-28T13:10:28.3980824Z   java-package: jdk
+2025-12-28T13:10:28.3981700Z   check-latest: false
+2025-12-28T13:10:28.3982602Z   server-id: github
+2025-12-28T13:10:28.3984207Z   server-username: GITHUB_ACTOR
+2025-12-28T13:10:28.3985300Z   server-password: GITHUB_TOKEN
+2025-12-28T13:10:28.3986347Z   overwrite-settings: true
+2025-12-28T13:10:28.3987303Z   job-status: success
+2025-12-28T13:10:28.3988470Z   token: ***
+2025-12-28T13:10:28.3989256Z ##[endgroup]
+2025-12-28T13:10:28.6013056Z ##[group]Installed distributions
+2025-12-28T13:10:28.6232686Z Resolved Java 17.0.17+10 from tool-cache
+2025-12-28T13:10:28.6234946Z Setting Java 17.0.17+10 as the default
+2025-12-28T13:10:28.6248526Z Creating toolchains.xml for JDK version 17 from temurin
+2025-12-28T13:10:28.6327983Z Writing to /home/runner/.m2/toolchains.xml
+2025-12-28T13:10:28.6330160Z 
+2025-12-28T13:10:28.6330740Z Java configuration:
+2025-12-28T13:10:28.6332174Z   Distribution: temurin
+2025-12-28T13:10:28.6333858Z   Version: 17.0.17+10
+2025-12-28T13:10:28.6335958Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-28T13:10:28.6337753Z 
+2025-12-28T13:10:28.6339274Z ##[endgroup]
+2025-12-28T13:10:28.6358351Z Creating settings.xml with server-id: github
+2025-12-28T13:10:28.6360437Z Writing to /home/runner/.m2/settings.xml
+2025-12-28T13:10:29.0540435Z Cache hit for: setup-java-Linux-x64-gradle-b35151aa9e2a9f1f87b7cde998b6992292016ecdc0d96002b9ecb18e3134fce8
+2025-12-28T13:10:30.3629319Z Received 0 of 297083782 (0.0%), 0.0 MBs/sec
+2025-12-28T13:10:31.3633970Z Received 113246208 of 297083782 (38.1%), 54.0 MBs/sec
+2025-12-28T13:10:32.3639466Z Received 213909504 of 297083782 (72.0%), 68.0 MBs/sec
+2025-12-28T13:10:33.3640875Z Received 292889478 of 297083782 (98.6%), 69.8 MBs/sec
+2025-12-28T13:10:33.5942243Z Received 297083782 of 297083782 (100.0%), 67.0 MBs/sec
+2025-12-28T13:10:33.5943345Z Cache Size: ~283 MB (297083782 B)
+2025-12-28T13:10:33.6092959Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e126bf04-de7a-4092-a4be-13ce3dae9361/cache.tzst -P -C /home/runner/work/Book_Crick/Book_Crick --use-compress-program unzstd
+2025-12-28T13:10:34.7681836Z Cache restored successfully
+2025-12-28T13:10:34.8253358Z Cache restored from key: setup-java-Linux-x64-gradle-b35151aa9e2a9f1f87b7cde998b6992292016ecdc0d96002b9ecb18e3134fce8
+2025-12-28T13:10:34.8427180Z ##[group]Run chmod +x gradlew
+2025-12-28T13:10:34.8427512Z [36;1mchmod +x gradlew[0m
+2025-12-28T13:10:34.8470324Z shell: /usr/bin/bash -e {0}
+2025-12-28T13:10:34.8470601Z env:
+2025-12-28T13:10:34.8470905Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-28T13:10:34.8471426Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-28T13:10:34.8471813Z ##[endgroup]
+2025-12-28T13:10:34.8598510Z ##[group]Run ./gradlew assembleDebug
+2025-12-28T13:10:34.8598838Z [36;1m./gradlew assembleDebug[0m
+2025-12-28T13:10:34.8632846Z shell: /usr/bin/bash -e {0}
+2025-12-28T13:10:34.8633088Z env:
+2025-12-28T13:10:34.8633660Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-28T13:10:34.8634135Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-28T13:10:34.8634503Z ##[endgroup]
+2025-12-28T13:10:37.0393893Z 
+2025-12-28T13:10:37.0395041Z Welcome to Gradle 8.14.2!
+2025-12-28T13:10:37.0395457Z 
+2025-12-28T13:10:37.0402860Z Here are the highlights of this release:
+2025-12-28T13:10:37.0404035Z  - Java 24 support
+2025-12-28T13:10:37.0409119Z  - GraalVM Native Image toolchain selection
+2025-12-28T13:10:37.0409697Z  - Enhancements to test reporting
+2025-12-28T13:10:37.0410139Z  - Build Authoring improvements
+2025-12-28T13:10:37.0410929Z 
+2025-12-28T13:10:37.0411380Z For more details see https://docs.gradle.org/8.14.2/release-notes.html
+2025-12-28T13:10:37.0411916Z 
+2025-12-28T13:10:37.2334568Z Starting a Gradle Daemon (subsequent builds will be faster)
+2025-12-28T13:10:50.9341707Z Checking the license for package Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/licenses
+2025-12-28T13:10:50.9343529Z License for package Android SDK Build-Tools 30.0.3 accepted.
+2025-12-28T13:10:50.9344600Z Preparing "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)".
+2025-12-28T13:10:52.1334323Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" ready.
+2025-12-28T13:10:52.1335195Z Installing Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/build-tools/30.0.3
+2025-12-28T13:10:52.1336492Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" complete.
+2025-12-28T13:10:52.5336287Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" finished.
+2025-12-28T13:10:52.5343569Z Checking the license for package Android SDK Platform 33 in /usr/local/lib/android/sdk/licenses
+2025-12-28T13:10:52.5345057Z License for package Android SDK Platform 33 accepted.
+2025-12-28T13:10:52.5346199Z Preparing "Install Android SDK Platform 33 (revision: 3)".
+2025-12-28T13:10:55.4334367Z "Install Android SDK Platform 33 (revision: 3)" ready.
+2025-12-28T13:10:55.4336573Z Installing Android SDK Platform 33 in /usr/local/lib/android/sdk/platforms/android-33
+2025-12-28T13:10:55.4337376Z "Install Android SDK Platform 33 (revision: 3)" complete.
+2025-12-28T13:10:55.4337996Z "Install Android SDK Platform 33 (revision: 3)" finished.
+2025-12-28T13:10:55.8339125Z > Task :app:preBuild UP-TO-DATE
+2025-12-28T13:10:55.8343800Z > Task :app:preDebugBuild UP-TO-DATE
+2025-12-28T13:10:55.8376661Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+2025-12-28T13:10:55.9337373Z > Task :app:javaPreCompileDebug
+2025-12-28T13:10:56.3334144Z > Task :app:generateDebugResValues
+2025-12-28T13:10:56.3335812Z > Task :app:checkDebugAarMetadata
+2025-12-28T13:10:56.3338963Z > Task :app:mapDebugSourceSetPaths
+2025-12-28T13:10:56.3341702Z > Task :app:generateDebugResources
+2025-12-28T13:10:57.6342434Z > Task :app:packageDebugResources
+2025-12-28T13:10:58.3370233Z > Task :app:parseDebugLocalResources
+2025-12-28T13:10:58.3370883Z > Task :app:createDebugCompatibleScreenManifests
+2025-12-28T13:10:58.3371452Z > Task :app:extractDeepLinksDebug
+2025-12-28T13:10:58.7335016Z > Task :app:processDebugMainManifest
+2025-12-28T13:10:58.8335499Z > Task :app:mergeDebugResources
+2025-12-28T13:10:59.0360766Z > Task :app:processDebugManifest
+2025-12-28T13:10:59.0361380Z > Task :app:mergeDebugShaders
+2025-12-28T13:10:59.1341395Z > Task :app:compileDebugShaders NO-SOURCE
+2025-12-28T13:10:59.1350344Z > Task :app:generateDebugAssets UP-TO-DATE
+2025-12-28T13:10:59.1374293Z > Task :app:mergeDebugAssets
+2025-12-28T13:10:59.1379185Z > Task :app:compressDebugAssets
+2025-12-28T13:10:59.1385727Z > Task :app:processDebugJavaRes NO-SOURCE
+2025-12-28T13:10:59.3336584Z > Task :app:desugarDebugFileDependencies
+2025-12-28T13:10:59.3349890Z > Task :app:mergeDebugJniLibFolders
+2025-12-28T13:10:59.3374216Z > Task :app:checkDebugDuplicateClasses
+2025-12-28T13:10:59.4343943Z > Task :app:mergeDebugNativeLibs NO-SOURCE
+2025-12-28T13:10:59.6335798Z > Task :app:processDebugManifestForPackage
+2025-12-28T13:10:59.9363902Z > Task :app:mergeDebugJavaResource
+2025-12-28T13:11:00.0374366Z > Task :app:stripDebugDebugSymbols NO-SOURCE
+2025-12-28T13:11:00.0375081Z > Task :app:mergeLibDexDebug
+2025-12-28T13:11:01.5334929Z > Task :app:processDebugResources
+2025-12-28T13:11:01.8334704Z > Task :app:validateSigningDebug
+2025-12-28T13:11:04.7361621Z 
+2025-12-28T13:11:04.7425818Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:211: error: cannot find symbol
+2025-12-28T13:11:04.7427315Z         oscarAnimationOverlay.setVisibility(View.VISIBLE);
+2025-12-28T13:11:04.7427996Z         ^
+2025-12-28T13:11:04.7428432Z   symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:04.7429370Z   location: class MainActivity
+2025-12-28T13:11:04.7430453Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:212: error: cannot find symbol
+2025-12-28T13:11:04.7432602Z         oscarAnimationOverlay.setAlpha(0f);
+2025-12-28T13:11:04.7433027Z         ^
+2025-12-28T13:11:04.7433554Z   symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:04.7434021Z   location: class MainActivity
+2025-12-28T13:11:04.7434981Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:213: error: cannot find symbol
+2025-12-28T13:11:04.7436139Z         oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
+2025-12-28T13:11:04.7436675Z         ^
+2025-12-28T13:11:04.7436996Z   symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:04.7437448Z   location: class MainActivity
+2025-12-28T13:11:04.7438383Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:226: error: cannot find symbol
+2025-12-28T13:11:04.7439439Z             nomineeText.setText(nominees.get(index).name);
+2025-12-28T13:11:04.7439907Z             ^
+2025-12-28T13:11:04.7440220Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7440619Z   location: class MainActivity
+2025-12-28T13:11:04.7441716Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:227: error: cannot find symbol
+2025-12-28T13:11:04.7443301Z             nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+2025-12-28T13:11:04.7444147Z             ^
+2025-12-28T13:11:04.7444460Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7444863Z   location: class MainActivity
+2025-12-28T13:11:04.7445795Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:229: error: cannot find symbol
+2025-12-28T13:11:04.7447175Z             animationHandler.postDelayed(() -> showNomineeWithDelay(nominees, index + 1, winner, nextState), 2000);
+2025-12-28T13:11:04.7448099Z             ^
+2025-12-28T13:11:04.7448442Z   symbol:   variable animationHandler
+2025-12-28T13:11:04.7448858Z   location: class MainActivity
+2025-12-28T13:11:04.7450012Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:231: error: cannot find symbol
+2025-12-28T13:11:04.7451412Z             nomineeText.setText("🏆 WINNER 🏆\n" + winner.name);
+2025-12-28T13:11:04.7451884Z             ^
+2025-12-28T13:11:04.7452206Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7452598Z   location: class MainActivity
+2025-12-28T13:11:04.7453760Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:232: error: cannot find symbol
+2025-12-28T13:11:04.7454977Z             nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
+2025-12-28T13:11:04.7455598Z             ^
+2025-12-28T13:11:04.7455913Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7456319Z   location: class MainActivity
+2025-12-28T13:11:04.7457536Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:233: error: cannot find symbol
+2025-12-28T13:11:04.7459005Z             nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+2025-12-28T13:11:04.7459854Z             ^
+2025-12-28T13:11:04.7460340Z > Task :app:compileDebugJavaWithJavac
+2025-12-28T13:11:04.7472252Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7521230Z   location: class MainActivity
+2025-12-28T13:11:04.7522407Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:235: error: cannot find symbol
+2025-12-28T13:11:04.7524245Z             animationHandler.postDelayed(() -> {
+2025-12-28T13:11:04.7524774Z             ^
+2025-12-28T13:11:04.7525127Z   symbol:   variable animationHandler
+2025-12-28T13:11:04.7525594Z   location: class MainActivity
+2025-12-28T13:11:04.7526610Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:236: error: cannot find symbol
+2025-12-28T13:11:04.7528289Z                 oscarAnimationOverlay.animate().alpha(0f).setDuration(500).withEndAction(() -> {
+2025-12-28T13:11:04.7529015Z                 ^
+2025-12-28T13:11:04.7529413Z   symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:04.7529905Z   location: class MainActivity
+2025-12-28T13:11:04.7530908Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:237: error: cannot find symbol
+2025-12-28T13:11:04.7532088Z                     oscarAnimationOverlay.setVisibility(View.GONE);
+2025-12-28T13:11:04.7532622Z                     ^
+2025-12-28T13:11:04.7532999Z   symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:04.7533807Z   location: class MainActivity
+2025-12-28T13:11:04.7534813Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:238: error: cannot find symbol
+2025-12-28T13:11:04.7536066Z                     nomineeText.setTextColor(android.graphics.Color.WHITE);
+2025-12-28T13:11:04.7536606Z                     ^
+2025-12-28T13:11:04.7536957Z   symbol:   variable nomineeText
+2025-12-28T13:11:04.7537546Z   location: class MainActivity
+2025-12-28T13:11:04.8342989Z Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses or overrides a deprecated API.
+2025-12-28T13:11:04.8344764Z Note: Recompile with -Xlint:deprecation for details.
+2025-12-28T13:11:04.8347831Z Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses unchecked or unsafe operations.
+2025-12-28T13:11:04.8349925Z Note: Recompile with -Xlint:unchecked for details.
+2025-12-28T13:11:04.9357404Z 13 errors
+2025-12-28T13:11:05.0354028Z 
+2025-12-28T13:11:05.0354546Z > Task :app:compileDebugJavaWithJavac FAILED
+2025-12-28T13:11:05.2333835Z > Task :app:mergeExtDexDebug
+2025-12-28T13:11:05.3333303Z 
+2025-12-28T13:11:05.3335126Z [Incubating] Problems report is available at: file:///home/runner/work/Book_Crick/Book_Crick/build/reports/problems/problems-report.html
+2025-12-28T13:11:05.3336092Z 
+2025-12-28T13:11:05.3336289Z FAILURE: Build failed with an exception.
+2025-12-28T13:11:05.3336670Z 
+2025-12-28T13:11:05.3336831Z * What went wrong:
+2025-12-28T13:11:05.3337311Z Execution failed for task ':app:compileDebugJavaWithJavac'.
+2025-12-28T13:11:05.3337978Z > Compilation failed; see the compiler output below.
+2025-12-28T13:11:05.3339178Z   Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses or overrides a deprecated API.
+2025-12-28T13:11:05.3340280Z   Note: Recompile with -Xlint:deprecation for details.
+2025-12-28T13:11:05.3341398Z   Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses unchecked or unsafe operations.
+2025-12-28T13:11:05.3343039Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:211: error: cannot find symbol
+2025-12-28T13:11:05.3344712Z           oscarAnimationOverlay.setVisibility(View.VISIBLE);
+2025-12-28T13:11:05.3345209Z           ^
+2025-12-28T13:11:05.3345525Z     symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:05.3345967Z     location: class MainActivity
+2025-12-28T13:11:05.3346912Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:212: error: cannot find symbol
+2025-12-28T13:11:05.3347908Z           oscarAnimationOverlay.setAlpha(0f);
+2025-12-28T13:11:05.3348324Z           ^
+2025-12-28T13:11:05.3348638Z     symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:05.3354503Z     location: class MainActivity
+2025-12-28T13:11:05.3358595Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:213: error: cannot find symbol
+2025-12-28T13:11:05.3362679Z           oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
+2025-12-28T13:11:05.3386592Z           ^
+2025-12-28T13:11:05.3387269Z     symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:05.3387916Z     location: class MainActivity
+2025-12-28T13:11:05.3389002Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:226: error: cannot find symbol
+2025-12-28T13:11:05.3390197Z               nomineeText.setText(nominees.get(index).name);
+2025-12-28T13:11:05.3390789Z               ^
+2025-12-28T13:11:05.3391245Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3391762Z     location: class MainActivity
+2025-12-28T13:11:05.3392859Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:227: error: cannot find symbol
+2025-12-28T13:11:05.3394640Z               nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+2025-12-28T13:11:05.3395630Z               ^
+2025-12-28T13:11:05.3396088Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3396653Z     location: class MainActivity
+2025-12-28T13:11:05.3397760Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:229: error: cannot find symbol
+2025-12-28T13:11:05.3399281Z               animationHandler.postDelayed(() -> showNomineeWithDelay(nominees, index + 1, winner, nextState), 2000);
+2025-12-28T13:11:05.3400158Z               ^
+2025-12-28T13:11:05.3401689Z     symbol:   variable animationHandler
+2025-12-28T13:11:05.3402127Z     location: class MainActivity
+2025-12-28T13:11:05.3403260Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:231: error: cannot find symbol
+2025-12-28T13:11:05.3404625Z               nomineeText.setText("🏆 WINNER 🏆\n" + winner.name);
+2025-12-28T13:11:05.3405097Z               ^
+2025-12-28T13:11:05.3405400Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3405812Z     location: class MainActivity
+2025-12-28T13:11:05.3406766Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:232: error: cannot find symbol
+2025-12-28T13:11:05.3407920Z               nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
+2025-12-28T13:11:05.3408515Z               ^
+2025-12-28T13:11:05.3408817Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3409188Z     location: class MainActivity
+2025-12-28T13:11:05.3410102Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:233: error: cannot find symbol
+2025-12-28T13:11:05.3411495Z               nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+2025-12-28T13:11:05.3412317Z               ^
+2025-12-28T13:11:05.3412614Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3412995Z     location: class MainActivity
+2025-12-28T13:11:05.3423685Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:235: error: cannot find symbol
+2025-12-28T13:11:05.3424978Z               animationHandler.postDelayed(() -> {
+2025-12-28T13:11:05.3425419Z               ^
+2025-12-28T13:11:05.3425737Z     symbol:   variable animationHandler
+2025-12-28T13:11:05.3426152Z     location: class MainActivity
+2025-12-28T13:11:05.3427073Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:236: error: cannot find symbol
+2025-12-28T13:11:05.3428259Z                   oscarAnimationOverlay.animate().alpha(0f).setDuration(500).withEndAction(() -> {
+2025-12-28T13:11:05.3428879Z                   ^
+2025-12-28T13:11:05.3429213Z     symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:05.3429643Z     location: class MainActivity
+2025-12-28T13:11:05.3430549Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:237: error: cannot find symbol
+2025-12-28T13:11:05.3431579Z                       oscarAnimationOverlay.setVisibility(View.GONE);
+2025-12-28T13:11:05.3432245Z                       ^
+2025-12-28T13:11:05.3432605Z     symbol:   variable oscarAnimationOverlay
+2025-12-28T13:11:05.3433035Z     location: class MainActivity
+2025-12-28T13:11:05.3434099Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:238: error: cannot find symbol
+2025-12-28T13:11:05.3435179Z                       nomineeText.setTextColor(android.graphics.Color.WHITE);
+2025-12-28T13:11:05.3435699Z                       ^
+2025-12-28T13:11:05.3436025Z     symbol:   variable nomineeText
+2025-12-28T13:11:05.3436427Z     location: class MainActivity
+2025-12-28T13:11:05.3436870Z   Note: Recompile with -Xlint:unchecked for details.
+2025-12-28T13:11:05.3437323Z   13 errors
+2025-12-28T13:11:05.3437491Z 
+2025-12-28T13:11:05.3437597Z * Try:
+2025-12-28T13:11:05.3438015Z > Check your code and dependencies to fix the compilation error(s)
+2025-12-28T13:11:05.3438559Z > Run with --scan to get full insights.
+2025-12-28T13:11:05.3438853Z 
+2025-12-28T13:11:05.3438971Z BUILD FAILED in 29s
+2025-12-28T13:11:05.3439173Z 
+2025-12-28T13:11:05.3439606Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+2025-12-28T13:11:05.3440156Z 
+2025-12-28T13:11:05.3440792Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2025-12-28T13:11:05.3441556Z 
+2025-12-28T13:11:05.3442404Z For more on this, please refer to https://docs.gradle.org/8.14.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2025-12-28T13:11:05.3443680Z 24 actionable tasks: 24 executed
+2025-12-28T13:11:05.9935582Z ##[error]Process completed with exit code 1.
+2025-12-28T13:11:06.0042235Z Post job cleanup.
+2025-12-28T13:11:06.1850539Z Post job cleanup.
+2025-12-28T13:11:06.2801555Z [command]/usr/bin/git version
+2025-12-28T13:11:06.2837694Z git version 2.52.0
+2025-12-28T13:11:06.2880906Z Temporarily overriding HOME='/home/runner/work/_temp/df6fa336-9f85-4135-b114-7b0c5d0ec36b' before making global git config changes
+2025-12-28T13:11:06.2881830Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-28T13:11:06.2886599Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-28T13:11:06.2921327Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-28T13:11:06.2957092Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-28T13:11:06.3216565Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-28T13:11:06.3240600Z http.https://github.com/.extraheader
+2025-12-28T13:11:06.3256685Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-28T13:11:06.3291451Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-28T13:11:06.3545765Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-28T13:11:06.3581586Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-28T13:11:06.3960773Z Cleaning up orphan processes
+2025-12-28T13:11:06.4276585Z Terminate orphan process: pid (2221) (java)
