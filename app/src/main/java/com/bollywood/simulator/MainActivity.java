@@ -199,25 +199,65 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (nextState.equals("WINNER")) {
-            Player winner = activePlayers.get(0);
-            oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + winner.earnings + ")");
-            
-            PlayerStats winnerStats = playerStats.getOrDefault(winner.name, new PlayerStats(winner.name));
-            winnerStats.oscarWins++;
-            winnerStats.addAchievement("🏆 Oscar Winner");
-            playerStats.put(winner.name, winnerStats);
-            
-            for (Player p : players) {
-                playerHistory.add(new Player(p.name, p.loan, p.balance));
-            }
-            
-            currentYear++;
-            currentRound = 0;
-            saveData();
+            startOscarAnimation(activePlayers, nextState);
         } else {
             currentRound++;
+            gameState = nextState;
+            updateUI();
         }
+    }
 
+    private void startOscarAnimation(List<Player> activePlayers, String nextState) {
+        oscarAnimationOverlay.setVisibility(View.VISIBLE);
+        oscarAnimationOverlay.setAlpha(0f);
+        oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
+
+        List<Player> finalFour = new ArrayList<>();
+        for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
+            finalFour.add(activePlayers.get(i));
+        }
+        Collections.shuffle(finalFour);
+
+        showNomineeWithDelay(finalFour, 0, activePlayers.get(0), nextState);
+    }
+
+    private void showNomineeWithDelay(List<Player> nominees, int index, Player winner, String nextState) {
+        if (index < nominees.size()) {
+            nomineeText.setText(nominees.get(index).name);
+            nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+            
+            animationHandler.postDelayed(() -> showNomineeWithDelay(nominees, index + 1, winner, nextState), 2000);
+        } else {
+            nomineeText.setText("🏆 WINNER 🏆\n" + winner.name);
+            nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
+            nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+
+            animationHandler.postDelayed(() -> {
+                oscarAnimationOverlay.animate().alpha(0f).setDuration(500).withEndAction(() -> {
+                    oscarAnimationOverlay.setVisibility(View.GONE);
+                    nomineeText.setTextColor(android.graphics.Color.WHITE);
+                    finalizeYear(winner, nextState);
+                });
+            }, 4000);
+        }
+    }
+
+    private void finalizeYear(Player winner, String nextState) {
+        oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + winner.earnings + ")");
+        
+        PlayerStats winnerStats = playerStats.getOrDefault(winner.name, new PlayerStats(winner.name));
+        winnerStats.oscarWins++;
+        winnerStats.addAchievement("🏆 Oscar Winner");
+        playerStats.put(winner.name, winnerStats);
+        
+        for (Player p : players) {
+            playerHistory.add(new Player(p.name, p.loan, p.balance));
+        }
+        
+        currentYear++;
+        currentRound = 0;
+        saveData();
+        
         gameState = nextState;
         updateUI();
     }
