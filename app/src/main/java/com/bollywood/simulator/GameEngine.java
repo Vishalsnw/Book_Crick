@@ -137,6 +137,14 @@ public class GameEngine {
         total *= result.cast.earningsMultiplier;
         total *= trend.theaterMultiplier;
         
+        // Add excitement: Sudden Box Office Crash or Surge
+        if (random.nextInt(15) == 0) {
+            float swing = 0.5f + (random.nextFloat() * 1.0f); // 0.5x to 1.5x
+            total *= swing;
+            if (swing > 1.3f) result.eventDescription = "🚀 BOX OFFICE SURGE! " + result.eventDescription;
+            else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
+        }
+
         result.totalEarnings = Math.max(0, (int)total);
         
         // Generate Star Rating (1.0 to 5.0)

@@ -283,12 +283,18 @@ public class MainActivity extends AppCompatActivity {
     private void showTopMovies(List<MovieRecord> movies, int count, String title) {
         Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
-        sb.append("Current Trend: ").append(currentTrend.description).append("\n\n");
+        sb.append("🔥 TREND: ").append(currentTrend.description.toUpperCase()).append("\n\n");
         for (int i = 0; i < Math.min(count, movies.size()); i++) {
             MovieRecord m = movies.get(i);
-            String stars = String.format("%.1f★", m.rating);
-            sb.append("#").append(i + 1).append(" ").append(m.playerName)
-              .append("\n  ").append(m.cast.name).append(" | ").append(stars).append(" | ₹").append(m.earnings).append("\n");
+            String stars = "";
+            for(int s=0; s<(int)m.rating; s++) stars += "⭐";
+            if (m.rating % 1 >= 0.5) stars += "✨";
+            
+            String hitStatus = m.earnings > 150 ? " [BLOCKBUSTER 🚀]" : m.earnings > 80 ? " [HIT 🎬]" : m.earnings < 30 ? " [FLOP 📉]" : "";
+            
+            sb.append("#").append(i + 1).append(" ").append(m.playerName).append(hitStatus)
+              .append("\n  ").append(m.cast.name).append(" | ").append(stars).append(" (").append(String.format("%.1f", m.rating)).append(")")
+              .append("\n  Earnings: ₹").append(m.earnings).append("\n\n");
         }
         TextView sectionTitle = (TextView) topMoviesSection.getChildAt(0);
         sectionTitle.setText("🎬 " + title);
@@ -320,11 +326,12 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        sb.append(String.format("%-15s | %-10s\n", "Name", "Balance"));
-        sb.append("----------------------------\n");
+        sb.append(String.format("%-3s | %-15s | %-10s\n", "R", "Name", "Balance"));
+        sb.append("---------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
-            sb.append(String.format("%-15s | ₹%-10d\n", p.name, p.balance));
+            String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
+            sb.append(String.format("%-3s | %-15s | ₹%-10d\n", rankSymbol, p.name, p.balance));
         }
 
         statsText.setText(sb.toString());
