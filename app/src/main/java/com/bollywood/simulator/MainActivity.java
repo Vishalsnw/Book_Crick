@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -39,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private final Random random = new Random();
     private final Gson gson = new Gson();
 
-    private TextView titleText, statsText, yearBadge, topMoviesText, eventText;
+    private TextView titleText, statsText, yearBadge, topMoviesText, eventText, nomineeText;
     private Button actionButton, oscarButton, incomeButton, profileButton, achieveButton;
-    private LinearLayout topMoviesSection;
+    private LinearLayout topMoviesSection, oscarAnimationOverlay;
+    private Handler animationHandler = new Handler(Looper.getMainLooper());
 
     private static final String PREFS_NAME = "BollywoodPrefs";
     private static final String KEY_OSCARS = "OscarWinners";
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         achieveButton = findViewById(R.id.achieveButton);
         topMoviesSection = findViewById(R.id.topMoviesSection);
         eventText = findViewById(R.id.eventText);
+        oscarAnimationOverlay = findViewById(R.id.oscarAnimationOverlay);
+        nomineeText = findViewById(R.id.nomineeText);
 
         loadData();
 
