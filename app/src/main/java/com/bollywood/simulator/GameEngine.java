@@ -34,17 +34,19 @@ public class GameEngine {
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year) {
         RoundResults result = new RoundResults();
         
-        result.baseEarnings = random.nextInt(101);
+        result.baseEarnings = random.nextInt(151); // Increased range
         
-        String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy"};
+        String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
         
         switch (result.genre) {
-            case "Action": result.genreMultiplier = 150; break;
-            case "Horror": result.genreMultiplier = 150; break;
-            case "Drama": result.genreMultiplier = 80; break;
-            case "Romance": result.genreMultiplier = 120; break;
-            case "Comedy": result.genreMultiplier = 110; break;
+            case "Action": result.genreMultiplier = 160; break;
+            case "Horror": result.genreMultiplier = 140; break;
+            case "Drama": result.genreMultiplier = 90; break;
+            case "Romance": result.genreMultiplier = 130; break;
+            case "Comedy": result.genreMultiplier = 120; break;
+            case "Thriller": result.genreMultiplier = 150; break;
+            case "Sci-Fi": result.genreMultiplier = 170; break;
             default: result.genreMultiplier = 100;
         }
         

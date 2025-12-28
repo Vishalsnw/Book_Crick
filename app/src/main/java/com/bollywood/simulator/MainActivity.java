@@ -259,6 +259,13 @@ public class MainActivity extends AppCompatActivity {
             playerHistory.add(new Player(p.name, p.loan, p.balance));
         }
         
+        // Ensure player stats are persistent across years by updating them in history
+        for (Player p : players) {
+            PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
+            stats.addMovie(new Movie(p.name, "Year End", p.earnings, 0, currentYear, false));
+            playerStats.put(p.name, stats);
+        }
+        
         currentYear++;
         currentRound = 0;
         saveData();
@@ -304,22 +311,11 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        sb.append(String.format("%-4s | %-15s | %-5s | %-5s | %-5s\n", "Rank", "Name", "Loan", "Earn", "Bal"));
-        sb.append("------------------------------------------------------\n");
+        sb.append(String.format("%-15s | %-10s\n", "Name", "Balance"));
+        sb.append("----------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
-            String color = "#FFFFFF";
-            if (i == 0) color = "#FFD700"; // Gold for rank 1
-            else if (i == 1) color = "#C0C0C0"; // Silver for rank 2
-            else if (i == 2) color = "#CD7F32"; // Bronze for rank 3
-            
-            sb.append(String.format("#%-3d | %-15s | %-5d | %-5d | %-5d %s\n", 
-                i + 1, p.name, p.loan, p.earnings, p.balance, p.active ? "★" : ""));
-        }
-
-        if (!oscarWinners.isEmpty()) {
-            sb.append("\n🏆 OSCAR HALL OF FAME\n");
-            for (int i = oscarWinners.size() - 1; i >= 0; i--) sb.append(oscarWinners.get(i)).append("\n");
+            sb.append(String.format("%-15s | ₹%-10d\n", p.name, p.balance));
         }
 
         statsText.setText(sb.toString());
