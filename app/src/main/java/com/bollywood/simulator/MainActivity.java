@@ -263,6 +263,11 @@ public class MainActivity extends AppCompatActivity {
         sb.append("------------------------------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
+            String color = "#FFFFFF";
+            if (i == 0) color = "#FFD700"; // Gold for rank 1
+            else if (i == 1) color = "#C0C0C0"; // Silver for rank 2
+            else if (i == 2) color = "#CD7F32"; // Bronze for rank 3
+            
             sb.append(String.format("#%-3d | %-15s | %-5d | %-5d | %-5d %s\n", 
                 i + 1, p.name, p.loan, p.earnings, p.balance, p.active ? "★" : ""));
         }

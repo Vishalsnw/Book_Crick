@@ -13,7 +13,11 @@ public class GameEngine {
         "🎬 Famous director signed! +25 earnings",
         "⭐ Award nomination! +10 earnings",
         "😢 Production delays! -15 earnings",
-        "🎉 Audience favorite! +18 earnings"
+        "🎉 Audience favorite! +18 earnings",
+        "📱 Viral dance challenge! +30 earnings",
+        "🌧️ Shooting cancelled due to rain! -12 earnings",
+        "🍿 Surprise box office hit! +40 earnings",
+        "🤝 Major brand tie-up! +22 earnings"
     };
 
     public static class RoundResults {
