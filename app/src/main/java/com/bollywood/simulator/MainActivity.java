@@ -109,11 +109,13 @@ public class MainActivity extends AppCompatActivity {
             PlayerStats stats = playerStats.getOrDefault(name, new PlayerStats(name));
             Player existingPlayer = findPlayerInHistory(name);
             
-            if (existingPlayer != null && existingPlayer.balance > 0) {
+            int budget = random.nextInt(91) + 10;
+            if (existingPlayer != null && existingPlayer.balance >= budget) {
+                // Use existing balance, no new loan
                 players.add(new Player(name, 0, existingPlayer.balance));
             } else {
-                int budget = random.nextInt(91) + 10;
-                players.add(new Player(name, budget, 0));
+                // Take a loan
+                players.add(new Player(name, budget, existingPlayer != null ? existingPlayer.balance : 0));
             }
             
             stats.yearsActive++;
@@ -257,11 +259,12 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        sb.append(String.format("%-15s | %-5s | %-5s | %-5s\n", "Name", "Loan", "Earn", "Bal"));
-        sb.append("------------------------------------------\n");
-        for (Player p : sorted) {
-            sb.append(String.format("%-15s | %-5d | %-5d | %-5d %s\n", 
-                p.name, p.loan, p.earnings, p.balance, p.active ? "★" : ""));
+        sb.append(String.format("%-4s | %-15s | %-5s | %-5s | %-5s\n", "Rank", "Name", "Loan", "Earn", "Bal"));
+        sb.append("------------------------------------------------------\n");
+        for (int i = 0; i < sorted.size(); i++) {
+            Player p = sorted.get(i);
+            sb.append(String.format("#%-3d | %-15s | %-5d | %-5d | %-5d %s\n", 
+                i + 1, p.name, p.loan, p.earnings, p.balance, p.active ? "★" : ""));
         }
 
         if (!oscarWinners.isEmpty()) {
@@ -320,13 +323,8 @@ public class MainActivity extends AppCompatActivity {
         public Player(String name, int loan, int carryoverBalance) {
             this.name = name;
             this.loan = loan;
-            if (carryoverBalance > 0) {
-                this.balance = carryoverBalance;
-                this.earnings = carryoverBalance;
-            } else {
-                this.balance = -loan;
-                this.earnings = 0;
-            }
+            this.earnings = carryoverBalance;
+            this.balance = carryoverBalance - loan;
         }
     }
 
