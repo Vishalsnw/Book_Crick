@@ -228,7 +228,8 @@ public class MainActivity extends AppCompatActivity {
         oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
 
         List<Player> nominees = new ArrayList<>();
-        // Get top 4 as nominees from quarter final (active players at the end of round 3 are the nominees)
+        // Nominees are the ones who were active in the last round (semi-final)
+        // Since activePlayers passed here are the ones who just finished the round
         for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
             nominees.add(activePlayers.get(i));
         }
@@ -236,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Reset text and button
         nomineeText.setText("Click to reveal first nominee...");
+        nomineeText.setTextColor(android.graphics.Color.WHITE); // Reset color
         actionButton.setText("Next Nominee");
         
         final int[] currentIndex = {0};
@@ -340,12 +342,14 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        sb.append(String.format("%-3s | %-15s | %-10s\n", "R", "Name", "Balance"));
-        sb.append("---------------------------------\n");
+        // Optimized for small screens: Rank | Name | Bal
+        sb.append(String.format("%-2s | %-12s | %s\n", "R", "Name", "Bal"));
+        sb.append("--------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
             String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
-            sb.append(String.format("%-3s | %-15s | ₹%-10d\n", rankSymbol, p.name, p.balance));
+            String name = p.name.length() > 12 ? p.name.substring(0, 10) + ".." : p.name;
+            sb.append(String.format("%-2s | %-12s | ₹%d\n", rankSymbol, name, p.balance));
         }
 
         statsText.setText(sb.toString());

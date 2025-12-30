@@ -30,15 +30,16 @@ public class PlayerIncomeActivity extends AppCompatActivity {
             List<MainActivity.Player> sorted = new ArrayList<>(players);
             Collections.sort(sorted, (a, b) -> Integer.compare(b.earnings, a.earnings));
             
-            sb.append(String.format("%-3s | %-20s | %8s | %8s | %8s | %6s\n", "R", "Player", "Loan", "Earnings", "Balance", "Status"));
-            sb.append("==================================================================================\n");
+            sb.append(String.format("%-2s | %-12s | %4s | %4s | %4s | %s\n", "R", "Player", "Loan", "Earn", "Bal", "Stat"));
+            sb.append("===================================================\n");
             
             for (int i = 0; i < sorted.size(); i++) {
                 MainActivity.Player p = sorted.get(i);
                 String rank = String.format("%02d", i + 1);
-                String status = p.active ? "Active ★" : "Out ✗";
-                sb.append(String.format("%-3s | %-20s | %8d | %8d | %8d | %s\n", 
-                    rank, p.name, p.loan, p.earnings, p.balance, status));
+                String status = p.active ? "★" : "✗";
+                String name = p.name.length() > 12 ? p.name.substring(0, 10) + ".." : p.name;
+                sb.append(String.format("%-2s | %-12s | %4d | %4d | %4d | %s\n", 
+                    rank, name, p.loan, p.earnings, p.balance, status));
             }
             
             sb.append("\n📊 STATISTICS:\n");
