@@ -22,7 +22,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.graphics.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String KEY_OSCARS = "oscar_winners";
+    private static final String KEY_YEAR = "current_year";
+    private static final String KEY_PLAYERS = "players";
+    private static final String KEY_STATS = "player_stats";
+    private static final String KEY_MOVIES = "movie_archive";
+    
+    private String lastEvent = "";
+
     private final String[] PLAYER_NAMES = {
         "Golu", "Amit Bagle", "Mangesh", "Vasim", "Amit Randhe", "Khushi", "Ajinkya", "Vinay",
         "Aashish", "Ashok Singh", "Sandip Basra", "Gokul", "Ritesh", "Bipin", "Ajit Bonde", "Amol Patil",
@@ -296,12 +313,12 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void showTopMovies(List<MovieRecord> movies, int count, String title) {
+    private void showTopMovies(List<GameEngine.MovieRecord> movies, int count, String title) {
         Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
         sb.append("🔥 TREND: ").append(currentTrend.description.toUpperCase()).append("\n\n");
         for (int i = 0; i < Math.min(count, movies.size()); i++) {
-            MovieRecord m = movies.get(i);
+            GameEngine.MovieRecord m = movies.get(i);
             String stars = "";
             for(int s=0; s<(int)m.rating; s++) stars += "⭐";
             if (m.rating % 1 >= 0.5) stars += "✨";
@@ -357,8 +374,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveData() {
         try {
-            java.io.File file = new java.io.File(getFilesDir(), "save_data.json");
-            java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
+            File file = new File(getFilesDir(), "save_data.json");
+            FileOutputStream fos = new FileOutputStream(file);
             Map<String, Object> data = new HashMap<>();
             data.put(KEY_OSCARS, oscarWinners);
             data.put(KEY_YEAR, currentYear);
@@ -374,12 +391,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadData() {
         try {
-            java.io.File file = new java.io.File(getFilesDir(), "save_data.json");
+            File file = new File(getFilesDir(), "save_data.json");
             if (!file.exists()) return;
             
-            java.io.FileInputStream fis = new java.io.FileInputStream(file);
-            java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
-            java.io.BufferedReader br = new java.io.BufferedReader(isr);
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) sb.append(line);
