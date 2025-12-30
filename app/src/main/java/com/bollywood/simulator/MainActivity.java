@@ -190,11 +190,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Collections.sort(activePlayers, (a, b) -> Integer.compare(b.lastEarnings, a.lastEarnings));
+        
+        // Reset all active players' active status before advancing
+        for (Player p : players) {
+            p.active = false;
+        }
+
         for (int i = 0; i < Math.min(advanceCount, activePlayers.size()); i++) {
             activePlayers.get(i).active = true;
-        }
-        for (int i = advanceCount; i < activePlayers.size(); i++) {
-            activePlayers.get(i).active = false;
         }
 
         if (nextState != null && nextState.equals("ROUND 2")) {
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (nextState.equals("WINNER")) {
+            gameState = "CELEBRATION";
             startOscarAnimation(activePlayers, nextState);
         } else {
             currentRound++;
@@ -261,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
         winnerStats.addAchievement("🏆 Oscar Winner");
         playerStats.put(winner.name, winnerStats);
         
+        playerHistory.clear();
         for (Player p : players) {
             playerHistory.add(new Player(p.name, p.loan, p.balance));
         }
