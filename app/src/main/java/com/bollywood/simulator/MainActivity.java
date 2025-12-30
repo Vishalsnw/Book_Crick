@@ -227,34 +227,43 @@ public class MainActivity extends AppCompatActivity {
         oscarAnimationOverlay.setAlpha(0f);
         oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
 
-        List<Player> finalFour = new ArrayList<>();
+        List<Player> nominees = new ArrayList<>();
+        // Get top 4 as nominees from quarter final (active players at the end of round 3 are the nominees)
         for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
-            finalFour.add(activePlayers.get(i));
+            nominees.add(activePlayers.get(i));
         }
-        Collections.shuffle(finalFour);
+        Collections.shuffle(nominees);
 
-        showNomineeWithDelay(finalFour, 0, activePlayers.get(0), nextState);
-    }
-
-    private void showNomineeWithDelay(List<Player> nominees, int index, Player winner, String nextState) {
-        if (index < nominees.size()) {
-            nomineeText.setText(nominees.get(index).name);
-            nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
-            
-            animationHandler.postDelayed(() -> showNomineeWithDelay(nominees, index + 1, winner, nextState), 2000);
-        } else {
-            nomineeText.setText("🏆 WINNER 🏆\n" + winner.name);
-            nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
-            nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
-
-            animationHandler.postDelayed(() -> {
+        // Reset text and button
+        nomineeText.setText("Click to reveal first nominee...");
+        actionButton.setText("Next Nominee");
+        
+        final int[] currentIndex = {0};
+        final Player finalWinner = activePlayers.get(0);
+        
+        actionButton.setOnClickListener(v -> {
+            if (currentIndex[0] < nominees.size()) {
+                nomineeText.setText(nominees[currentIndex[0]].name);
+                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+                currentIndex[0]++;
+                if (currentIndex[0] == nominees.size()) {
+                    actionButton.setText("Reveal Winner");
+                }
+            } else if (currentIndex[0] == nominees.size()) {
+                nomineeText.setText("🏆 WINNER 🏆\n" + finalWinner.name);
+                nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
+                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+                actionButton.setText("Finish Year");
+                currentIndex[0]++;
+            } else {
                 oscarAnimationOverlay.animate().alpha(0f).setDuration(500).withEndAction(() -> {
                     oscarAnimationOverlay.setVisibility(View.GONE);
                     nomineeText.setTextColor(android.graphics.Color.WHITE);
-                    finalizeYear(winner, nextState);
+                    actionButton.setOnClickListener(v2 -> handleButtonClick());
+                    finalizeYear(finalWinner, nextState);
                 });
-            }, 4000);
-        }
+            }
+        });
     }
 
     private void finalizeYear(Player winner, String nextState) {
@@ -343,43 +352,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_OSCARS, gson.toJson(oscarWinners));
-        editor.putInt(KEY_YEAR, currentYear);
-        editor.putString(KEY_PLAYERS, gson.toJson(playerHistory));
-        editor.putString(KEY_STATS, gson.toJson(playerStats));
-        editor.putString(KEY_MOVIES, gson.toJson(movieArchive));
-        editor.apply();
+        try {
+            java.io.File file = new java.io.File(getFilesDir(), "save_data.json");
+            java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
+            Map<String, Object> data = new HashMap<>();
+            data.put(KEY_OSCARS, oscarWinners);
+            data.put(KEY_YEAR, currentYear);
+            data.put(KEY_PLAYERS, playerHistory);
+            data.put(KEY_STATS, playerStats);
+            data.put(KEY_MOVIES, movieArchive);
+            fos.write(gson.toJson(data).getBytes());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadData() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String oscarsJson = prefs.getString(KEY_OSCARS, null);
-        if (oscarsJson != null) {
-            Type type = new TypeToken<ArrayList<String>>() {}.getType();
-            oscarWinners = gson.fromJson(oscarsJson, type);
+        try {
+            java.io.File file = new java.io.File(getFilesDir(), "save_data.json");
+            if (!file.exists()) return;
+            
+            java.io.FileInputStream fis = new java.io.FileInputStream(file);
+            java.io.InputStreamReader isr = new java.io.InputStreamReader(fis);
+            java.io.BufferedReader br = new java.io.BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) sb.append(line);
+            fis.close();
+
+            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+            Map<String, Object> data = gson.fromJson(sb.toString(), type);
+            
+            if (data.containsKey(KEY_OSCARS)) {
+                oscarWinners = gson.fromJson(gson.toJson(data.get(KEY_OSCARS)), new TypeToken<ArrayList<String>>(){}.getType());
+            }
+            if (data.containsKey(KEY_YEAR)) {
+                currentYear = ((Double) data.get(KEY_YEAR)).intValue();
+            }
+            if (data.containsKey(KEY_PLAYERS)) {
+                playerHistory = gson.fromJson(gson.toJson(data.get(KEY_PLAYERS)), new TypeToken<ArrayList<Player>>(){}.getType());
+            }
+            if (data.containsKey(KEY_STATS)) {
+                playerStats = gson.fromJson(gson.toJson(data.get(KEY_STATS)), new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
+            }
+            if (data.containsKey(KEY_MOVIES)) {
+                movieArchive = gson.fromJson(gson.toJson(data.get(KEY_MOVIES)), new TypeToken<ArrayList<Movie>>(){}.getType());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        String playerJson = prefs.getString(KEY_PLAYERS, null);
-        if (playerJson != null) {
-            Type playerType = new TypeToken<ArrayList<Player>>() {}.getType();
-            playerHistory = gson.fromJson(playerJson, playerType);
-        }
-        
-        String statsJson = prefs.getString(KEY_STATS, null);
-        if (statsJson != null) {
-            Type statsType = new TypeToken<HashMap<String, PlayerStats>>() {}.getType();
-            playerStats = gson.fromJson(statsJson, statsType);
-        }
-        
-        String moviesJson = prefs.getString(KEY_MOVIES, null);
-        if (moviesJson != null) {
-            Type moviesType = new TypeToken<ArrayList<Movie>>() {}.getType();
-            movieArchive = gson.fromJson(moviesJson, moviesType);
-        }
-        
-        currentYear = prefs.getInt(KEY_YEAR, 1);
     }
 
     public static class Player implements Serializable {
