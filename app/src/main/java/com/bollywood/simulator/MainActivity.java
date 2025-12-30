@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         
         actionButton.setOnClickListener(v -> {
             if (currentIndex[0] < nominees.size()) {
-                nomineeText.setText(nominees[currentIndex[0]].name);
+                nomineeText.setText(nominees.get(currentIndex[0]).name);
                 nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
                 currentIndex[0]++;
                 if (currentIndex[0] == nominees.size()) {
@@ -388,7 +388,12 @@ public class MainActivity extends AppCompatActivity {
                 oscarWinners = gson.fromJson(gson.toJson(data.get(KEY_OSCARS)), new TypeToken<ArrayList<String>>(){}.getType());
             }
             if (data.containsKey(KEY_YEAR)) {
-                currentYear = ((Double) data.get(KEY_YEAR)).intValue();
+                Object yearObj = data.get(KEY_YEAR);
+                if (yearObj instanceof Double) {
+                    currentYear = ((Double) yearObj).intValue();
+                } else if (yearObj instanceof Integer) {
+                    currentYear = (Integer) yearObj;
+                }
             }
             if (data.containsKey(KEY_PLAYERS)) {
                 playerHistory = gson.fromJson(gson.toJson(data.get(KEY_PLAYERS)), new TypeToken<ArrayList<Player>>(){}.getType());

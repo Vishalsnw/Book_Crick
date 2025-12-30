@@ -1,0 +1,285 @@
+﻿2025-12-30T19:32:14.2760568Z Current runner version: '2.330.0'
+2025-12-30T19:32:14.2785214Z ##[group]Runner Image Provisioner
+2025-12-30T19:32:14.2786123Z Hosted Compute Agent
+2025-12-30T19:32:14.2786748Z Version: 20251211.462
+2025-12-30T19:32:14.2787365Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-30T19:32:14.2788387Z Build Date: 2025-12-11T16:28:49Z
+2025-12-30T19:32:14.2789128Z Worker ID: {155e989c-7bc6-42ad-994a-875434227199}
+2025-12-30T19:32:14.2789792Z ##[endgroup]
+2025-12-30T19:32:14.2790352Z ##[group]Operating System
+2025-12-30T19:32:14.2790866Z Ubuntu
+2025-12-30T19:32:14.2791407Z 24.04.3
+2025-12-30T19:32:14.2791828Z LTS
+2025-12-30T19:32:14.2792272Z ##[endgroup]
+2025-12-30T19:32:14.2792791Z ##[group]Runner Image
+2025-12-30T19:32:14.2793369Z Image: ubuntu-24.04
+2025-12-30T19:32:14.2793863Z Version: 20251215.174.1
+2025-12-30T19:32:14.2794914Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-30T19:32:14.2796456Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-30T19:32:14.2797510Z ##[endgroup]
+2025-12-30T19:32:14.2800520Z ##[group]GITHUB_TOKEN Permissions
+2025-12-30T19:32:14.2802822Z Actions: write
+2025-12-30T19:32:14.2803339Z ArtifactMetadata: write
+2025-12-30T19:32:14.2803884Z Attestations: write
+2025-12-30T19:32:14.2804447Z Checks: write
+2025-12-30T19:32:14.2804900Z Contents: write
+2025-12-30T19:32:14.2805438Z Deployments: write
+2025-12-30T19:32:14.2805942Z Discussions: write
+2025-12-30T19:32:14.2806489Z Issues: write
+2025-12-30T19:32:14.2806940Z Metadata: read
+2025-12-30T19:32:14.2807454Z Models: read
+2025-12-30T19:32:14.2808110Z Packages: write
+2025-12-30T19:32:14.2808638Z Pages: write
+2025-12-30T19:32:14.2809498Z PullRequests: write
+2025-12-30T19:32:14.2810133Z RepositoryProjects: write
+2025-12-30T19:32:14.2810702Z SecurityEvents: write
+2025-12-30T19:32:14.2811176Z Statuses: write
+2025-12-30T19:32:14.2811749Z ##[endgroup]
+2025-12-30T19:32:14.2813844Z Secret source: Actions
+2025-12-30T19:32:14.2814580Z Prepare workflow directory
+2025-12-30T19:32:14.3151331Z Prepare all required actions
+2025-12-30T19:32:14.3211590Z Getting action download info
+2025-12-30T19:32:14.7569952Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-30T19:32:14.8752878Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2025-12-30T19:32:15.5106129Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-12-30T19:32:15.7398391Z Complete job name: build
+2025-12-30T19:32:15.8103056Z ##[group]Run actions/checkout@v4
+2025-12-30T19:32:15.8103897Z with:
+2025-12-30T19:32:15.8104308Z   repository: Vishalsnw/Book_Crick
+2025-12-30T19:32:15.8104982Z   token: ***
+2025-12-30T19:32:15.8105365Z   ssh-strict: true
+2025-12-30T19:32:15.8105744Z   ssh-user: git
+2025-12-30T19:32:15.8106144Z   persist-credentials: true
+2025-12-30T19:32:15.8106581Z   clean: true
+2025-12-30T19:32:15.8106983Z   sparse-checkout-cone-mode: true
+2025-12-30T19:32:15.8107482Z   fetch-depth: 1
+2025-12-30T19:32:15.8108036Z   fetch-tags: false
+2025-12-30T19:32:15.8108447Z   show-progress: true
+2025-12-30T19:32:15.8108850Z   lfs: false
+2025-12-30T19:32:15.8109222Z   submodules: false
+2025-12-30T19:32:15.8109621Z   set-safe-directory: true
+2025-12-30T19:32:15.8110343Z ##[endgroup]
+2025-12-30T19:32:15.9235469Z Syncing repository: Vishalsnw/Book_Crick
+2025-12-30T19:32:15.9237820Z ##[group]Getting Git version info
+2025-12-30T19:32:15.9239191Z Working directory is '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-30T19:32:15.9241117Z [command]/usr/bin/git version
+2025-12-30T19:32:15.9347017Z git version 2.52.0
+2025-12-30T19:32:15.9375002Z ##[endgroup]
+2025-12-30T19:32:15.9400005Z Temporarily overriding HOME='/home/runner/work/_temp/322d5e2b-7ef7-4d71-8ca4-cc990ceccae7' before making global git config changes
+2025-12-30T19:32:15.9402372Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T19:32:15.9406951Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-30T19:32:15.9451741Z Deleting the contents of '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-30T19:32:15.9455807Z ##[group]Initializing the repository
+2025-12-30T19:32:15.9460793Z [command]/usr/bin/git init /home/runner/work/Book_Crick/Book_Crick
+2025-12-30T19:32:15.9599184Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-30T19:32:15.9600754Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-30T19:32:15.9601786Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-30T19:32:15.9603103Z hint: call:
+2025-12-30T19:32:15.9603573Z hint:
+2025-12-30T19:32:15.9604099Z hint: 	git config --global init.defaultBranch <name>
+2025-12-30T19:32:15.9605034Z hint:
+2025-12-30T19:32:15.9606055Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-30T19:32:15.9607793Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-30T19:32:15.9609586Z hint:
+2025-12-30T19:32:15.9610299Z hint: 	git branch -m <name>
+2025-12-30T19:32:15.9611113Z hint:
+2025-12-30T19:32:15.9612263Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-30T19:32:15.9613969Z Initialized empty Git repository in /home/runner/work/Book_Crick/Book_Crick/.git/
+2025-12-30T19:32:15.9619015Z [command]/usr/bin/git remote add origin https://github.com/Vishalsnw/Book_Crick
+2025-12-30T19:32:15.9656066Z ##[endgroup]
+2025-12-30T19:32:15.9657258Z ##[group]Disabling automatic garbage collection
+2025-12-30T19:32:15.9661173Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-30T19:32:15.9690533Z ##[endgroup]
+2025-12-30T19:32:15.9691728Z ##[group]Setting up auth
+2025-12-30T19:32:15.9698477Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T19:32:15.9730187Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T19:32:16.0116217Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T19:32:16.0148679Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T19:32:16.0375708Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T19:32:16.0409339Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T19:32:16.0636430Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-30T19:32:16.0673024Z ##[endgroup]
+2025-12-30T19:32:16.0674251Z ##[group]Fetching the repository
+2025-12-30T19:32:16.0683047Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +23958c437e0ae66cf369b90fc853fcb88b5ffdef:refs/remotes/origin/main
+2025-12-30T19:32:16.5969468Z From https://github.com/Vishalsnw/Book_Crick
+2025-12-30T19:32:16.5971031Z  * [new ref]         23958c437e0ae66cf369b90fc853fcb88b5ffdef -> origin/main
+2025-12-30T19:32:16.6004184Z ##[endgroup]
+2025-12-30T19:32:16.6005538Z ##[group]Determining the checkout info
+2025-12-30T19:32:16.6007116Z ##[endgroup]
+2025-12-30T19:32:16.6011667Z [command]/usr/bin/git sparse-checkout disable
+2025-12-30T19:32:16.6056295Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-30T19:32:16.6086947Z ##[group]Checking out the ref
+2025-12-30T19:32:16.6092424Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-30T19:32:16.6260741Z Switched to a new branch 'main'
+2025-12-30T19:32:16.6263114Z branch 'main' set up to track 'origin/main'.
+2025-12-30T19:32:16.6272900Z ##[endgroup]
+2025-12-30T19:32:16.6310207Z [command]/usr/bin/git log -1 --format=%H
+2025-12-30T19:32:16.6333738Z 23958c437e0ae66cf369b90fc853fcb88b5ffdef
+2025-12-30T19:32:16.6702114Z ##[group]Run actions/setup-java@v4
+2025-12-30T19:32:16.6703319Z with:
+2025-12-30T19:32:16.6704130Z   java-version: 17
+2025-12-30T19:32:16.6705054Z   distribution: temurin
+2025-12-30T19:32:16.6706009Z   cache: gradle
+2025-12-30T19:32:16.6706907Z   java-package: jdk
+2025-12-30T19:32:16.6707978Z   check-latest: false
+2025-12-30T19:32:16.6708919Z   server-id: github
+2025-12-30T19:32:16.6709856Z   server-username: GITHUB_ACTOR
+2025-12-30T19:32:16.6710948Z   server-password: GITHUB_TOKEN
+2025-12-30T19:32:16.6712035Z   overwrite-settings: true
+2025-12-30T19:32:16.6713001Z   job-status: success
+2025-12-30T19:32:16.6714153Z   token: ***
+2025-12-30T19:32:16.6714956Z ##[endgroup]
+2025-12-30T19:32:16.8759118Z ##[group]Installed distributions
+2025-12-30T19:32:16.8831189Z Resolved Java 17.0.17+10 from tool-cache
+2025-12-30T19:32:16.8832665Z Setting Java 17.0.17+10 as the default
+2025-12-30T19:32:16.8846586Z Creating toolchains.xml for JDK version 17 from temurin
+2025-12-30T19:32:16.8924085Z Writing to /home/runner/.m2/toolchains.xml
+2025-12-30T19:32:16.8925546Z 
+2025-12-30T19:32:16.8926162Z Java configuration:
+2025-12-30T19:32:16.8927688Z   Distribution: temurin
+2025-12-30T19:32:16.8929519Z   Version: 17.0.17+10
+2025-12-30T19:32:16.8931739Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-30T19:32:16.8933602Z 
+2025-12-30T19:32:16.8935206Z ##[endgroup]
+2025-12-30T19:32:16.8956712Z Creating settings.xml with server-id: github
+2025-12-30T19:32:16.8959112Z Writing to /home/runner/.m2/settings.xml
+2025-12-30T19:32:17.3054336Z Cache hit for: setup-java-Linux-x64-gradle-3bcf51412f640cfe03540e4ceade32781d8407a8b025c272cdcc847e92da0d39
+2025-12-30T19:32:18.6474522Z Received 0 of 297091618 (0.0%), 0.0 MBs/sec
+2025-12-30T19:32:19.6473250Z Received 121634816 of 297091618 (40.9%), 58.0 MBs/sec
+2025-12-30T19:32:20.6480003Z Received 230686720 of 297091618 (77.6%), 73.3 MBs/sec
+2025-12-30T19:32:21.3668765Z Received 297091618 of 297091618 (100.0%), 76.4 MBs/sec
+2025-12-30T19:32:21.3669967Z Cache Size: ~283 MB (297091618 B)
+2025-12-30T19:32:21.3747585Z [command]/usr/bin/tar -xf /home/runner/work/_temp/29e6e5ef-c1f8-43c2-b487-6f6faa159008/cache.tzst -P -C /home/runner/work/Book_Crick/Book_Crick --use-compress-program unzstd
+2025-12-30T19:32:22.4325559Z Cache restored successfully
+2025-12-30T19:32:22.4889733Z Cache restored from key: setup-java-Linux-x64-gradle-3bcf51412f640cfe03540e4ceade32781d8407a8b025c272cdcc847e92da0d39
+2025-12-30T19:32:22.5061153Z ##[group]Run chmod +x gradlew
+2025-12-30T19:32:22.5061508Z [36;1mchmod +x gradlew[0m
+2025-12-30T19:32:22.5101021Z shell: /usr/bin/bash -e {0}
+2025-12-30T19:32:22.5101300Z env:
+2025-12-30T19:32:22.5101609Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-30T19:32:22.5102086Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-30T19:32:22.5102480Z ##[endgroup]
+2025-12-30T19:32:22.5225486Z ##[group]Run ./gradlew assembleDebug
+2025-12-30T19:32:22.5225831Z [36;1m./gradlew assembleDebug[0m
+2025-12-30T19:32:22.5258546Z shell: /usr/bin/bash -e {0}
+2025-12-30T19:32:22.5258803Z env:
+2025-12-30T19:32:22.5259101Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-30T19:32:22.5259573Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-30T19:32:22.5259919Z ##[endgroup]
+2025-12-30T19:32:25.1095190Z 
+2025-12-30T19:32:25.1096107Z Welcome to Gradle 8.14.2!
+2025-12-30T19:32:25.1096576Z 
+2025-12-30T19:32:25.1097532Z Here are the highlights of this release:
+2025-12-30T19:32:25.1109118Z  - Java 24 support
+2025-12-30T19:32:25.1110275Z  - GraalVM Native Image toolchain selection
+2025-12-30T19:32:25.1111902Z  - Enhancements to test reporting
+2025-12-30T19:32:25.1113315Z  - Build Authoring improvements
+2025-12-30T19:32:25.1114115Z 
+2025-12-30T19:32:25.1115051Z For more details see https://docs.gradle.org/8.14.2/release-notes.html
+2025-12-30T19:32:25.1116318Z 
+2025-12-30T19:32:25.4024110Z Starting a Gradle Daemon (subsequent builds will be faster)
+2025-12-30T19:32:40.0030171Z Checking the license for package Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/licenses
+2025-12-30T19:32:40.0032766Z License for package Android SDK Build-Tools 30.0.3 accepted.
+2025-12-30T19:32:40.1024991Z Preparing "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)".
+2025-12-30T19:32:41.5023721Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" ready.
+2025-12-30T19:32:41.5025414Z Installing Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/build-tools/30.0.3
+2025-12-30T19:32:41.5026704Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" complete.
+2025-12-30T19:32:41.9023705Z "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" finished.
+2025-12-30T19:32:41.9024701Z Checking the license for package Android SDK Platform 33 in /usr/local/lib/android/sdk/licenses
+2025-12-30T19:32:41.9025615Z License for package Android SDK Platform 33 accepted.
+2025-12-30T19:32:41.9026228Z Preparing "Install Android SDK Platform 33 (revision: 3)".
+2025-12-30T19:32:45.0049297Z "Install Android SDK Platform 33 (revision: 3)" ready.
+2025-12-30T19:32:45.0075673Z Installing Android SDK Platform 33 in /usr/local/lib/android/sdk/platforms/android-33
+2025-12-30T19:32:45.0099531Z "Install Android SDK Platform 33 (revision: 3)" complete.
+2025-12-30T19:32:45.0100211Z "Install Android SDK Platform 33 (revision: 3)" finished.
+2025-12-30T19:32:45.4028559Z > Task :app:preBuild UP-TO-DATE
+2025-12-30T19:32:45.4056605Z > Task :app:preDebugBuild UP-TO-DATE
+2025-12-30T19:32:45.4060579Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+2025-12-30T19:32:45.5033241Z > Task :app:javaPreCompileDebug
+2025-12-30T19:32:45.9030651Z > Task :app:generateDebugResValues
+2025-12-30T19:32:45.9046469Z > Task :app:checkDebugAarMetadata
+2025-12-30T19:32:46.0031899Z > Task :app:mapDebugSourceSetPaths
+2025-12-30T19:32:46.0035038Z > Task :app:generateDebugResources
+2025-12-30T19:32:48.0023614Z > Task :app:packageDebugResources
+2025-12-30T19:32:48.1023771Z > Task :app:createDebugCompatibleScreenManifests
+2025-12-30T19:32:48.2023391Z > Task :app:extractDeepLinksDebug
+2025-12-30T19:32:48.3051465Z > Task :app:parseDebugLocalResources
+2025-12-30T19:32:48.5023067Z > Task :app:mergeDebugResources
+2025-12-30T19:32:48.6033690Z > Task :app:processDebugMainManifest
+2025-12-30T19:32:48.8023042Z > Task :app:processDebugManifest
+2025-12-30T19:32:48.9050496Z > Task :app:mergeDebugShaders
+2025-12-30T19:32:48.9051043Z > Task :app:compileDebugShaders NO-SOURCE
+2025-12-30T19:32:48.9051560Z > Task :app:generateDebugAssets UP-TO-DATE
+2025-12-30T19:32:48.9054686Z > Task :app:mergeDebugAssets
+2025-12-30T19:32:49.0057782Z > Task :app:compressDebugAssets
+2025-12-30T19:32:49.0058424Z > Task :app:processDebugJavaRes NO-SOURCE
+2025-12-30T19:32:49.0058840Z > Task :app:processDebugManifestForPackage
+2025-12-30T19:32:49.5087230Z > Task :app:desugarDebugFileDependencies
+2025-12-30T19:32:49.6024945Z > Task :app:mergeDebugJniLibFolders
+2025-12-30T19:32:49.6025574Z > Task :app:checkDebugDuplicateClasses
+2025-12-30T19:32:49.7051178Z > Task :app:mergeDebugNativeLibs NO-SOURCE
+2025-12-30T19:32:49.7052016Z > Task :app:mergeDebugJavaResource
+2025-12-30T19:32:49.8025356Z > Task :app:stripDebugDebugSymbols NO-SOURCE
+2025-12-30T19:32:49.8033537Z > Task :app:mergeLibDexDebug
+2025-12-30T19:32:50.6023709Z > Task :app:processDebugResources
+2025-12-30T19:32:50.9056274Z > Task :app:validateSigningDebug
+2025-12-30T19:32:54.4056145Z /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:246: error: array required, but List<Player> found
+2025-12-30T19:32:54.4057399Z                 nomineeText.setText(nominees[currentIndex[0]].name);
+2025-12-30T19:32:54.4058098Z                                             ^
+2025-12-30T19:32:54.4058390Z 
+2025-12-30T19:32:54.4058847Z > Task :app:compileDebugJavaWithJavac
+2025-12-30T19:32:54.5043577Z Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses or overrides a deprecated API.
+2025-12-30T19:32:54.5045585Z Note: Recompile with -Xlint:deprecation for details.
+2025-12-30T19:32:54.5047056Z Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses unchecked or unsafe operations.
+2025-12-30T19:32:54.5048663Z Note: Recompile with -Xlint:unchecked for details.
+2025-12-30T19:32:54.5050563Z 1 error
+2025-12-30T19:32:54.6036600Z 
+2025-12-30T19:32:54.6036996Z > Task :app:compileDebugJavaWithJavac FAILED
+2025-12-30T19:32:55.2022064Z > Task :app:mergeExtDexDebug
+2025-12-30T19:32:55.3069016Z 
+2025-12-30T19:32:55.3069042Z 
+2025-12-30T19:32:55.3069543Z FAILURE: Build failed with an exception.
+2025-12-30T19:32:55.3069892Z 
+2025-12-30T19:32:55.3070227Z * What went wrong:
+2025-12-30T19:32:55.3070795Z Execution failed for task ':app:compileDebugJavaWithJavac'.
+2025-12-30T19:32:55.3071550Z > Compilation failed; see the compiler output below.
+2025-12-30T19:32:55.3072868Z   Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses or overrides a deprecated API.
+2025-12-30T19:32:55.3074882Z   /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/MainActivity.java:246: error: array required, but List<Player> found
+2025-12-30T19:32:55.3076301Z                   nomineeText.setText(nominees[currentIndex[0]].name);
+2025-12-30T19:32:55.3076983Z                                               ^
+2025-12-30T19:32:55.3077632Z   Note: Recompile with -Xlint:deprecation for details.
+2025-12-30T19:32:55.3079231Z   Note: /home/runner/work/Book_Crick/Book_Crick/app/src/main/java/com/bollywood/simulator/PlayerIncomeActivity.java uses unchecked or unsafe operations.
+2025-12-30T19:32:55.3080663Z   Note: Recompile with -Xlint:unchecked for details.
+2025-12-30T19:32:55.3081277Z   1 error
+2025-12-30T19:32:55.3081524Z 
+2025-12-30T19:32:55.3081669Z * Try:
+2025-12-30T19:32:55.3082097Z > Check your code and dependencies to fix the compilation error(s)
+2025-12-30T19:32:55.3082845Z > Run with --scan to get full insights.
+2025-12-30T19:32:55.3083331Z 
+2025-12-30T19:32:55.3100429Z BUILD FAILED in 31s
+2025-12-30T19:32:55.3101302Z [Incubating] Problems report is available at: file:///home/runner/work/Book_Crick/Book_Crick/build/reports/problems/problems-report.html
+2025-12-30T19:32:55.3102034Z 
+2025-12-30T19:32:55.3102401Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+2025-12-30T19:32:55.3102928Z 
+2025-12-30T19:32:55.3103585Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2025-12-30T19:32:55.3104349Z 
+2025-12-30T19:32:55.3105323Z For more on this, please refer to https://docs.gradle.org/8.14.2/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2025-12-30T19:32:55.3106415Z 24 actionable tasks: 24 executed
+2025-12-30T19:32:55.7966004Z ##[error]Process completed with exit code 1.
+2025-12-30T19:32:55.8076649Z Post job cleanup.
+2025-12-30T19:32:55.9872475Z Post job cleanup.
+2025-12-30T19:32:56.1012309Z [command]/usr/bin/git version
+2025-12-30T19:32:56.1063128Z git version 2.52.0
+2025-12-30T19:32:56.1120765Z Temporarily overriding HOME='/home/runner/work/_temp/42cc6f02-bd32-41c4-9a69-46bfc42e1927' before making global git config changes
+2025-12-30T19:32:56.1121978Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-30T19:32:56.1128569Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-30T19:32:56.1171781Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-30T19:32:56.1205366Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-30T19:32:56.1440886Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-30T19:32:56.1462460Z http.https://github.com/.extraheader
+2025-12-30T19:32:56.1475194Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-30T19:32:56.1506865Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-30T19:32:56.1734673Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-30T19:32:56.1767126Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-30T19:32:56.2099281Z Cleaning up orphan processes
+2025-12-30T19:32:56.2390509Z Terminate orphan process: pid (2194) (java)
