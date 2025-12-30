@@ -34,8 +34,8 @@ public class OscarListActivity extends AppCompatActivity {
                 Map<String, Object> saveData = gson.fromJson(json, new TypeToken<Map<String, Object>>(){}.getType());
                 
                 if (saveData.containsKey("oscar_winners")) {
-                    List<String> oscarWinners = gson.fromJson(gson.toJson(saveData.get("oscar_winners")), new TypeToken<ArrayList<String>>(){}.getType());
-                    if (!oscarWinners.isEmpty()) {
+                    List<String> oscarWinners = (List<String>) saveData.get("oscar_winners");
+                    if (oscarWinners != null && !oscarWinners.isEmpty()) {
                         for (int i = oscarWinners.size() - 1; i >= 0; i--) {
                             sb.append(oscarWinners.get(i)).append("\n");
                         }

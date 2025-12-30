@@ -35,40 +35,44 @@ public class PlayerProfileActivity extends AppCompatActivity {
                 Map<String, Object> saveData = gson.fromJson(json, new TypeToken<Map<String, Object>>(){}.getType());
                 
                 if (saveData.containsKey("player_stats")) {
-                    Map<String, PlayerStats> allStats = gson.fromJson(gson.toJson(saveData.get("player_stats")), 
+                    String statsJson = gson.toJson(saveData.get("player_stats"));
+                    Map<String, PlayerStats> allStats = gson.fromJson(statsJson, 
                         new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
-                    PlayerStats stats = allStats.get(playerName);
+                    
+                    if (allStats != null) {
+                        PlayerStats stats = allStats.get(playerName);
 
-                    if (stats != null) {
-                        sb.append("📊 CAREER STATISTICS\n");
-                        sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-                        sb.append("Total Movies: ").append(stats.totalMovies).append("\n");
-                        sb.append("Total Earnings: ₹").append(stats.totalEarnings).append("\n");
-                        sb.append("Oscar Wins: ").append(stats.oscarWins).append("\n");
-                        sb.append("Bankruptcies: ").append(stats.bankruptcies).append("\n");
-                        sb.append("Longest Win Streak: ").append(stats.longestWinStreak).append("\n");
-                        sb.append("Retired: ").append(stats.retired ? "Yes" : "No").append("\n");
-                        
-                        if (!stats.achievements.isEmpty()) {
-                            sb.append("\n🏅 ACHIEVEMENTS\n");
+                        if (stats != null) {
+                            sb.append("📊 CAREER STATISTICS\n");
                             sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-                            for (String achievement : stats.achievements) {
-                                sb.append("✓ ").append(achievement).append("\n");
+                            sb.append("Total Movies: ").append(stats.totalMovies).append("\n");
+                            sb.append("Total Earnings: ₹").append(stats.totalEarnings).append("\n");
+                            sb.append("Oscar Wins: ").append(stats.oscarWins).append("\n");
+                            sb.append("Bankruptcies: ").append(stats.bankruptcies).append("\n");
+                            sb.append("Longest Win Streak: ").append(stats.longestWinStreak).append("\n");
+                            sb.append("Retired: ").append(stats.retired ? "Yes" : "No").append("\n");
+                            
+                            if (stats.achievements != null && !stats.achievements.isEmpty()) {
+                                sb.append("\n🏅 ACHIEVEMENTS\n");
+                                sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                                for (String achievement : stats.achievements) {
+                                    sb.append("✓ ").append(achievement).append("\n");
+                                }
                             }
-                        }
-                        
-                        if (!stats.movieHistory.isEmpty()) {
-                            sb.append("\n🎬 RECENT MOVIES\n");
-                            sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-                            int start = Math.max(0, stats.movieHistory.size() - 5);
-                            for (int i = stats.movieHistory.size() - 1; i >= start; i--) {
-                                Movie m = stats.movieHistory.get(i);
-                                sb.append("Year ").append(m.year).append(", Round ").append(m.round).append(": ")
-                                  .append(m.title).append(" - ₹").append(m.earnings).append("\n");
+                            
+                            if (stats.movieHistory != null && !stats.movieHistory.isEmpty()) {
+                                sb.append("\n🎬 RECENT MOVIES\n");
+                                sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+                                int start = Math.max(0, stats.movieHistory.size() - 5);
+                                for (int i = stats.movieHistory.size() - 1; i >= start; i--) {
+                                    Movie m = stats.movieHistory.get(i);
+                                    sb.append("Year ").append(m.year).append(", Round ").append(m.round).append(": ")
+                                      .append(m.title).append(" - ₹").append(m.earnings).append("\n");
+                                }
                             }
+                        } else {
+                            sb.append("No profile data yet.");
                         }
-                    } else {
-                        sb.append("No profile data yet.");
                     }
                 }
             } else {

@@ -32,16 +32,19 @@ public class AchievementsActivity extends AppCompatActivity {
                 Map<String, Object> saveData = gson.fromJson(json, new TypeToken<Map<String, Object>>(){}.getType());
                 
                 if (saveData.containsKey("player_stats")) {
-                    Map<String, PlayerStats> allStats = gson.fromJson(gson.toJson(saveData.get("player_stats")), 
+                    String statsJson = gson.toJson(saveData.get("player_stats"));
+                    Map<String, PlayerStats> allStats = gson.fromJson(statsJson, 
                         new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
 
-                    for (PlayerStats stats : allStats.values()) {
-                        if (!stats.achievements.isEmpty()) {
-                            sb.append("👤 ").append(stats.playerName).append("\n");
-                            for (String achievement : stats.achievements) {
-                                sb.append("  ✓ ").append(achievement).append("\n");
+                    if (allStats != null) {
+                        for (PlayerStats stats : allStats.values()) {
+                            if (stats.achievements != null && !stats.achievements.isEmpty()) {
+                                sb.append("👤 ").append(stats.playerName).append("\n");
+                                for (String achievement : stats.achievements) {
+                                    sb.append("  ✓ ").append(achievement).append("\n");
+                                }
+                                sb.append("\n");
                             }
-                            sb.append("\n");
                         }
                     }
                 }

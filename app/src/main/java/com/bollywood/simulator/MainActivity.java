@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         actionButton.setOnClickListener(v -> {
             if (currentIndex[0] < nominees.size()) {
                 nomineeText.setText(nominees.get(currentIndex[0]).name);
-                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_scale_in));
                 currentIndex[0]++;
                 if (currentIndex[0] == nominees.size()) {
                     actionButton.setText("Reveal Winner");
@@ -254,12 +254,12 @@ public class MainActivity extends AppCompatActivity {
             } else if (currentIndex[0] == nominees.size()) {
                 nomineeText.setText("🏆 WINNER 🏆\n" + finalWinner.name);
                 nomineeText.setTextColor(android.graphics.Color.parseColor("#FFD700"));
-                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_scale_in));
+                nomineeText.startAnimation(android.view.animation.AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_scale_in));
                 actionButton.setText("Finish Year");
                 currentIndex[0]++;
             } else {
                 oscarAnimationOverlay.animate().alpha(0f).setDuration(500).withEndAction(() -> {
-                    oscarAnimationOverlay.setVisibility(View.GONE);
+                    oscarAnimationOverlay.setVisibility(android.view.View.GONE);
                     nomineeText.setTextColor(android.graphics.Color.WHITE);
                     actionButton.setOnClickListener(v2 -> handleButtonClick());
                     finalizeYear(finalWinner, nextState);
