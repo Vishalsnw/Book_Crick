@@ -156,7 +156,7 @@ public class GameEngine {
             else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
         }
 
-        result.totalEarnings = Math.max(0, (int)total);
+        result.totalEarnings = Math.min(100, Math.max(0, (int)total));
         
         // Generate Star Rating (1.0 to 5.0)
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
