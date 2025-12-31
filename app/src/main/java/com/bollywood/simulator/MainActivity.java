@@ -156,11 +156,11 @@ public class MainActivity extends AppCompatActivity {
             if (carryoverBalance >= budget) {
                 // Use existing balance, no new loan
                 newPlayer = new Player(name, 0, carryoverBalance);
+                newPlayer.balance = carryoverBalance - budget; // Apply initial budget cost
             } else {
                 // Take a loan for the budget, but keep the existing balance
-                // The balance becomes (carryover + budget) - budget = carryover
-                // But wait, if they take a loan, it's added to their debt.
                 newPlayer = new Player(name, budget, carryoverBalance);
+                newPlayer.balance = carryoverBalance - budget; // Apply initial budget cost
             }
             
             newPlayer.oscarWins = stats.oscarWins;
