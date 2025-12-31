@@ -10,7 +10,10 @@ The game follows a tournament-style structure where players take loans, produce 
 
 Preferred communication style: Simple, everyday language.
 
-## System Architecture
+## Project Architecture
+
+### Build Note
+- **CRITICAL**: Do not attempt to build the project within the Replit environment. The build process is managed via `.yml` (GitHub Actions) as there are complex Android SDK dependencies that are not currently configured in the local Nix environment.
 
 ### Application Type
 - **Platform**: Android native application
