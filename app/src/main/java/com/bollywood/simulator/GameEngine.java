@@ -78,7 +78,7 @@ public class GameEngine {
         else if (starRoll < 60) result.cast = StarPower.NEWCOMER;
         else result.cast = StarPower.NONE;
 
-        result.baseEarnings = random.nextInt(151);
+        result.baseEarnings = random.nextInt(101); // 0 to 100
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
