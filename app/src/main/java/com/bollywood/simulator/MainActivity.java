@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> roundEvents = new ArrayList<>();
 
         for (Player p : players) {
-            if (p != null && p.active) {
+            if (p != null && p.active && p.balance > -500) { // Only truly active players earn
                 GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear, currentTrend);
                 
                 if (results != null) {

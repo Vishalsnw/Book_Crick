@@ -131,16 +131,22 @@ public class GameEngine {
         }
         result.loanInterest = loanInterest;
         
-        // Calculate Total Earnings with Star Power and Trends
-        // Base income is centered around 0-100, then multipliers are applied.
-        // To allow for losses, we can subtract a fixed production cost or make multipliers harsher.
-        int productionCost = 40; // Fixed cost per round
+        // Base income is strictly 0-100 before multipliers
+        float total = result.baseEarnings;
         
-        float total = ((result.baseEarnings * result.genreMultiplier) / 100.0f) + 
-                               result.seasonalBonus + result.randomEventImpact - result.loanInterest - productionCost;
+        // Apply multipliers
+        total = (total * result.genreMultiplier) / 100.0f;
+        total += result.seasonalBonus;
+        total += result.randomEventImpact;
         
+        // Star and Trend multipliers
         total *= result.cast.earningsMultiplier;
         total *= trend.theaterMultiplier;
+        
+        // Subtract costs and interest (costs are NOT multiplied)
+        int productionCost = 40; 
+        total -= result.loanInterest;
+        total -= productionCost;
         
         // Add excitement: Sudden Box Office Crash or Surge
         if (random.nextInt(15) == 0) {
