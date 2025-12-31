@@ -140,22 +140,42 @@ public class MainActivity extends AppCompatActivity {
         
         for (String name : PLAYER_NAMES) {
             PlayerStats stats = playerStats.getOrDefault(name, new PlayerStats(name));
-            Player existingPlayer = findPlayerInHistory(name);
+            
+            // Find carryover balance from playerHistory
+            int carryoverBalance = 0;
+            for (Player hp : playerHistory) {
+                if (hp.name.equals(name)) {
+                    carryoverBalance = hp.balance;
+                    break;
+                }
+            }
             
             int budget = random.nextInt(91) + 10;
             Player newPlayer;
-            if (existingPlayer != null && existingPlayer.balance >= budget) {
+            
+            if (carryoverBalance >= budget) {
                 // Use existing balance, no new loan
-                newPlayer = new Player(name, 0, existingPlayer.balance);
+                newPlayer = new Player(name, 0, carryoverBalance);
             } else {
-                // Take a loan
-                newPlayer = new Player(name, budget, existingPlayer != null ? existingPlayer.balance : 0);
+                // Take a loan for the budget, but keep the existing balance
+                // The balance becomes (carryover + budget) - budget = carryover
+                // But wait, if they take a loan, it's added to their debt.
+                newPlayer = new Player(name, budget, carryoverBalance);
             }
+            
             newPlayer.oscarWins = stats.oscarWins;
             players.add(newPlayer);
             
             stats.yearsActive++;
             playerStats.put(name, stats);
+        }
+        
+        // Store initial positions for trend arrows
+        lastPositions.clear();
+        List<Player> sorted = new ArrayList<>(players);
+        Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
+        for (int i = 0; i < sorted.size(); i++) {
+            lastPositions.put(sorted.get(i).name, i);
         }
         
         gameState = "ROUND1";
@@ -362,6 +382,8 @@ public class MainActivity extends AppCompatActivity {
         topMoviesSection.setVisibility(View.VISIBLE);
     }
 
+    private Map<String, Integer> lastPositions = new HashMap<>();
+
     private void updateUI() {
         yearBadge.setText("Year " + currentYear);
         
@@ -392,13 +414,28 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
             String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
+            
+            // Position trend arrow
+            String trendArrow = "";
+            if (lastPositions.containsKey(p.name)) {
+                int lastPos = lastPositions.get(p.name);
+                if (i < lastPos) trendArrow = " ⬆️";
+                else if (i > lastPos) trendArrow = " ⬇️";
+            }
+            
             String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
             
             // Get Oscar count from stats for accuracy
             PlayerStats stats = playerStats.get(p.name);
             int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
             
-            sb.append(String.format("%-2s | %-10s | ₹%-4d | %d\n", rankSymbol, name, p.balance, oscars));
+            sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d\n", rankSymbol, name, trendArrow, p.balance, oscars));
+        }
+
+        // Update positions for next time
+        lastPositions.clear();
+        for (int i = 0; i < sorted.size(); i++) {
+            lastPositions.put(sorted.get(i).name, i);
         }
 
         statsText.setText(sb.toString());

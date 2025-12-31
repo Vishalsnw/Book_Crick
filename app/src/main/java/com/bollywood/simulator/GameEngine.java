@@ -126,13 +126,18 @@ public class GameEngine {
         
         int loanInterest = 0;
         if (player.loan > 0) {
+            // Apply 12% interest on the loan amount per round
             loanInterest = (int)(player.loan * 0.12);
         }
         result.loanInterest = loanInterest;
         
         // Calculate Total Earnings with Star Power and Trends
+        // Base income is centered around 0-100, then multipliers are applied.
+        // To allow for losses, we can subtract a fixed production cost or make multipliers harsher.
+        int productionCost = 40; // Fixed cost per round
+        
         float total = ((result.baseEarnings * result.genreMultiplier) / 100.0f) + 
-                               result.seasonalBonus + result.randomEventImpact - result.loanInterest;
+                               result.seasonalBonus + result.randomEventImpact - result.loanInterest - productionCost;
         
         total *= result.cast.earningsMultiplier;
         total *= trend.theaterMultiplier;
