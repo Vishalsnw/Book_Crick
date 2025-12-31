@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 if (results != null) {
                     p.lastEarnings = results.totalEarnings;
                     p.earnings += results.totalEarnings;
-                    p.balance = p.earnings - p.loan;
+                    p.balance += results.totalEarnings;
                     
                     activePlayers.add(p);
                     roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
@@ -507,8 +507,8 @@ public class MainActivity extends AppCompatActivity {
         public Player(String name, int loan, int carryoverBalance) {
             this.name = name;
             this.loan = loan;
-            this.earnings = carryoverBalance;
-            this.balance = carryoverBalance - loan;
+            this.earnings = 0; // Reset annual earnings
+            this.balance = carryoverBalance; // Initial balance before budget
             this.oscarWins = 0;
         }
     }
