@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         topMoviesText = findViewById(R.id.topMoviesText);
         actionButton = findViewById(R.id.actionButton);
         oscarButton = findViewById(R.id.oscarButton);
-        incomeButton = findViewById(R.id.incomeButton);
         profileButton = findViewById(R.id.profileButton);
         achieveButton = findViewById(R.id.achieveButton);
         topMoviesSection = findViewById(R.id.topMoviesSection);
@@ -85,15 +84,11 @@ public class MainActivity extends AppCompatActivity {
         oscarAnimationOverlay = findViewById(R.id.oscarAnimationOverlay);
         nomineeText = findViewById(R.id.nomineeText);
 
+        // Load data first to populate playerHistory and playerStats
         loadData();
 
         actionButton.setOnClickListener(v -> handleButtonClick());
         oscarButton.setOnClickListener(v -> startActivity(new Intent(this, OscarListActivity.class)));
-        incomeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, PlayerIncomeActivity.class);
-            intent.putExtra("players", new ArrayList<>(players));
-            startActivity(intent);
-        });
         profileButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, PlayerProfileActivity.class);
             if (!players.isEmpty()) {
@@ -103,8 +98,14 @@ public class MainActivity extends AppCompatActivity {
         });
         achieveButton.setOnClickListener(v -> startActivity(new Intent(this, AchievementsActivity.class)));
 
-        if (players.isEmpty()) {
+        // Only setup initial players if loading didn't restore any
+        if (players.isEmpty() && playerHistory.isEmpty()) {
             setupInitialPlayers();
+        } else if (players.isEmpty() && !playerHistory.isEmpty()) {
+            // Restore current year state if available
+            for (Player p : playerHistory) {
+                players.add(new Player(p.name, p.loan, p.balance));
+            }
         }
         updateUI();
     }
@@ -385,14 +386,19 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        // Optimized for small screens: Rank | Name | Bal
-        sb.append(String.format("%-2s | %-12s | %s\n", "R", "Name", "Bal"));
-        sb.append("--------------------------\n");
+        // Optimized for small screens: Rank | Name | Bal | 🏆
+        sb.append(String.format("%-2s | %-10s | %-4s | %s\n", "R", "Name", "Bal", "🏆"));
+        sb.append("--------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
             String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
-            String name = p.name.length() > 12 ? p.name.substring(0, 10) + ".." : p.name;
-            sb.append(String.format("%-2s | %-12s | ₹%d\n", rankSymbol, name, p.balance));
+            String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
+            
+            // Get Oscar count from stats for accuracy
+            PlayerStats stats = playerStats.get(p.name);
+            int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
+            
+            sb.append(String.format("%-2s | %-10s | ₹%-4d | %d\n", rankSymbol, name, p.balance, oscars));
         }
 
         statsText.setText(sb.toString());
