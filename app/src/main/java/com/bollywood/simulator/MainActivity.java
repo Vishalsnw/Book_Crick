@@ -108,8 +108,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         achieveButton.setOnClickListener(v -> startActivity(new Intent(this, AchievementsActivity.class)));
-        
+
+        if (players.isEmpty()) {
+            setupInitialPlayers();
+        }
         updateUI();
+    }
+
+    private void setupInitialPlayers() {
+        players.clear();
+        for (String name : PLAYER_NAMES) {
+            int budget = 10 + random.nextInt(91); // 10 to 100
+            players.add(new Player(name, budget, 0));
+        }
     }
 
     private void handleButtonClick() {
@@ -137,13 +148,16 @@ public class MainActivity extends AppCompatActivity {
             Player existingPlayer = findPlayerInHistory(name);
             
             int budget = random.nextInt(91) + 10;
+            Player newPlayer;
             if (existingPlayer != null && existingPlayer.balance >= budget) {
                 // Use existing balance, no new loan
-                players.add(new Player(name, 0, existingPlayer.balance));
+                newPlayer = new Player(name, 0, existingPlayer.balance);
             } else {
                 // Take a loan
-                players.add(new Player(name, budget, existingPlayer != null ? existingPlayer.balance : 0));
+                newPlayer = new Player(name, budget, existingPlayer != null ? existingPlayer.balance : 0);
             }
+            newPlayer.oscarWins = stats.oscarWins;
+            players.add(newPlayer);
             
             stats.yearsActive++;
             playerStats.put(name, stats);
@@ -250,6 +264,16 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
             nominees.add(activePlayers.get(i));
         }
+        // Ensure we always show 4 nominations if possible
+        if (nominees.size() < 4) {
+            // This case shouldn't happen with 32 players, but for safety:
+            for (Player p : players) {
+                if (!nominees.contains(p)) {
+                    nominees.add(p);
+                    if (nominees.size() == 4) break;
+                }
+            }
+        }
         Collections.shuffle(nominees);
 
         // Reset text and button
@@ -292,6 +316,14 @@ public class MainActivity extends AppCompatActivity {
         winnerStats.oscarWins++;
         winnerStats.addAchievement("🏆 Oscar Winner");
         playerStats.put(winner.name, winnerStats);
+
+        // Update oscarWins in the current player object for UI persistence
+        for (Player p : players) {
+            if (p.name.equals(winner.name)) {
+                p.oscarWins++;
+                break;
+            }
+        }
         
         playerHistory.clear();
         for (Player p : players) {
@@ -432,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Player implements Serializable {
         public String name;
-        public int loan, earnings, balance, lastEarnings;
+        public int loan, earnings, balance, lastEarnings, oscarWins;
         public boolean active = true;
         
         public Player(String name, int loan, int carryoverBalance) {
@@ -440,6 +472,7 @@ public class MainActivity extends AppCompatActivity {
             this.loan = loan;
             this.earnings = carryoverBalance;
             this.balance = carryoverBalance - loan;
+            this.oscarWins = 0;
         }
     }
 
