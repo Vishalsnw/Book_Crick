@@ -1,0 +1,430 @@
+﻿2025-12-31T18:03:23.6805154Z Current runner version: '2.330.0'
+2025-12-31T18:03:23.6828828Z ##[group]Runner Image Provisioner
+2025-12-31T18:03:23.6829860Z Hosted Compute Agent
+2025-12-31T18:03:23.6830508Z Version: 20251211.462
+2025-12-31T18:03:23.6831077Z Commit: 6cbad8c2bb55d58165063d031ccabf57e2d2db61
+2025-12-31T18:03:23.6831770Z Build Date: 2025-12-11T16:28:49Z
+2025-12-31T18:03:23.6832412Z Worker ID: {75c9d754-d4d2-42f4-9aa0-e4486894f579}
+2025-12-31T18:03:23.6833135Z ##[endgroup]
+2025-12-31T18:03:23.6833621Z ##[group]Operating System
+2025-12-31T18:03:23.6834219Z Ubuntu
+2025-12-31T18:03:23.6834675Z 24.04.3
+2025-12-31T18:03:23.6835129Z LTS
+2025-12-31T18:03:23.6835531Z ##[endgroup]
+2025-12-31T18:03:23.6836117Z ##[group]Runner Image
+2025-12-31T18:03:23.6836667Z Image: ubuntu-24.04
+2025-12-31T18:03:23.6837128Z Version: 20251215.174.1
+2025-12-31T18:03:23.6838214Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251215.174/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-31T18:03:23.6840009Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251215.174
+2025-12-31T18:03:23.6841098Z ##[endgroup]
+2025-12-31T18:03:23.6843613Z ##[group]GITHUB_TOKEN Permissions
+2025-12-31T18:03:23.6845695Z Actions: write
+2025-12-31T18:03:23.6846228Z ArtifactMetadata: write
+2025-12-31T18:03:23.6846781Z Attestations: write
+2025-12-31T18:03:23.6847397Z Checks: write
+2025-12-31T18:03:23.6847897Z Contents: write
+2025-12-31T18:03:23.6848368Z Deployments: write
+2025-12-31T18:03:23.6848928Z Discussions: write
+2025-12-31T18:03:23.6849700Z Issues: write
+2025-12-31T18:03:23.6850223Z Metadata: read
+2025-12-31T18:03:23.6850772Z Models: read
+2025-12-31T18:03:23.6851276Z Packages: write
+2025-12-31T18:03:23.6851770Z Pages: write
+2025-12-31T18:03:23.6852254Z PullRequests: write
+2025-12-31T18:03:23.6852901Z RepositoryProjects: write
+2025-12-31T18:03:23.6853443Z SecurityEvents: write
+2025-12-31T18:03:23.6854035Z Statuses: write
+2025-12-31T18:03:23.6854501Z ##[endgroup]
+2025-12-31T18:03:23.6856658Z Secret source: Actions
+2025-12-31T18:03:23.6857445Z Prepare workflow directory
+2025-12-31T18:03:23.7293792Z Prepare all required actions
+2025-12-31T18:03:23.7350367Z Getting action download info
+2025-12-31T18:03:24.0601388Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-31T18:03:24.1674548Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2025-12-31T18:03:24.6327090Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-12-31T18:03:24.8501125Z Complete job name: build
+2025-12-31T18:03:24.9205951Z ##[group]Run actions/checkout@v4
+2025-12-31T18:03:24.9206792Z with:
+2025-12-31T18:03:24.9207192Z   repository: Vishalsnw/Book_Crick
+2025-12-31T18:03:24.9207874Z   token: ***
+2025-12-31T18:03:24.9208256Z   ssh-strict: true
+2025-12-31T18:03:24.9208646Z   ssh-user: git
+2025-12-31T18:03:24.9209050Z   persist-credentials: true
+2025-12-31T18:03:24.9209697Z   clean: true
+2025-12-31T18:03:24.9210102Z   sparse-checkout-cone-mode: true
+2025-12-31T18:03:24.9210610Z   fetch-depth: 1
+2025-12-31T18:03:24.9210993Z   fetch-tags: false
+2025-12-31T18:03:24.9211402Z   show-progress: true
+2025-12-31T18:03:24.9211811Z   lfs: false
+2025-12-31T18:03:24.9212184Z   submodules: false
+2025-12-31T18:03:24.9212586Z   set-safe-directory: true
+2025-12-31T18:03:24.9213274Z ##[endgroup]
+2025-12-31T18:03:25.0311345Z Syncing repository: Vishalsnw/Book_Crick
+2025-12-31T18:03:25.0313064Z ##[group]Getting Git version info
+2025-12-31T18:03:25.0313780Z Working directory is '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-31T18:03:25.0314820Z [command]/usr/bin/git version
+2025-12-31T18:03:25.0396203Z git version 2.52.0
+2025-12-31T18:03:25.0428064Z ##[endgroup]
+2025-12-31T18:03:25.0444313Z Temporarily overriding HOME='/home/runner/work/_temp/94d9b3f1-56d3-48e5-8b3b-00a1441c3717' before making global git config changes
+2025-12-31T18:03:25.0457753Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-31T18:03:25.0459284Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-31T18:03:25.0497670Z Deleting the contents of '/home/runner/work/Book_Crick/Book_Crick'
+2025-12-31T18:03:25.0501682Z ##[group]Initializing the repository
+2025-12-31T18:03:25.0505736Z [command]/usr/bin/git init /home/runner/work/Book_Crick/Book_Crick
+2025-12-31T18:03:25.0643502Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-31T18:03:25.0645300Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-31T18:03:25.0646864Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-31T18:03:25.0647981Z hint: call:
+2025-12-31T18:03:25.0648638Z hint:
+2025-12-31T18:03:25.0649814Z hint: 	git config --global init.defaultBranch <name>
+2025-12-31T18:03:25.0650970Z hint:
+2025-12-31T18:03:25.0651985Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-31T18:03:25.0653611Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-31T18:03:25.0654867Z hint:
+2025-12-31T18:03:25.0655501Z hint: 	git branch -m <name>
+2025-12-31T18:03:25.0656246Z hint:
+2025-12-31T18:03:25.0657216Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-31T18:03:25.0658881Z Initialized empty Git repository in /home/runner/work/Book_Crick/Book_Crick/.git/
+2025-12-31T18:03:25.0665185Z [command]/usr/bin/git remote add origin https://github.com/Vishalsnw/Book_Crick
+2025-12-31T18:03:25.0713187Z ##[endgroup]
+2025-12-31T18:03:25.0714382Z ##[group]Disabling automatic garbage collection
+2025-12-31T18:03:25.0718296Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-31T18:03:25.0754318Z ##[endgroup]
+2025-12-31T18:03:25.0755478Z ##[group]Setting up auth
+2025-12-31T18:03:25.0763290Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-31T18:03:25.0800024Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-31T18:03:25.4029626Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-31T18:03:25.4064020Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-31T18:03:25.4293414Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-31T18:03:25.4326328Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-31T18:03:25.4570487Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-31T18:03:25.4609067Z ##[endgroup]
+2025-12-31T18:03:25.4610680Z ##[group]Fetching the repository
+2025-12-31T18:03:25.4619104Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7268e09bc6dcc08d42ea65db532c63910dbf716f:refs/remotes/origin/main
+2025-12-31T18:03:25.9536612Z From https://github.com/Vishalsnw/Book_Crick
+2025-12-31T18:03:25.9537673Z  * [new ref]         7268e09bc6dcc08d42ea65db532c63910dbf716f -> origin/main
+2025-12-31T18:03:25.9570802Z ##[endgroup]
+2025-12-31T18:03:25.9571602Z ##[group]Determining the checkout info
+2025-12-31T18:03:25.9573085Z ##[endgroup]
+2025-12-31T18:03:25.9577639Z [command]/usr/bin/git sparse-checkout disable
+2025-12-31T18:03:25.9628714Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-31T18:03:25.9655779Z ##[group]Checking out the ref
+2025-12-31T18:03:25.9659706Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-31T18:03:25.9933574Z Switched to a new branch 'main'
+2025-12-31T18:03:25.9937237Z branch 'main' set up to track 'origin/main'.
+2025-12-31T18:03:25.9943314Z ##[endgroup]
+2025-12-31T18:03:25.9980940Z [command]/usr/bin/git log -1 --format=%H
+2025-12-31T18:03:26.0003795Z 7268e09bc6dcc08d42ea65db532c63910dbf716f
+2025-12-31T18:03:26.0345942Z ##[group]Run actions/setup-java@v4
+2025-12-31T18:03:26.0346930Z with:
+2025-12-31T18:03:26.0347589Z   java-version: 17
+2025-12-31T18:03:26.0348351Z   distribution: temurin
+2025-12-31T18:03:26.0349119Z   cache: gradle
+2025-12-31T18:03:26.0349983Z   java-package: jdk
+2025-12-31T18:03:26.0350758Z   check-latest: false
+2025-12-31T18:03:26.0351550Z   server-id: github
+2025-12-31T18:03:26.0352367Z   server-username: GITHUB_ACTOR
+2025-12-31T18:03:26.0353305Z   server-password: GITHUB_TOKEN
+2025-12-31T18:03:26.0354246Z   overwrite-settings: true
+2025-12-31T18:03:26.0355105Z   job-status: success
+2025-12-31T18:03:26.0356150Z   token: ***
+2025-12-31T18:03:26.0356908Z ##[endgroup]
+2025-12-31T18:03:26.2392810Z ##[group]Installed distributions
+2025-12-31T18:03:26.2706694Z Resolved Java 17.0.17+10 from tool-cache
+2025-12-31T18:03:26.2708452Z Setting Java 17.0.17+10 as the default
+2025-12-31T18:03:26.2723709Z Creating toolchains.xml for JDK version 17 from temurin
+2025-12-31T18:03:26.2802819Z Writing to /home/runner/.m2/toolchains.xml
+2025-12-31T18:03:26.2804457Z 
+2025-12-31T18:03:26.2805055Z Java configuration:
+2025-12-31T18:03:26.2806338Z   Distribution: temurin
+2025-12-31T18:03:26.2815053Z   Version: 17.0.17+10
+2025-12-31T18:03:26.2816923Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-31T18:03:26.2818583Z 
+2025-12-31T18:03:26.2820248Z ##[endgroup]
+2025-12-31T18:03:26.2836637Z Creating settings.xml with server-id: github
+2025-12-31T18:03:26.2838367Z Writing to /home/runner/.m2/settings.xml
+2025-12-31T18:03:26.4900511Z gradle cache is not found
+2025-12-31T18:03:26.5086241Z ##[group]Run chmod +x gradlew
+2025-12-31T18:03:26.5087393Z [36;1mchmod +x gradlew[0m
+2025-12-31T18:03:26.5203240Z shell: /usr/bin/bash -e {0}
+2025-12-31T18:03:26.5204278Z env:
+2025-12-31T18:03:26.5205483Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-31T18:03:26.5207594Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-31T18:03:26.5209200Z ##[endgroup]
+2025-12-31T18:03:26.5378697Z ##[group]Run ./gradlew assembleDebug
+2025-12-31T18:03:26.5380060Z [36;1m./gradlew assembleDebug[0m
+2025-12-31T18:03:26.5415414Z shell: /usr/bin/bash -e {0}
+2025-12-31T18:03:26.5416287Z env:
+2025-12-31T18:03:26.5417385Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-31T18:03:26.5419302Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-31T18:03:26.5421079Z ##[endgroup]
+2025-12-31T18:03:27.9838525Z Downloading https://services.gradle.org/distributions/gradle-8.14.2-bin.zip
+2025-12-31T18:03:30.4758449Z .............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%..............100%
+2025-12-31T18:03:32.8240855Z 
+2025-12-31T18:03:32.8248480Z Welcome to Gradle 8.14.2!
+2025-12-31T18:03:32.8249569Z 
+2025-12-31T18:03:32.8250067Z Here are the highlights of this release:
+2025-12-31T18:03:32.8251234Z  - Java 24 support
+2025-12-31T18:03:32.8251778Z  - GraalVM Native Image toolchain selection
+2025-12-31T18:03:32.8252306Z  - Enhancements to test reporting
+2025-12-31T18:03:32.8252764Z  - Build Authoring improvements
+2025-12-31T18:03:32.8253075Z 
+2025-12-31T18:03:32.8253615Z For more details see https://docs.gradle.org/8.14.2/release-notes.html
+2025-12-31T18:03:32.8254334Z 
+2025-12-31T18:03:32.9200363Z Starting a Gradle Daemon (subsequent builds will be faster)
+2025-12-31T18:04:11.8199908Z 
+2025-12-31T18:04:11.8232448Z FAILURE: Build failed with an exception.
+2025-12-31T18:04:11.8233959Z 
+2025-12-31T18:04:11.8235109Z * What went wrong:
+2025-12-31T18:04:11.8235759Z A problem occurred configuring root project 'Book_Crick'.
+2025-12-31T18:04:11.8270500Z > Could not resolve all artifacts for configuration 'classpath'.
+2025-12-31T18:04:11.8272468Z    > Could not resolve com.googlecode.juniversalchardet:juniversalchardet:1.0.3.
+2025-12-31T18:04:11.8275469Z      Required by:
+2025-12-31T18:04:11.8276849Z          root project : > com.android.tools.build:gradle:8.0.2 > androidx.databinding:databinding-compiler-common:8.0.2
+2025-12-31T18:04:11.8279560Z       > Could not resolve com.googlecode.juniversalchardet:juniversalchardet:1.0.3.
+2025-12-31T18:04:11.8282879Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom'.
+2025-12-31T18:04:11.8286480Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8288059Z    > Could not resolve javax.annotation:javax.annotation-api:1.3.2.
+2025-12-31T18:04:11.8288617Z      Required by:
+2025-12-31T18:04:11.8289678Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.0.2
+2025-12-31T18:04:11.8290967Z       > Could not resolve javax.annotation:javax.annotation-api:1.3.2.
+2025-12-31T18:04:11.8292099Z          > Could not parse POM https://repo.maven.apache.org/maven2/javax/annotation/javax.annotation-api/1.3.2/javax.annotation-api-1.3.2.pom
+2025-12-31T18:04:11.8293158Z             > Could not resolve net.java:jvnet-parent:3.
+2025-12-31T18:04:11.8293694Z                > Could not resolve net.java:jvnet-parent:3.
+2025-12-31T18:04:11.8294559Z                   > Could not get resource 'https://repo.maven.apache.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom'.
+2025-12-31T18:04:11.8296051Z                      > Could not GET 'https://repo.maven.apache.org/maven2/net/java/jvnet-parent/3/jvnet-parent-3.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8297224Z    > Could not resolve org.jetbrains.kotlin:kotlin-stdlib:1.7.10.
+2025-12-31T18:04:11.8297820Z      Required by:
+2025-12-31T18:04:11.8298509Z          root project : > com.android.tools.build:gradle:8.0.2 > org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10
+2025-12-31T18:04:11.8300348Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > org.jetbrains.kotlin:kotlin-reflect:1.7.10
+2025-12-31T18:04:11.8301453Z       > Could not resolve org.jetbrains.kotlin:kotlin-stdlib:1.7.10.
+2025-12-31T18:04:11.8302543Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.7.10/kotlin-stdlib-1.7.10.pom'.
+2025-12-31T18:04:11.8304316Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/1.7.10/kotlin-stdlib-1.7.10.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8314997Z    > Could not resolve org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10.
+2025-12-31T18:04:11.8315626Z      Required by:
+2025-12-31T18:04:11.8316342Z          root project : > com.android.tools.build:gradle:8.0.2 > org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10
+2025-12-31T18:04:11.8317309Z       > Could not resolve org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10.
+2025-12-31T18:04:11.8318532Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.7.10/kotlin-stdlib-jdk7-1.7.10.pom'.
+2025-12-31T18:04:11.8320593Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.7.10/kotlin-stdlib-jdk7-1.7.10.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8321912Z    > Could not resolve org.ow2.asm:asm-tree:9.2.
+2025-12-31T18:04:11.8322378Z      Required by:
+2025-12-31T18:04:11.8322958Z          root project : > com.android.tools.build:gradle:8.0.2 > org.ow2.asm:asm-analysis:9.2
+2025-12-31T18:04:11.8323842Z          root project : > com.android.tools.build:gradle:8.0.2 > org.ow2.asm:asm-commons:9.2
+2025-12-31T18:04:11.8324709Z          root project : > com.android.tools.build:gradle:8.0.2 > org.ow2.asm:asm-util:9.2
+2025-12-31T18:04:11.8325779Z       > Could not resolve org.ow2.asm:asm-tree:9.2.
+2025-12-31T18:04:11.8326651Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/9.2/asm-tree-9.2.pom'.
+2025-12-31T18:04:11.8328033Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/ow2/asm/asm-tree/9.2/asm-tree-9.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8329194Z    > Could not resolve jakarta.xml.bind:jakarta.xml.bind-api:2.3.2.
+2025-12-31T18:04:11.8329979Z      Required by:
+2025-12-31T18:04:11.8330586Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8331434Z       > Could not resolve jakarta.xml.bind:jakarta.xml.bind-api:2.3.2.
+2025-12-31T18:04:11.8332587Z          > Could not get resource 'https://repo.maven.apache.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.pom'.
+2025-12-31T18:04:11.8334385Z             > Could not GET 'https://repo.maven.apache.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8335672Z    > Could not resolve org.glassfish.jaxb:txw2:2.3.2.
+2025-12-31T18:04:11.8336157Z      Required by:
+2025-12-31T18:04:11.8336809Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8337582Z       > Could not resolve org.glassfish.jaxb:txw2:2.3.2.
+2025-12-31T18:04:11.8338434Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.pom'.
+2025-12-31T18:04:11.8340119Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8341342Z    > Could not resolve com.sun.istack:istack-commons-runtime:3.0.8.
+2025-12-31T18:04:11.8341931Z      Required by:
+2025-12-31T18:04:11.8342573Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8343701Z       > Could not resolve com.sun.istack:istack-commons-runtime:3.0.8.
+2025-12-31T18:04:11.8344933Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.pom'.
+2025-12-31T18:04:11.8346830Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8372373Z    > Could not resolve org.jvnet.staxex:stax-ex:1.8.1.
+2025-12-31T18:04:11.8372918Z      Required by:
+2025-12-31T18:04:11.8373589Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8374438Z       > Could not resolve org.jvnet.staxex:stax-ex:1.8.1.
+2025-12-31T18:04:11.8375370Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.pom'.
+2025-12-31T18:04:11.8376886Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8378096Z    > Could not resolve com.sun.xml.fastinfoset:FastInfoset:1.2.16.
+2025-12-31T18:04:11.8378659Z      Required by:
+2025-12-31T18:04:11.8379534Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8380420Z       > Could not resolve com.sun.xml.fastinfoset:FastInfoset:1.2.16.
+2025-12-31T18:04:11.8381556Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.pom'.
+2025-12-31T18:04:11.8383288Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8385014Z    > Could not resolve jakarta.activation:jakarta.activation-api:1.2.1.
+2025-12-31T18:04:11.8385637Z      Required by:
+2025-12-31T18:04:11.8386304Z          root project : > com.android.tools.build:gradle:8.0.2 > org.glassfish.jaxb:jaxb-runtime:2.3.2
+2025-12-31T18:04:11.8387256Z       > Could not resolve jakarta.activation:jakarta.activation-api:1.2.1.
+2025-12-31T18:04:11.8388557Z          > Could not get resource 'https://repo.maven.apache.org/maven2/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.pom'.
+2025-12-31T18:04:11.8390762Z             > Could not GET 'https://repo.maven.apache.org/maven2/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8392326Z    > Could not resolve com.google.auto.value:auto-value-annotations:1.6.2.
+2025-12-31T18:04:11.8392971Z      Required by:
+2025-12-31T18:04:11.8393661Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:bundletool:1.13.2
+2025-12-31T18:04:11.8394646Z       > Could not resolve com.google.auto.value:auto-value-annotations:1.6.2.
+2025-12-31T18:04:11.8396006Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom'.
+2025-12-31T18:04:11.8448963Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/auto/value/auto-value-annotations/1.6.2/auto-value-annotations-1.6.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8450777Z    > Could not resolve com.google.errorprone:error_prone_annotations:2.10.0.
+2025-12-31T18:04:11.8451411Z      Required by:
+2025-12-31T18:04:11.8452075Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:bundletool:1.13.2
+2025-12-31T18:04:11.8453016Z       > Could not resolve com.google.errorprone:error_prone_annotations:2.10.0.
+2025-12-31T18:04:11.8454356Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.10.0/error_prone_annotations-2.10.0.pom'.
+2025-12-31T18:04:11.8456660Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.10.0/error_prone_annotations-2.10.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8458060Z    > Could not resolve com.google.dagger:dagger:2.28.3.
+2025-12-31T18:04:11.8458566Z      Required by:
+2025-12-31T18:04:11.8459226Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:bundletool:1.13.2
+2025-12-31T18:04:11.8460273Z       > Could not resolve com.google.dagger:dagger:2.28.3.
+2025-12-31T18:04:11.8461258Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/dagger/dagger/2.28.3/dagger-2.28.3.pom'.
+2025-12-31T18:04:11.8462870Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/dagger/dagger/2.28.3/dagger-2.28.3.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8464057Z    > Could not resolve org.bitbucket.b_c:jose4j:0.7.0.
+2025-12-31T18:04:11.8464595Z      Required by:
+2025-12-31T18:04:11.8465265Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:bundletool:1.13.2
+2025-12-31T18:04:11.8466109Z       > Could not resolve org.bitbucket.b_c:jose4j:0.7.0.
+2025-12-31T18:04:11.8467032Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/bitbucket/b_c/jose4j/0.7.0/jose4j-0.7.0.pom'.
+2025-12-31T18:04:11.8468498Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/bitbucket/b_c/jose4j/0.7.0/jose4j-0.7.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8469868Z    > Could not resolve org.slf4j:slf4j-api:1.7.30.
+2025-12-31T18:04:11.8470378Z      Required by:
+2025-12-31T18:04:11.8471048Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:bundletool:1.13.2
+2025-12-31T18:04:11.8472187Z       > Could not resolve org.slf4j:slf4j-api:1.7.30.
+2025-12-31T18:04:11.8473083Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.pom'.
+2025-12-31T18:04:11.8474493Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8475545Z    > Could not resolve org.jdom:jdom2:2.0.6.
+2025-12-31T18:04:11.8475990Z      Required by:
+2025-12-31T18:04:11.8476779Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10
+2025-12-31T18:04:11.8477671Z       > Could not resolve org.jdom:jdom2:2.0.6.
+2025-12-31T18:04:11.8478491Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom'.
+2025-12-31T18:04:11.8480160Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8481331Z    > Could not resolve com.google.j2objc:j2objc-annotations:1.3.
+2025-12-31T18:04:11.8481899Z      Required by:
+2025-12-31T18:04:11.8482573Z          root project : > com.android.tools.build:gradle:8.0.2 > com.google.protobuf:protobuf-java-util:3.19.3
+2025-12-31T18:04:11.8483787Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > com.google.guava:guava:31.0.1-jre
+2025-12-31T18:04:11.8484805Z       > Could not resolve com.google.j2objc:j2objc-annotations:1.3.
+2025-12-31T18:04:11.8485941Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom'.
+2025-12-31T18:04:11.8508852Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8510508Z    > Could not resolve com.google.code.findbugs:jsr305:3.0.2.
+2025-12-31T18:04:11.8511099Z      Required by:
+2025-12-31T18:04:11.8512057Z          root project : > com.android.tools.build:gradle:8.0.2 > com.google.protobuf:protobuf-java-util:3.19.3
+2025-12-31T18:04:11.8513158Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-protobuf:1.45.1
+2025-12-31T18:04:11.8514304Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > com.google.guava:guava:31.0.1-jre
+2025-12-31T18:04:11.8515819Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:builder:8.0.2 > com.android.tools.build:apkzlib:8.0.2
+2025-12-31T18:04:11.8516908Z       > Could not resolve com.google.code.findbugs:jsr305:3.0.2.
+2025-12-31T18:04:11.8518004Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom'.
+2025-12-31T18:04:11.8519905Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8521188Z    > Could not resolve io.grpc:grpc-api:1.45.1.
+2025-12-31T18:04:11.8521703Z      Required by:
+2025-12-31T18:04:11.8522344Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-core:1.45.1
+2025-12-31T18:04:11.8523315Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-protobuf:1.45.1
+2025-12-31T18:04:11.8524272Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-stub:1.45.1
+2025-12-31T18:04:11.8525062Z       > Could not resolve io.grpc:grpc-api:1.45.1.
+2025-12-31T18:04:11.8526123Z          > Could not get resource 'https://repo.maven.apache.org/maven2/io/grpc/grpc-api/1.45.1/grpc-api-1.45.1.pom'.
+2025-12-31T18:04:11.8527593Z             > Could not GET 'https://repo.maven.apache.org/maven2/io/grpc/grpc-api/1.45.1/grpc-api-1.45.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8529208Z    > Could not resolve com.google.android:annotations:4.1.1.4.
+2025-12-31T18:04:11.8531829Z      Required by:
+2025-12-31T18:04:11.8532456Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-core:1.45.1
+2025-12-31T18:04:11.8533275Z       > Could not resolve com.google.android:annotations:4.1.1.4.
+2025-12-31T18:04:11.8534358Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/android/annotations/4.1.1.4/annotations-4.1.1.4.pom'.
+2025-12-31T18:04:11.8536107Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/android/annotations/4.1.1.4/annotations-4.1.1.4.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8537529Z    > Could not resolve org.codehaus.mojo:animal-sniffer-annotations:1.19.
+2025-12-31T18:04:11.8538182Z      Required by:
+2025-12-31T18:04:11.8538780Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-core:1.45.1
+2025-12-31T18:04:11.8539875Z       > Could not resolve org.codehaus.mojo:animal-sniffer-annotations:1.19.
+2025-12-31T18:04:11.8541221Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.19/animal-sniffer-annotations-1.19.pom'.
+2025-12-31T18:04:11.8543264Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.19/animal-sniffer-annotations-1.19.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8544677Z    > Could not resolve io.perfmark:perfmark-api:0.23.0.
+2025-12-31T18:04:11.8545168Z      Required by:
+2025-12-31T18:04:11.8545731Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-core:1.45.1
+2025-12-31T18:04:11.8546598Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-netty:1.45.1
+2025-12-31T18:04:11.8547331Z       > Could not resolve io.perfmark:perfmark-api:0.23.0.
+2025-12-31T18:04:11.8548351Z          > Could not get resource 'https://repo.maven.apache.org/maven2/io/perfmark/perfmark-api/0.23.0/perfmark-api-0.23.0.pom'.
+2025-12-31T18:04:11.8550307Z             > Could not GET 'https://repo.maven.apache.org/maven2/io/perfmark/perfmark-api/0.23.0/perfmark-api-0.23.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8551627Z    > Could not resolve io.netty:netty-codec-http2:4.1.72.Final.
+2025-12-31T18:04:11.8552172Z      Required by:
+2025-12-31T18:04:11.8552757Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-netty:1.45.1
+2025-12-31T18:04:11.8553547Z       > Could not resolve io.netty:netty-codec-http2:4.1.72.Final.
+2025-12-31T18:04:11.8554690Z          > Could not get resource 'https://repo.maven.apache.org/maven2/io/netty/netty-codec-http2/4.1.72.Final/netty-codec-http2-4.1.72.Final.pom'.
+2025-12-31T18:04:11.8556508Z             > Could not GET 'https://repo.maven.apache.org/maven2/io/netty/netty-codec-http2/4.1.72.Final/netty-codec-http2-4.1.72.Final.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8557828Z    > Could not resolve io.netty:netty-handler-proxy:4.1.72.Final.
+2025-12-31T18:04:11.8558401Z      Required by:
+2025-12-31T18:04:11.8558981Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-netty:1.45.1
+2025-12-31T18:04:11.8559989Z       > Could not resolve io.netty:netty-handler-proxy:4.1.72.Final.
+2025-12-31T18:04:11.8578442Z          > Could not get resource 'https://repo.maven.apache.org/maven2/io/netty/netty-handler-proxy/4.1.72.Final/netty-handler-proxy-4.1.72.Final.pom'.
+2025-12-31T18:04:11.8580718Z             > Could not GET 'https://repo.maven.apache.org/maven2/io/netty/netty-handler-proxy/4.1.72.Final/netty-handler-proxy-4.1.72.Final.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8582252Z    > Could not resolve com.google.api.grpc:proto-google-common-protos:2.0.1.
+2025-12-31T18:04:11.8582880Z      Required by:
+2025-12-31T18:04:11.8583726Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-protobuf:1.45.1
+2025-12-31T18:04:11.8584608Z       > Could not resolve com.google.api.grpc:proto-google-common-protos:2.0.1.
+2025-12-31T18:04:11.8585971Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/api/grpc/proto-google-common-protos/2.0.1/proto-google-common-protos-2.0.1.pom'.
+2025-12-31T18:04:11.8588013Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/api/grpc/proto-google-common-protos/2.0.1/proto-google-common-protos-2.0.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8589640Z    > Could not resolve io.grpc:grpc-protobuf-lite:1.45.1.
+2025-12-31T18:04:11.8590132Z      Required by:
+2025-12-31T18:04:11.8590690Z          root project : > com.android.tools.build:gradle:8.0.2 > io.grpc:grpc-protobuf:1.45.1
+2025-12-31T18:04:11.8591435Z       > Could not resolve io.grpc:grpc-protobuf-lite:1.45.1.
+2025-12-31T18:04:11.8592448Z          > Could not get resource 'https://repo.maven.apache.org/maven2/io/grpc/grpc-protobuf-lite/1.45.1/grpc-protobuf-lite-1.45.1.pom'.
+2025-12-31T18:04:11.8594097Z             > Could not GET 'https://repo.maven.apache.org/maven2/io/grpc/grpc-protobuf-lite/1.45.1/grpc-protobuf-lite-1.45.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8595360Z    > Could not resolve org.checkerframework:checker-qual:3.12.0.
+2025-12-31T18:04:11.8595914Z      Required by:
+2025-12-31T18:04:11.8596575Z          root project : > com.android.tools.build:gradle:8.0.2 > org.tensorflow:tensorflow-lite-metadata:0.1.0-rc2
+2025-12-31T18:04:11.8597479Z       > Could not resolve org.checkerframework:checker-qual:3.12.0.
+2025-12-31T18:04:11.8598576Z          > Could not get resource 'https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.12.0/checker-qual-3.12.0.pom'.
+2025-12-31T18:04:11.8600746Z             > Could not GET 'https://repo.maven.apache.org/maven2/org/checkerframework/checker-qual/3.12.0/checker-qual-3.12.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8602011Z    > Could not resolve commons-codec:commons-codec:1.11.
+2025-12-31T18:04:11.8602702Z      Required by:
+2025-12-31T18:04:11.8603336Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:builder:8.0.2
+2025-12-31T18:04:11.8604125Z       > Could not resolve commons-codec:commons-codec:1.11.
+2025-12-31T18:04:11.8605090Z          > Could not get resource 'https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.11/commons-codec-1.11.pom'.
+2025-12-31T18:04:11.8606677Z             > Could not GET 'https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.11/commons-codec-1.11.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8607834Z    > Could not resolve com.squareup:javawriter:2.5.0.
+2025-12-31T18:04:11.8608380Z      Required by:
+2025-12-31T18:04:11.8609048Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.build:builder:8.0.2
+2025-12-31T18:04:11.8610147Z       > Could not resolve com.squareup:javawriter:2.5.0.
+2025-12-31T18:04:11.8611087Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom'.
+2025-12-31T18:04:11.8612603Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8613811Z    > Could not resolve com.google.guava:failureaccess:1.0.1.
+2025-12-31T18:04:11.8614338Z      Required by:
+2025-12-31T18:04:11.8615204Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > com.google.guava:guava:31.0.1-jre
+2025-12-31T18:04:11.8616168Z       > Could not resolve com.google.guava:failureaccess:1.0.1.
+2025-12-31T18:04:11.8617209Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom'.
+2025-12-31T18:04:11.8619070Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8620713Z    > Could not resolve com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava.
+2025-12-31T18:04:11.8621488Z      Required by:
+2025-12-31T18:04:11.8622271Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > com.google.guava:guava:31.0.1-jre
+2025-12-31T18:04:11.8623462Z       > Could not resolve com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava.
+2025-12-31T18:04:11.8625344Z          > Could not get resource 'https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom'.
+2025-12-31T18:04:11.8628174Z             > Could not GET 'https://repo.maven.apache.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8630271Z    > Could not resolve xml-apis:xml-apis:1.4.01.
+2025-12-31T18:04:11.8630757Z      Required by:
+2025-12-31T18:04:11.8631504Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools:sdk-common:31.0.2 > xerces:xercesImpl:2.12.0
+2025-12-31T18:04:11.8632397Z       > Could not resolve xml-apis:xml-apis:1.4.01.
+2025-12-31T18:04:11.8633256Z          > Could not get resource 'https://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.pom'.
+2025-12-31T18:04:11.8634662Z             > Could not GET 'https://repo.maven.apache.org/maven2/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8635794Z    > Could not resolve commons-logging:commons-logging:1.2.
+2025-12-31T18:04:11.8636321Z      Required by:
+2025-12-31T18:04:11.8637300Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.analytics-library:crash:31.0.2 > org.apache.httpcomponents:httpclient:4.5.13
+2025-12-31T18:04:11.8638657Z       > Could not resolve commons-logging:commons-logging:1.2.
+2025-12-31T18:04:11.8639924Z          > Could not get resource 'https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.pom'.
+2025-12-31T18:04:11.8641618Z             > Could not GET 'https://repo.maven.apache.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8642820Z    > Could not resolve net.java.dev.jna:jna:5.6.0.
+2025-12-31T18:04:11.8643295Z      Required by:
+2025-12-31T18:04:11.8644199Z          root project : > com.android.tools.build:gradle:8.0.2 > com.android.tools.analytics-library:shared:31.0.2 > net.java.dev.jna:jna-platform:5.6.0
+2025-12-31T18:04:11.8645277Z       > Could not resolve net.java.dev.jna:jna:5.6.0.
+2025-12-31T18:04:11.8646157Z          > Could not get resource 'https://repo.maven.apache.org/maven2/net/java/dev/jna/jna/5.6.0/jna-5.6.0.pom'.
+2025-12-31T18:04:11.8647495Z             > Could not GET 'https://repo.maven.apache.org/maven2/net/java/dev/jna/jna/5.6.0/jna-5.6.0.pom'. Received status code 403 from server: Forbidden
+2025-12-31T18:04:11.8648540Z > There are 6 more failures with identical causes.
+2025-12-31T18:04:11.8648895Z 
+2025-12-31T18:04:11.8649012Z * Try:
+2025-12-31T18:04:11.8649596Z > Run with --stacktrace option to get the stack trace.
+2025-12-31T18:04:11.8650200Z > Run with --info or --debug option to get more log output.
+2025-12-31T18:04:11.8650755Z > Run with --scan to get full insights.
+2025-12-31T18:04:11.8651262Z > Get more help at https://help.gradle.org.
+2025-12-31T18:04:11.8652851Z 
+2025-12-31T18:04:11.8652991Z BUILD FAILED in 44s
+2025-12-31T18:04:12.3958030Z ##[error]Process completed with exit code 1.
+2025-12-31T18:04:12.4075362Z Post job cleanup.
+2025-12-31T18:04:12.5888388Z Post job cleanup.
+2025-12-31T18:04:12.6856867Z [command]/usr/bin/git version
+2025-12-31T18:04:12.6895071Z git version 2.52.0
+2025-12-31T18:04:12.6940732Z Temporarily overriding HOME='/home/runner/work/_temp/459cbbd4-c00a-4bf3-8220-23fde056abaa' before making global git config changes
+2025-12-31T18:04:12.6942005Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-31T18:04:12.6947504Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Book_Crick/Book_Crick
+2025-12-31T18:04:12.6985925Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-31T18:04:12.7020883Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-31T18:04:12.7257892Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-31T18:04:12.7280521Z http.https://github.com/.extraheader
+2025-12-31T18:04:12.7293323Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-31T18:04:12.7325109Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-31T18:04:12.7553746Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-31T18:04:12.7586548Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-31T18:04:12.7924065Z Cleaning up orphan processes
+2025-12-31T18:04:12.8209146Z Terminate orphan process: pid (2176) (java)
