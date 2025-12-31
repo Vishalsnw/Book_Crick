@@ -32,13 +32,13 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String KEY_OSCARS = "oscar_winners";
-    private static final String KEY_YEAR = "current_year";
-    private static final String KEY_PLAYERS = "players";
-    private static final String KEY_STATS = "player_stats";
-    private static final String KEY_MOVIES = "movie_archive";
+    private static final String KEY_OSCARS_SAVE = "oscar_winners";
+    private static final String KEY_YEAR_SAVE = "current_year";
+    private static final String KEY_PLAYERS_SAVE = "players";
+    private static final String KEY_STATS_SAVE = "player_stats";
+    private static final String KEY_MOVIES_SAVE = "movie_archive";
     
-    private String lastEvent = "";
+    private String lastEventMsg = "";
 
     private final String[] PLAYER_NAMES = {
         "Golu", "Amit Bagle", "Mangesh", "Vasim", "Amit Randhe", "Khushi", "Ajinkya", "Vinay",
@@ -65,12 +65,6 @@ public class MainActivity extends AppCompatActivity {
     private Handler animationHandler = new Handler(Looper.getMainLooper());
 
     private static final String PREFS_NAME = "BollywoodPrefs";
-    private static final String KEY_OSCARS = "OscarWinners";
-    private static final String KEY_YEAR = "CurrentYear";
-    private static final String KEY_PLAYERS = "PlayerHistory";
-    private static final String KEY_STATS = "PlayerStats";
-    private static final String KEY_MOVIES = "MovieArchive";
-    private String lastEvent = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         
         gameState = "ROUND1";
         topMoviesSection.setVisibility(View.GONE);
-        lastEvent = "🎬 New year begins! Players ready their films...";
+        lastEventMsg = "🎬 New year begins! Players ready their films...";
         updateUI();
     }
 
@@ -240,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!roundEvents.isEmpty()) {
-            lastEvent = roundEvents.get(0);
+            lastEventMsg = roundEvents.get(0);
         }
 
         if (nextState.equals("WINNER")) {
@@ -345,12 +339,12 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void showTopMovies(List<GameEngine.MovieRecord> movies, int count, String title) {
+    private void showTopMovies(List<MovieRecord> movies, int count, String title) {
         Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
         sb.append("🔥 TREND: ").append(currentTrend.description.toUpperCase()).append("\n\n");
         for (int i = 0; i < Math.min(count, movies.size()); i++) {
-            GameEngine.MovieRecord m = movies.get(i);
+            MovieRecord m = movies.get(i);
             String stars = "";
             for(int s=0; s<(int)m.rating; s++) stars += "⭐";
             if (m.rating % 1 >= 0.5) stars += "✨";
@@ -370,8 +364,8 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI() {
         yearBadge.setText("Year " + currentYear);
         
-        if (!lastEvent.isEmpty()) {
-            eventText.setText("NEWS: " + lastEvent + "\n(Trend: " + currentTrend.description + ")");
+        if (!lastEventMsg.isEmpty()) {
+            eventText.setText("NEWS: " + lastEventMsg + "\n(Trend: " + currentTrend.description + ")");
             eventText.setVisibility(View.VISIBLE);
         } else {
             eventText.setVisibility(View.GONE);
@@ -409,11 +403,11 @@ public class MainActivity extends AppCompatActivity {
             File file = new File(getFilesDir(), "save_data.json");
             FileOutputStream fos = new FileOutputStream(file);
             Map<String, Object> data = new HashMap<>();
-            data.put(KEY_OSCARS, oscarWinners);
-            data.put(KEY_YEAR, currentYear);
-            data.put(KEY_PLAYERS, playerHistory);
-            data.put(KEY_STATS, playerStats);
-            data.put(KEY_MOVIES, movieArchive);
+            data.put(KEY_OSCARS_SAVE, oscarWinners);
+            data.put(KEY_YEAR_SAVE, currentYear);
+            data.put(KEY_PLAYERS_SAVE, playerHistory);
+            data.put(KEY_STATS_SAVE, playerStats);
+            data.put(KEY_MOVIES_SAVE, movieArchive);
             fos.write(gson.toJson(data).getBytes());
             fos.close();
         } catch (Exception e) {
@@ -437,25 +431,25 @@ public class MainActivity extends AppCompatActivity {
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             Map<String, Object> data = gson.fromJson(sb.toString(), type);
             
-            if (data.containsKey(KEY_OSCARS)) {
-                oscarWinners = gson.fromJson(gson.toJson(data.get(KEY_OSCARS)), new TypeToken<ArrayList<String>>(){}.getType());
+            if (data.containsKey(KEY_OSCARS_SAVE)) {
+                oscarWinners = gson.fromJson(gson.toJson(data.get(KEY_OSCARS_SAVE)), new TypeToken<ArrayList<String>>(){}.getType());
             }
-            if (data.containsKey(KEY_YEAR)) {
-                Object yearObj = data.get(KEY_YEAR);
+            if (data.containsKey(KEY_YEAR_SAVE)) {
+                Object yearObj = data.get(KEY_YEAR_SAVE);
                 if (yearObj instanceof Double) {
                     currentYear = ((Double) yearObj).intValue();
                 } else if (yearObj instanceof Integer) {
                     currentYear = (Integer) yearObj;
                 }
             }
-            if (data.containsKey(KEY_PLAYERS)) {
-                playerHistory = gson.fromJson(gson.toJson(data.get(KEY_PLAYERS)), new TypeToken<ArrayList<Player>>(){}.getType());
+            if (data.containsKey(KEY_PLAYERS_SAVE)) {
+                playerHistory = gson.fromJson(gson.toJson(data.get(KEY_PLAYERS_SAVE)), new TypeToken<ArrayList<Player>>(){}.getType());
             }
-            if (data.containsKey(KEY_STATS)) {
-                playerStats = gson.fromJson(gson.toJson(data.get(KEY_STATS)), new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
+            if (data.containsKey(KEY_STATS_SAVE)) {
+                playerStats = gson.fromJson(gson.toJson(data.get(KEY_STATS_SAVE)), new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
             }
-            if (data.containsKey(KEY_MOVIES)) {
-                movieArchive = gson.fromJson(gson.toJson(data.get(KEY_MOVIES)), new TypeToken<ArrayList<Movie>>(){}.getType());
+            if (data.containsKey(KEY_MOVIES_SAVE)) {
+                movieArchive = gson.fromJson(gson.toJson(data.get(KEY_MOVIES_SAVE)), new TypeToken<ArrayList<Movie>>(){}.getType());
             }
         } catch (Exception e) {
             e.printStackTrace();
