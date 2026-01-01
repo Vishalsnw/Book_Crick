@@ -360,13 +360,19 @@ public class MainActivity extends AppCompatActivity {
         int maxHits = 0;
         for (Player p : players) {
             PlayerStats ps = playerStats.get(p.name);
-            if (ps != null && ps.hits > maxHits) {
-                maxHits = ps.hits;
+            int p_hits = 0;
+            if (ps != null) {
+                for (Movie m : ps.movieHistory) {
+                    if (m.wasHit && m.year == currentYear) p_hits++;
+                }
+            }
+            if (p_hits > maxHits) {
+                maxHits = p_hits;
                 mostHits = p;
             }
         }
         if (maxHits > 0) {
-            yearEndNews.add("🎬 " + mostHits.name + " is being hailed as the 'Hit Machine' of the decade!");
+            yearEndNews.add("🎬 " + mostHits.name + " is being hailed as the 'Hit Machine' of the year with " + maxHits + " hits!");
         }
 
         List<Player> lowPerformers = new ArrayList<>();
@@ -377,6 +383,9 @@ public class MainActivity extends AppCompatActivity {
             Collections.shuffle(lowPerformers);
             yearEndNews.add("📉 Financial struggle for " + lowPerformers.get(0).name + " as debts continue to mount.");
         }
+        
+        // Add round-specific news
+        yearEndNews.add("🏆 " + winner.name + " wins the prestigious Oscar for Year " + currentYear + "!");
 
         lastEventMsg = yearEndNews.get(new Random().nextInt(yearEndNews.size()));
 
