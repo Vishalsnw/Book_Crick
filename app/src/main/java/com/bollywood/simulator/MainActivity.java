@@ -329,7 +329,9 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(sortedByPerformance, (a, b) -> Integer.compare(b.earnings, a.earnings));
         
         for (int i = 0; i < Math.min(4, sortedByPerformance.size()); i++) {
-            nominees.add(sortedByPerformance.get(i));
+            Player p = sortedByPerformance.get(i);
+            nominees.add(p);
+            p.nominationCount++;
         }
         
         Collections.shuffle(nominees);
@@ -451,30 +453,31 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sorted = new ArrayList<>(players);
         Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
 
-        // Optimized for small screens: Rank | Name | Bal | 🏆
-        sb.append(String.format("%-2s | %-10s | %-4s | %s\n", "R", "Name", "Bal", "🏆"));
-        sb.append("--------------------------------\n");
-        for (int i = 0; i < sorted.size(); i++) {
-            Player p = sorted.get(i);
-            String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
-            
-            // Position trend arrow
-            String trendArrow = "";
-            if (lastPositions.containsKey(p.name)) {
-                int lastPos = lastPositions.get(p.name);
-                if (i < lastPos) trendArrow = " ⬆️";
-                else if (i > lastPos) trendArrow = " ⬇️";
+            // Optimized for small screens: Rank | Name | Bal | 🏆 | Nom
+            sb.append(String.format("%-2s | %-10s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
+            sb.append("--------------------------------------\n");
+            for (int i = 0; i < sorted.size(); i++) {
+                Player p = sorted.get(i);
+                String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
+                
+                // Position trend arrow
+                String trendArrow = "";
+                if (lastPositions.containsKey(p.name)) {
+                    int lastPos = lastPositions.get(p.name);
+                    if (i < lastPos) trendArrow = " ⬆️";
+                    else if (i > lastPos) trendArrow = " ⬇️";
+                }
+                
+                String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
+                String ageStr = " (" + p.age + ")";
+                
+                // Get Oscar and Nom count from stats for accuracy
+                PlayerStats stats = playerStats.get(p.name);
+                int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
+                int noms = p.nominationCount;
+                
+                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d | N%d%s\n", rankSymbol, name, trendArrow, p.balance, oscars, noms, ageStr));
             }
-            
-            String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
-            String ageStr = " (" + p.age + ")";
-            
-            // Get Oscar count from stats for accuracy
-            PlayerStats stats = playerStats.get(p.name);
-            int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
-            
-            sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d%s\n", rankSymbol, name, trendArrow, p.balance, oscars, ageStr));
-        }
 
         // Update positions for next time
         lastPositions.clear();
@@ -545,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Player implements Serializable {
         public String name;
-        public int loan, earnings, balance, lastEarnings, oscarWins;
+        public int loan, earnings, balance, lastEarnings, oscarWins, nominationCount;
         public boolean active = true;
         public GameEngine.StarPower currentStar = GameEngine.StarPower.NONE;
         public int age = 20 + new java.util.Random().nextInt(15);
@@ -556,6 +559,7 @@ public class MainActivity extends AppCompatActivity {
             this.earnings = 0; // Reset annual earnings
             this.balance = carryoverBalance; // Initial balance before budget
             this.oscarWins = 0;
+            this.nominationCount = 0;
         }
     }
 
