@@ -191,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 newPlayer.age = histP.age;
                 newPlayer.currentStar = histP.currentStar;
                 newPlayer.name = histP.name;
+                newPlayer.nominationCount = histP.nominationCount;
+                newPlayer.oscarWins = histP.oscarWins;
             }
             
             newPlayer.oscarWins = stats.oscarWins;
@@ -340,12 +342,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finalizeYear(Player winner, String nextState) {
-        oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + winner.earnings + ")");
+        oscarWinners.add("Year " + currentYear + ": " + winner.name + " (₹" + String.format("%.2f", winner.earnings) + ")");
         
         PlayerStats winnerStats = playerStats.getOrDefault(winner.name, new PlayerStats(winner.name));
         winnerStats.oscarWins++;
         winnerStats.addAchievement("🏆 Oscar Winner");
         playerStats.put(winner.name, winnerStats);
+
+        // Generate Year-End News
+        List<String> yearEndNews = new ArrayList<>();
+        List<Player> sortedByBalance = new ArrayList<>(players);
+        Collections.sort(sortedByBalance, (a, b) -> Float.compare(b.balance, a.balance));
+        
+        yearEndNews.add("💰 " + sortedByBalance.get(0).name + " ends the year as the wealthiest producer!");
+        
+        Player mostHits = players.get(0);
+        int maxHits = 0;
+        for (Player p : players) {
+            PlayerStats ps = playerStats.get(p.name);
+            if (ps != null && ps.hits > maxHits) {
+                maxHits = ps.hits;
+                mostHits = p;
+            }
+        }
+        if (maxHits > 0) {
+            yearEndNews.add("🎬 " + mostHits.name + " is being hailed as the 'Hit Machine' of the decade!");
+        }
+
+        List<Player> lowPerformers = new ArrayList<>();
+        for (Player p : players) {
+            if (p.balance < -200) lowPerformers.add(p);
+        }
+        if (!lowPerformers.isEmpty()) {
+            Collections.shuffle(lowPerformers);
+            yearEndNews.add("📉 Financial struggle for " + lowPerformers.get(0).name + " as debts continue to mount.");
+        }
+
+        lastEventMsg = yearEndNews.get(new Random().nextInt(yearEndNews.size()));
 
         // Update oscarWins in the current player object for UI persistence
         for (Player p : players) {
@@ -357,7 +390,12 @@ public class MainActivity extends AppCompatActivity {
         
         playerHistory.clear();
         for (Player p : players) {
-            playerHistory.add(new Player(p.name, p.loan, p.balance));
+            Player historyPlayer = new Player(p.name, p.loan, p.balance);
+            historyPlayer.age = p.age;
+            historyPlayer.currentStar = p.currentStar;
+            historyPlayer.oscarWins = p.oscarWins;
+            historyPlayer.nominationCount = p.nominationCount;
+            playerHistory.add(historyPlayer);
         }
         
         // Ensure player stats are persistent across years by updating them in history
