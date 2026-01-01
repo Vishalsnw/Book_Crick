@@ -214,24 +214,10 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private Player findPlayerInHistory(String name) {
-        for (Player p : playerHistory) {
-            if (p.name.equals(name)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
     private void playRound(int advanceCount, String nextState) {
         List<Player> activePlayers = new ArrayList<>();
         List<MovieRecord> roundMovies = new ArrayList<>();
         List<String> roundEvents = new ArrayList<>();
-
-        // Get networth of player at rank 15 for suicide logic
-        List<Player> tempSorted = new ArrayList<>(players);
-        Collections.sort(tempSorted, (a, b) -> Integer.compare(b.balance, a.balance));
-        int rank15Networth = tempSorted.size() >= 15 ? tempSorted.get(14).balance : -300;
 
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
@@ -255,21 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     if (stats != null) {
                         stats.addMovie(movie);
                         
-                        // New Suicide Logic: Debt > 300 AND balance <= rank15Networth
-                        if (p.balance < -300 && p.balance <= rank15Networth) {
-                            String oldName = p.name;
-                            roundEvents.add("⚠️ BREAKING NEWS: " + oldName + " committed suicide due to mounting debt! 🕯️");
-                            
-                            // Replace with legacy player (Jr.)
-                            p.name = oldName + " Jr.";
-                            p.balance = 0; // Fresh start for the heir
-                            p.loan = 0;
-                            p.earnings = 0;
-                            p.currentStar = GameEngine.StarPower.NEWCOMER; // Starts as newcomer
-                            
-                            stats.bankruptcies++;
-                            stats.addAchievement("💀 Legacy Heir");
-                        } else if (GameEngine.checkBankruptcy(p)) {
+                        if (GameEngine.checkBankruptcy(p)) {
                             p.active = false;
                             stats.bankruptcies++;
                             roundEvents.add("💥 " + p.name + " filed for bankruptcy!");
