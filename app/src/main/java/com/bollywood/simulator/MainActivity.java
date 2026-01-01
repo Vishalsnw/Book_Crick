@@ -226,20 +226,17 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
-            // Ignore p.active check to keep all players in the game forever
-            if (p != null) {
+            // Every active player produces a movie in their respective round
+            if (p != null && p.active) {
                 GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear, currentTrend);
                 
                 if (results != null) {
                     p.lastEarnings = results.totalEarnings;
-                    p.earnings += results.totalEarnings;
-                    p.balance += results.totalEarnings;
+                    p.earnings += results.totalEarnings; // This is cumulative for the year
+                    p.balance += results.totalEarnings; // This is cumulative for their career
                     
-                    // Add only currently advanced players to round statistics for sorting
-                    if (p.active) {
-                        activePlayers.add(p);
-                        roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
-                    }
+                    activePlayers.add(p);
+                    roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
                     
                     String genreStr = (results.genre != null) ? results.genre : "Unknown";
                     Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.isHit);
@@ -249,20 +246,6 @@ public class MainActivity extends AppCompatActivity {
                     PlayerStats stats = playerStats.getOrDefault(p.name, new PlayerStats(p.name));
                     if (stats != null) {
                         stats.addMovie(movie);
-                        
-                        // Bankruptcy logic (DISABLED: Don't remove any player)
-                        /*
-                        if (GameEngine.checkBankruptcy(p)) {
-                            p.active = false;
-                            stats.bankruptcies++;
-                            roundEvents.add("💥 " + p.name + " filed for bankruptcy!");
-                        } else {
-                            String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.size() - 1, activePlayers.size());
-                            if (achievement != null) {
-                                stats.addAchievement(achievement);
-                            }
-                        }
-                        */
                         String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.size() - 1, activePlayers.size());
                         if (achievement != null) {
                             stats.addAchievement(achievement);
