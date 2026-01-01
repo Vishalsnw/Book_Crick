@@ -21,6 +21,14 @@ Preferred communication style: Simple, everyday language.
 - **Genre Fatigue**: If many players choose "Action" in the same round, the earnings for that genre should decrease due to market saturation.
 - **Awards & Legacy**: Winning an Oscar or having the "Top Movie of the Year" should provide a permanent boost to a player's starting multiplier for the next year.
 
+### Future Realism Ideas
+- **Marketing Spend**: Allow players to choose a marketing budget (Low/Medium/High) that increases the base earnings multiplier but adds to the upfront cost.
+- **Critic vs. User Ratings**: Separate "Critic Score" from "Audience Score". High critic scores could lead to more awards, while high audience scores lead to more money.
+- **Genre Fatigue & Trends**: If too many players choose "Action", the market gets saturated, and earnings for Action movies drop in the next round.
+- **Contract Negotiations**: Players could sign multi-movie deals with directors or studios for consistent (but safer) returns.
+- **Social Media Hype**: A "Hype" meter that builds up before a movie release based on previous hits, affecting opening day earnings.
+- **Director Reputation**: Associate movies with "AI Directors" who have their own success rates and styles.
+
 ### Build Note
 - **CRITICAL**: Do not attempt to build the project within the Replit environment. The build process is managed via `.yml` (GitHub Actions) as there are complex Android SDK dependencies that are not currently configured in the local Nix environment.
 
