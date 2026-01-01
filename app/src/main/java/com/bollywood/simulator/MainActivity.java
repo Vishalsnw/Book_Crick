@@ -469,14 +469,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 
                 String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
-                String ageStr = " (" + p.age + ")";
                 
                 // Get Oscar and Nom count from stats for accuracy
                 PlayerStats stats = playerStats.get(p.name);
                 int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
                 int noms = p.nominationCount;
                 
-                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d | N%d%s\n", rankSymbol, name, trendArrow, p.balance, oscars, noms, ageStr));
+                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d | %d\n", rankSymbol, name, trendArrow, p.balance, oscars, noms));
             }
 
         // Update positions for next time
