@@ -12,6 +12,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Project Architecture
 
+### Realism Improvement Suggestions
+- **Dynamic Popularity**: Players' "Star Power" should fluctuate based on recent movie performance rather than being purely random.
+- **Career Trajectories**: Introduce "Experience" levels. Newcomers have lower budgets but potential for high growth, while veterans have high budgets and stable returns.
+- **Budget-to-Earnings Ratio**: Make the budget matter. A movie with a budget of ₹100 that earns ₹100 is a "Flop", while a budget of ₹10 that earns ₹50 is a "Super Hit".
+- **Marketing & Hype**: Add a "Marketing Spend" option that increases the base earnings multiplier but adds to the upfront cost.
+- **Critical vs. Commercial Success**: Separate "Box Office" from "Critic Rating". A movie can be a commercial hit but a critical disaster, affecting long-term popularity differently.
+- **Genre Fatigue**: If many players choose "Action" in the same round, the earnings for that genre should decrease due to market saturation.
+- **Awards & Legacy**: Winning an Oscar or having the "Top Movie of the Year" should provide a permanent boost to a player's starting multiplier for the next year.
+
 ### Build Note
 - **CRITICAL**: Do not attempt to build the project within the Replit environment. The build process is managed via `.yml` (GitHub Actions) as there are complex Android SDK dependencies that are not currently configured in the local Nix environment.
 
