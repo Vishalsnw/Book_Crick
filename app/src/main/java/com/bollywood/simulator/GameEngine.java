@@ -68,10 +68,24 @@ public class GameEngine {
         public boolean isHit;
     }
 
+    private static final String[] DECADE_EVENTS = {
+        "📱 Streaming Revolution! +50% budget needed but safer returns",
+        "🍿 Cinema Tax Break! +20% earnings for all",
+        "📉 Global Theater Closure! -30% earnings",
+        "🎭 New Wave Cinema! Drama/Indie genres +40%",
+        "🤖 AI Scripting! Production costs -15%"
+    };
+
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year, IndustryTrend trend) {
         RoundResults result = new RoundResults();
         result.currentTrend = trend;
         
+        // Add dynamic decade events every 10 years
+        if (year % 10 == 0 && round == 1) {
+            String decadeEvent = DECADE_EVENTS[random.nextInt(DECADE_EVENTS.length)];
+            result.eventDescription = "📅 DECADE SHIFT: " + decadeEvent;
+        }
+
         // Dynamic Popularity: Start with player's current star power
         result.cast = player.currentStar;
         
@@ -92,13 +106,21 @@ public class GameEngine {
         int inflationAdjustment = (year / 10) * 10;
         int effectiveBudget = 40 + result.cast.budgetIncrease + inflationAdjustment;
         
+        // Decade-specific modifiers
+        float decadeMultiplier = 1.0f;
+        if (year >= 20 && year < 30) decadeMultiplier = 1.2f; // Golden Era
+        else if (year >= 30) decadeMultiplier = 0.9f; // Saturated Market
+        
         switch (result.genre) {
             case "Action": 
                 result.genreMultiplier = 160; 
                 if (trend == IndustryTrend.SOUTH_WAVE) result.genreMultiplier += 30;
                 break;
             case "Horror": result.genreMultiplier = 140; break;
-            case "Drama": result.genreMultiplier = 90; break;
+            case "Drama": 
+                result.genreMultiplier = 90; 
+                if (year >= 20) result.genreMultiplier += 30; // Drama revival in later decades
+                break;
             case "Romance": 
                 result.genreMultiplier = 130; 
                 if (trend == IndustryTrend.ROMANCE_REVIVAL) result.genreMultiplier += 20;
@@ -124,8 +146,8 @@ public class GameEngine {
         result.seasonalBonus = seasonalBonus;
         
         int eventImpact = 0;
-        String eventDesc = "Normal market conditions";
-        if (random.nextInt(3) == 0) {
+        String eventDesc = (result.eventDescription != null) ? result.eventDescription : "Normal market conditions";
+        if (random.nextInt(3) == 0 && result.eventDescription == null) {
             int eventIdx = random.nextInt(RANDOM_EVENTS.length);
             eventDesc = RANDOM_EVENTS[eventIdx];
             eventImpact = random.nextInt(31) - 15;
@@ -142,6 +164,7 @@ public class GameEngine {
         total += result.randomEventImpact;
         total *= result.cast.earningsMultiplier;
         total *= trend.theaterMultiplier;
+        total *= decadeMultiplier;
         
         total -= result.loanInterest;
         total -= effectiveBudget;
