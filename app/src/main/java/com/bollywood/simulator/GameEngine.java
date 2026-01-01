@@ -89,7 +89,8 @@ public class GameEngine {
         result.genre = genres[random.nextInt(genres.length)];
         
         // ROI-based success logic (Budget matters)
-        int effectiveBudget = 40 + result.cast.budgetIncrease;
+        int inflationAdjustment = (year / 10) * 10;
+        int effectiveBudget = 40 + result.cast.budgetIncrease + inflationAdjustment;
         
         switch (result.genre) {
             case "Action": 

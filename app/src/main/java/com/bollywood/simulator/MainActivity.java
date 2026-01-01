@@ -134,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
         players.clear();
         currentRound = 1;
         
+        // Dynamic Inflation: Production costs rise every 10 years
+        int baseProductionCost = 40 + (currentYear / 10) * 20;
+        
         // Set a random trend for the year
         GameEngine.IndustryTrend[] trends = GameEngine.IndustryTrend.values();
         currentTrend = trends[random.nextInt(trends.length)];
@@ -143,24 +146,46 @@ public class MainActivity extends AppCompatActivity {
             
             // Find carryover balance from playerHistory
             int carryoverBalance = 0;
+            Player histP = null;
             for (Player hp : playerHistory) {
                 if (hp.name.equals(name)) {
                     carryoverBalance = hp.balance;
+                    histP = hp;
                     break;
                 }
             }
             
-            int budget = random.nextInt(91) + 10;
+            // Aging & Retirement Logic
+            if (histP != null) {
+                histP.age++;
+                // Chance to retire after 50, forced at 65
+                if (histP.age > 50 && (random.nextInt(100) < (histP.age - 50) * 5 || histP.age >= 65)) {
+                    lastEventMsg = "👋 Legendary " + name + " has retired from the industry!";
+                    // Reset as a new newcomer with same name
+                    histP.name = name; // keep name
+                    histP.age = 20 + random.nextInt(5);
+                    histP.balance = 0;
+                    histP.loan = 0;
+                    histP.currentStar = GameEngine.StarPower.NEWCOMER;
+                    carryoverBalance = 0;
+                }
+            }
+
+            int budget = random.nextInt(91) + baseProductionCost / 2;
             Player newPlayer;
             
             if (carryoverBalance >= budget) {
-                // Use existing balance, no new loan
                 newPlayer = new Player(name, 0, carryoverBalance);
-                newPlayer.balance = carryoverBalance - budget; // Apply initial budget cost
+                newPlayer.balance = carryoverBalance - budget;
             } else {
-                // Take a loan for the budget, but keep the existing balance
                 newPlayer = new Player(name, budget, carryoverBalance);
-                newPlayer.balance = carryoverBalance - budget; // Apply initial budget cost
+                newPlayer.balance = carryoverBalance - budget;
+            }
+            
+            if (histP != null) {
+                newPlayer.age = histP.age;
+                newPlayer.currentStar = histP.currentStar;
+                newPlayer.name = histP.name;
             }
             
             newPlayer.oscarWins = stats.oscarWins;
@@ -168,6 +193,11 @@ public class MainActivity extends AppCompatActivity {
             
             stats.yearsActive++;
             playerStats.put(name, stats);
+        }
+        
+        // Random Market Crash/Boom every few decades
+        if (currentYear % 15 == 0) {
+            lastEventMsg = "⚠️ GLOBAL ECONOMIC SHIFT! Market dynamics have changed forever.";
         }
         
         // Store initial positions for trend arrows
@@ -180,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         
         gameState = "ROUND1";
         topMoviesSection.setVisibility(View.GONE);
-        lastEventMsg = "🎬 New year begins! Players ready their films...";
+        if (lastEventMsg.isEmpty()) lastEventMsg = "🎬 Year " + currentYear + " begins!";
         updateUI();
     }
 
@@ -437,12 +467,13 @@ public class MainActivity extends AppCompatActivity {
             }
             
             String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
+            String ageStr = " (" + p.age + ")";
             
             // Get Oscar count from stats for accuracy
             PlayerStats stats = playerStats.get(p.name);
             int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
             
-            sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d\n", rankSymbol, name, trendArrow, p.balance, oscars));
+            sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d%s\n", rankSymbol, name, trendArrow, p.balance, oscars, ageStr));
         }
 
         // Update positions for next time
@@ -517,6 +548,7 @@ public class MainActivity extends AppCompatActivity {
         public int loan, earnings, balance, lastEarnings, oscarWins;
         public boolean active = true;
         public GameEngine.StarPower currentStar = GameEngine.StarPower.NONE;
+        public int age = 20 + new java.util.Random().nextInt(15);
         
         public Player(String name, int loan, int carryoverBalance) {
             this.name = name;
