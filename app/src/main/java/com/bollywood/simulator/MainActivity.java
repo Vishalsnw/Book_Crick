@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         "Golu", "Amit Bagle", "Mangesh", "Vasim", "Amit Randhe", "Khushi", "Ajinkya", "Vinay",
         "Aashish", "Ashok Singh", "Sandip Basra", "Gokul", "Ritesh", "Bipin", "Ajit Bonde", "Amol Patil",
         "Hemant", "Ravi Patil", "Sachin Pardesi", "Sachin Patil", "Vishal", "Nitin", "Dipak Trivedi",
-        "Sunil", "Charu", "Bhavesh Chaudhari", "Dipak R", "Mayur", "Nilesh", "Dipak BH", "Akshit"
+        "Sunil", "Charu", "Bhavesh Chaudhari", "Dipak R", "Mayur", "Nilesh", "Dipak BH", "Akshit", "Suraj"
     };
 
     private List<Player> players = new ArrayList<>();
@@ -235,8 +235,11 @@ public class MainActivity extends AppCompatActivity {
                     p.earnings += results.totalEarnings;
                     p.balance += results.totalEarnings;
                     
-                    activePlayers.add(p);
-                    roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
+                    // Add only currently advanced players to round statistics for sorting
+                    if (p.active) {
+                        activePlayers.add(p);
+                        roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
+                    }
                     
                     String genreStr = (results.genre != null) ? results.genre : "Unknown";
                     Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.isHit);
@@ -272,11 +275,10 @@ public class MainActivity extends AppCompatActivity {
 
         Collections.sort(activePlayers, (a, b) -> Integer.compare(b.lastEarnings, a.lastEarnings));
         
-        // Reset all active players' active status before advancing
+        // Advance players based on round logic
         for (Player p : players) {
             p.active = false;
         }
-
         for (int i = 0; i < Math.min(advanceCount, activePlayers.size()); i++) {
             activePlayers.get(i).active = true;
         }
@@ -293,9 +295,12 @@ public class MainActivity extends AppCompatActivity {
             lastEventMsg = roundEvents.get(0);
         }
 
-        if (nextState.equals("WINNER")) {
-            gameState = "CELEBRATION";
+        if (nextState.equals("FINAL")) {
+            // Nomination logic: The 4 players entering Round 4 (Semi-Final) are the nominees
             startOscarAnimation(activePlayers, nextState);
+        } else if (nextState.equals("WINNER")) {
+             // Already handled by nomination flow or skip
+             finalizeYear(activePlayers.get(0), nextState);
         } else {
             currentRound++;
             gameState = nextState;
@@ -309,12 +314,9 @@ public class MainActivity extends AppCompatActivity {
         oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
 
         List<Player> nominees = new ArrayList<>();
-        // Performance-based nomination: Top 4 by total earnings this year
-        List<Player> sortedByPerformance = new ArrayList<>(players);
-        Collections.sort(sortedByPerformance, (a, b) -> Integer.compare(b.earnings, a.earnings));
-        
-        for (int i = 0; i < Math.min(4, sortedByPerformance.size()); i++) {
-            Player p = sortedByPerformance.get(i);
+        // The 4 players who qualified for the Semi-Final (Round 4) are the nominees
+        for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
+            Player p = activePlayers.get(i);
             nominees.add(p);
             p.nominationCount++;
         }
