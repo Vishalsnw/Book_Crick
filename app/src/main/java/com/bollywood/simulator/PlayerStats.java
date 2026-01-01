@@ -7,7 +7,7 @@ import java.util.List;
 public class PlayerStats implements Serializable {
     public String playerName;
     public int totalMovies = 0;
-    public int totalEarnings = 0;
+    public float totalEarnings = 0;
     public int oscarWins = 0;
     public int bankruptcies = 0;
     public int longestWinStreak = 0;

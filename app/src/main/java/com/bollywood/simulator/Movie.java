@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class Movie implements Serializable {
     public String playerName;
     public String genre;
-    public int earnings;
+    public float earnings;
     public int round;
     public int year;
     public boolean wasHit;
     public String title;
     public float starRating;
 
-    public Movie(String playerName, String genre, int earnings, int round, int year, boolean wasHit) {
+    public Movie(String playerName, String genre, float earnings, int round, int year, boolean wasHit) {
         this.playerName = playerName;
         this.genre = genre;
         this.earnings = earnings;
@@ -26,6 +26,6 @@ public class Movie implements Serializable {
         
         int index = Math.abs(playerName.hashCode() + round + year) % titles.length;
         this.title = titles[index] + 
-                     " - " + genres[Math.abs(playerName.hashCode() + earnings) % genres.length];
+                     " - " + genres[Math.abs(playerName.hashCode() + (int)earnings) % genres.length];
     }
 }

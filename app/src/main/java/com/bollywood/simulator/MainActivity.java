@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         // Store initial positions for trend arrows
         lastPositions.clear();
         List<Player> sorted = new ArrayList<>(players);
-        Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
+        Collections.sort(sorted, (a, b) -> Float.compare(b.balance, a.balance));
         for (int i = 0; i < sorted.size(); i++) {
             lastPositions.put(sorted.get(i).name, i);
         }
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
 
         StringBuilder sb = new StringBuilder();
         List<Player> sorted = new ArrayList<>(players);
-        Collections.sort(sorted, (a, b) -> Integer.compare(b.balance, a.balance));
+        Collections.sort(sorted, (a, b) -> Float.compare(b.balance, a.balance));
 
             // Optimized for small screens: Rank | Name | Bal | 🏆 | Nom
             sb.append(String.format("%-2s | %-10s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
