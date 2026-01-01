@@ -155,7 +155,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             
-            // Aging & Retirement Logic
+            // Aging & Retirement Logic (DISABLED: Don't remove any player)
+            /*
             if (histP != null) {
                 histP.age++;
                 // Chance to retire after 50, forced at 65
@@ -169,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
                     histP.currentStar = GameEngine.StarPower.NEWCOMER;
                     carryoverBalance = 0;
                 }
+            }
+            */
+            if (histP != null) {
+                histP.age++;
             }
 
             int budget = random.nextInt(91) + baseProductionCost / 2;
@@ -221,7 +226,8 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
-            if (p != null && p.active && p.balance > -500) {
+            // Ignore p.active check to keep all players in the game forever
+            if (p != null) {
                 GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear, currentTrend);
                 
                 if (results != null) {
@@ -241,6 +247,8 @@ public class MainActivity extends AppCompatActivity {
                     if (stats != null) {
                         stats.addMovie(movie);
                         
+                        // Bankruptcy logic (DISABLED: Don't remove any player)
+                        /*
                         if (GameEngine.checkBankruptcy(p)) {
                             p.active = false;
                             stats.bankruptcies++;
@@ -250,6 +258,11 @@ public class MainActivity extends AppCompatActivity {
                             if (achievement != null) {
                                 stats.addAchievement(achievement);
                             }
+                        }
+                        */
+                        String achievement = GameEngine.getAchievementForPerformance(p, activePlayers.size() - 1, activePlayers.size());
+                        if (achievement != null) {
+                            stats.addAchievement(achievement);
                         }
                         playerStats.put(p.name, stats);
                     }
