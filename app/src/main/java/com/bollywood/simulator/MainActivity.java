@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Collections.sort(activePlayers, (a, b) -> Integer.compare(b.lastEarnings, a.lastEarnings));
+        Collections.sort(activePlayers, (a, b) -> Float.compare(b.lastEarnings, a.lastEarnings));
         
         // Advance players based on round logic
         for (Player p : players) {
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showTopMovies(List<MovieRecord> movies, int count, String title) {
-        Collections.sort(movies, (a, b) -> Integer.compare(b.earnings, a.earnings));
+        Collections.sort(movies, (a, b) -> Float.compare(b.earnings, a.earnings));
         StringBuilder sb = new StringBuilder();
         sb.append("🔥 TREND: ").append(currentTrend.description.toUpperCase()).append("\n\n");
         for (int i = 0; i < Math.min(count, movies.size()); i++) {
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
             
             sb.append("#").append(i + 1).append(" ").append(m.playerName).append(hitStatus)
               .append("\n  ").append(m.cast.name).append(" | ").append(stars).append(" (").append(String.format("%.1f", m.rating)).append(")")
-              .append("\n  Earnings: ₹").append(m.earnings).append("\n\n");
+              .append("\n  Earnings: ₹").append(String.format("%.2f", m.earnings)).append("\n\n");
         }
         TextView sectionTitle = (TextView) topMoviesSection.getChildAt(0);
         sectionTitle.setText("🎬 " + title);
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                 int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
                 int noms = p.nominationCount;
                 
-                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4d | %d | %d\n", rankSymbol, name, trendArrow, p.balance, oscars, noms));
+                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4.2f | %d | %d\n", rankSymbol, name, trendArrow, (float)p.balance, oscars, noms));
             }
 
         // Update positions for next time
@@ -534,7 +534,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Player implements Serializable {
         public String name;
-        public int loan, earnings, balance, lastEarnings, oscarWins, nominationCount;
+        public int loan, balance, oscarWins, nominationCount;
+        public float earnings, lastEarnings;
         public boolean active = true;
         public GameEngine.StarPower currentStar = GameEngine.StarPower.NONE;
         public int age = 20 + new java.util.Random().nextInt(15);
@@ -551,10 +552,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static class MovieRecord {
         String playerName;
-        int earnings;
+        float earnings;
         float rating;
         GameEngine.StarPower cast;
-        MovieRecord(String name, int earn, float rate, GameEngine.StarPower star) { 
+        MovieRecord(String name, float earn, float rate, GameEngine.StarPower star) { 
             this.playerName = name; this.earnings = earn; this.rating = rate; this.cast = star;
         }
     }

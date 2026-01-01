@@ -54,12 +54,12 @@ public class GameEngine {
     }
 
     public static class RoundResults {
-        public int baseEarnings;
+        public float baseEarnings;
         public int genreMultiplier;
         public int seasonalBonus;
         public int randomEventImpact;
         public int loanInterest;
-        public int totalEarnings;
+        public float totalEarnings;
         public String genre;
         public String eventDescription;
         public float starRating;
@@ -97,7 +97,7 @@ public class GameEngine {
         }
         player.currentStar = result.cast;
 
-        result.baseEarnings = random.nextInt(101); // 0 to 100
+        result.baseEarnings = random.nextFloat() * 100.0f; // 0.0 to 100.0
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
@@ -176,7 +176,7 @@ public class GameEngine {
             else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
         }
 
-        result.totalEarnings = Math.min(100, Math.max(0, (int)total));
+        result.totalEarnings = Math.max(0.0f, total);
         
         // ROI Hit Detection: Earnings > Budget * 1.5 is a hit
         result.isHit = result.totalEarnings > (effectiveBudget * 1.2);
