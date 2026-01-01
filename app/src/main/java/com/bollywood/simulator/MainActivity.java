@@ -385,10 +385,10 @@ public class MainActivity extends AppCompatActivity {
         }
         
         currentYear++;
-        currentRound = 0;
+        currentRound = 1;
         saveData();
         
-        gameState = nextState;
+        gameState = "START";
         updateUI();
     }
 
