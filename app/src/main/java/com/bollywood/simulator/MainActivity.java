@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                     roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
                     
                     String genreStr = (results.genre != null) ? results.genre : "Unknown";
-                    Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.totalEarnings > 50);
+                    Movie movie = new Movie(p.name, genreStr, results.totalEarnings, currentRound, currentYear, results.isHit);
                     movie.starRating = results.starRating;
                     movieArchive.add(movie);
                     
@@ -274,21 +274,14 @@ public class MainActivity extends AppCompatActivity {
         oscarAnimationOverlay.animate().alpha(1f).setDuration(500);
 
         List<Player> nominees = new ArrayList<>();
-        // Nominees are the ones who were active in the last round (semi-final)
-        // Since activePlayers passed here are the ones who just finished the round
-        for (int i = 0; i < Math.min(4, activePlayers.size()); i++) {
-            nominees.add(activePlayers.get(i));
+        // Performance-based nomination: Top 4 by total earnings this year
+        List<Player> sortedByPerformance = new ArrayList<>(players);
+        Collections.sort(sortedByPerformance, (a, b) -> Integer.compare(b.earnings, a.earnings));
+        
+        for (int i = 0; i < Math.min(4, sortedByPerformance.size()); i++) {
+            nominees.add(sortedByPerformance.get(i));
         }
-        // Ensure we always show 4 nominations if possible
-        if (nominees.size() < 4) {
-            // This case shouldn't happen with 32 players, but for safety:
-            for (Player p : players) {
-                if (!nominees.contains(p)) {
-                    nominees.add(p);
-                    if (nominees.size() == 4) break;
-                }
-            }
-        }
+        
         Collections.shuffle(nominees);
 
         // Reset text and button
@@ -503,6 +496,7 @@ public class MainActivity extends AppCompatActivity {
         public String name;
         public int loan, earnings, balance, lastEarnings, oscarWins;
         public boolean active = true;
+        public GameEngine.StarPower currentStar = GameEngine.StarPower.NONE;
         
         public Player(String name, int loan, int carryoverBalance) {
             this.name = name;

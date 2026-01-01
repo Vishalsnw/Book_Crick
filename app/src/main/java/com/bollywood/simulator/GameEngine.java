@@ -38,17 +38,18 @@ public class GameEngine {
     }
 
     public enum StarPower {
-        NONE("No Star", 0, 1.0f),
-        NEWCOMER("Newcomer", 5, 1.2f),
-        RISING_STAR("Rising Star", 15, 1.5f),
-        SUPERSTAR("Superstar", 40, 2.5f),
-        MEGASTAR("Megastar", 70, 4.0f);
+        NONE("No Star", 0, 1.0f, 0),
+        NEWCOMER("Newcomer", 5, 1.2f, 1),
+        RISING_STAR("Rising Star", 15, 1.5f, 2),
+        SUPERSTAR("Superstar", 40, 2.5f, 3),
+        MEGASTAR("Megastar", 70, 4.0f, 4);
 
         public String name;
         public int budgetIncrease;
         public float earningsMultiplier;
-        StarPower(String name, int budget, float multi) {
-            this.name = name; this.budgetIncrease = budget; this.earningsMultiplier = multi;
+        public int level;
+        StarPower(String name, int budget, float multi, int lvl) {
+            this.name = name; this.budgetIncrease = budget; this.earningsMultiplier = multi; this.level = lvl;
         }
     }
 
@@ -64,24 +65,31 @@ public class GameEngine {
         public float starRating;
         public StarPower cast;
         public IndustryTrend currentTrend;
+        public boolean isHit;
     }
 
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year, IndustryTrend trend) {
         RoundResults result = new RoundResults();
         result.currentTrend = trend;
         
-        // Randomly assign star power
-        int starRoll = random.nextInt(100);
-        if (starRoll < 5) result.cast = StarPower.MEGASTAR;
-        else if (starRoll < 15) result.cast = StarPower.SUPERSTAR;
-        else if (starRoll < 35) result.cast = StarPower.RISING_STAR;
-        else if (starRoll < 60) result.cast = StarPower.NEWCOMER;
-        else result.cast = StarPower.NONE;
+        // Dynamic Popularity: Start with player's current star power
+        result.cast = player.currentStar;
+        
+        // Chance to naturally upgrade/downgrade based on last performance
+        if (player.lastEarnings > 80 && result.cast.level < 4 && random.nextInt(100) < 20) {
+            result.cast = StarPower.values()[result.cast.level + 1];
+        } else if (player.lastEarnings < 20 && result.cast.level > 0 && random.nextInt(100) < 15) {
+            result.cast = StarPower.values()[result.cast.level - 1];
+        }
+        player.currentStar = result.cast;
 
         result.baseEarnings = random.nextInt(101); // 0 to 100
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
+        
+        // ROI-based success logic (Budget matters)
+        int effectiveBudget = 40 + result.cast.budgetIncrease;
         
         switch (result.genre) {
             case "Action": 
@@ -124,33 +132,21 @@ public class GameEngine {
         result.randomEventImpact = eventImpact;
         result.eventDescription = eventDesc;
         
-        int loanInterest = 0;
-        if (player.loan > 0) {
-            // Apply 12% interest on the loan amount per round
-            loanInterest = (int)(player.loan * 0.12);
-        }
+        int loanInterest = (int)(player.loan * 0.12);
         result.loanInterest = loanInterest;
         
-        // Base income is strictly 0-100 before multipliers
         float total = result.baseEarnings;
-        
-        // Apply multipliers
         total = (total * result.genreMultiplier) / 100.0f;
         total += result.seasonalBonus;
         total += result.randomEventImpact;
-        
-        // Star and Trend multipliers
         total *= result.cast.earningsMultiplier;
         total *= trend.theaterMultiplier;
         
-        // Subtract costs and interest (costs are NOT multiplied)
-        int productionCost = 40; 
         total -= result.loanInterest;
-        total -= productionCost;
+        total -= effectiveBudget;
         
-        // Add excitement: Sudden Box Office Crash or Surge
         if (random.nextInt(15) == 0) {
-            float swing = 0.5f + (random.nextFloat() * 1.0f); // 0.5x to 1.5x
+            float swing = 0.5f + (random.nextFloat() * 1.0f);
             total *= swing;
             if (swing > 1.3f) result.eventDescription = "🚀 BOX OFFICE SURGE! " + result.eventDescription;
             else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
@@ -158,10 +154,11 @@ public class GameEngine {
 
         result.totalEarnings = Math.min(100, Math.max(0, (int)total));
         
-        // Generate Star Rating (1.0 to 5.0)
+        // ROI Hit Detection: Earnings > Budget * 1.5 is a hit
+        result.isHit = result.totalEarnings > (effectiveBudget * 1.2);
+        
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
-        if (result.totalEarnings > 200) result.starRating = Math.max(4.0f, result.starRating);
-        else if (result.totalEarnings < 20) result.starRating = Math.min(2.5f, result.starRating);
+        if (result.isHit) result.starRating = Math.max(3.5f, result.starRating);
 
         return result;
     }
