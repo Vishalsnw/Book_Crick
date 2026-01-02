@@ -5,26 +5,6 @@ import java.util.Random;
 public class GameEngine {
     private static final Random random = new Random();
 
-    private static final String[] RANDOM_EVENTS = {
-        "🎭 Actor scandal! -20 earnings",
-        "🎵 Hit soundtrack! +15 earnings",
-        "📰 Bad reviews! -10 earnings",
-        "🌟 Critical acclaim! +20 earnings",
-        "🎬 Famous director signed! +25 earnings",
-        "⭐ Award nomination! +10 earnings",
-        "😢 Production delays! -15 earnings",
-        "🎉 Audience favorite! +18 earnings",
-        "📱 Viral dance challenge! +30 earnings",
-        "🌧️ Shooting cancelled due to rain! -12 earnings",
-        "🍿 Surprise box office hit! +40 earnings",
-        "🤝 Major brand tie-up! +22 earnings",
-        "🛑 Script Leak Controversy! -15% earnings",
-        "💰 Tax Raid! -25 earnings",
-        "🔥 Social Media Boycott! -30 earnings",
-        "✨ Viral BTS Clip! +12 earnings",
-        "🎥 Cameo by a Superstar! +35 earnings"
-    };
-
     public enum IndustryTrend {
         NORMAL("Normal Market", 1.0f),
         SOUTH_WAVE("The South Wave (Action/Thriller +30%)", 1.0f),
@@ -54,27 +34,13 @@ public class GameEngine {
     }
 
     public static class RoundResults {
-        public float baseEarnings;
-        public int genreMultiplier;
-        public int seasonalBonus;
-        public int randomEventImpact;
-        public int loanInterest;
         public float totalEarnings;
         public String genre;
         public String eventDescription;
         public float starRating;
         public StarPower cast;
-        public IndustryTrend currentTrend;
         public boolean isHit;
     }
-
-    private static final String[] DECADE_EVENTS = {
-        "📱 Streaming Revolution! +50% budget needed but safer returns",
-        "🍿 Cinema Tax Break! +20% earnings for all",
-        "📉 Global Theater Closure! -30% earnings",
-        "🎭 New Wave Cinema! Drama/Indie genres +40%",
-        "🤖 AI Scripting! Production costs -15%"
-    };
 
     private static final String[] RANDOM_EVENTS = {
         "🎭 Scandal! Actor caught in party brawl - ₹15 penalty",
