@@ -319,7 +319,9 @@ public class MainActivity extends AppCompatActivity {
             "💰 %s ends the year as the undisputed King of Box Office!",
             "💎 Luxury cars and big mansions: %s is the wealthiest producer in town!",
             "📈 Stock market alert: Shares of %s's production house are soaring!",
-            "🤑 Cash flow! %s is drowning in profits this year."
+            "🤑 Cash flow! %s is drowning in profits this year.",
+            "🏦 Mega Merger? Rumors suggest %s might acquire a rival studio!",
+            "🌆 The skyline of Mumbai belongs to %s, the new real estate tycoon."
         };
         yearEndNews.add(String.format(wealthNews[random.nextInt(wealthNews.length)], sortedByBalance.get(0).name));
         
@@ -343,7 +345,9 @@ public class MainActivity extends AppCompatActivity {
                 "🎬 Midas Touch! Every movie %s touched this year became a hit!",
                 "🔥 %s is on fire with %d back-to-back blockbusters!",
                 "🌟 The industry is bowing down to the new Hit Machine: %s.",
-                "🎥 Record breaking year! %s delivers %d massive hits."
+                "🎥 Record breaking year! %s delivers %d massive hits.",
+                "🎞️ Scriptwriters are lining up outside %s's office for a chance to work!",
+                "🍿 Popcorn sales are at an all-time high thanks to %s's hits!"
             };
             String news = hitNews[random.nextInt(hitNews.length)];
             if (news.contains("%d")) {
@@ -363,7 +367,9 @@ public class MainActivity extends AppCompatActivity {
                 "📉 Financial Crisis: %s is struggling to pay back massive loans.",
                 "💸 Empty pockets! %s's production house is facing a liquidity crunch.",
                 "🏚️ From Riches to Rags: Can %s survive another year of flops?",
-                "⚠️ Bankruptcy warning for %s as debt continues to pile up."
+                "⚠️ Bankruptcy warning for %s as debt continues to pile up.",
+                "🕯️ Selling the family silver? %s seen leaving a pawn shop.",
+                "🚫 Production halted! %s can't even afford tea for the crew."
             };
             yearEndNews.add(String.format(brokeNews[random.nextInt(brokeNews.length)], lowPerformers.get(0).name));
         }
@@ -372,7 +378,11 @@ public class MainActivity extends AppCompatActivity {
             "🎭 Bollywood Trend: Audiences are rejecting star-kids and demanding better scripts!",
             "🎥 Cinema Strike! Production was halted for a month, but we are back.",
             "🎟️ Ticket prices hiked! Producers are happy, audiences are not.",
-            "📱 OTT vs Theaters: The war for content heats up!"
+            "📱 OTT vs Theaters: The war for content heats up!",
+            "🕺 Item numbers are back in fashion, much to the critics' dismay.",
+            "📽️ A major award show was cancelled due to a backstage brawl!",
+            "📈 Sensex up! Bollywood stocks are becoming a favorite for investors.",
+            "📸 Paparazzi alert: A major star was spotted at a secret director's meeting."
         };
         yearEndNews.add(industryNews[random.nextInt(industryNews.length)]);
         
