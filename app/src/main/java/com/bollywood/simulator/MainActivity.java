@@ -134,17 +134,7 @@ public class MainActivity extends AppCompatActivity {
         players.clear();
         currentRound = 1;
         
-        // Dynamic Inflation: Production costs rise every 10 years
-        int baseProductionCost = 40 + (currentYear / 10) * 20;
-        
-        // Set a random trend for the year
-        GameEngine.IndustryTrend[] trends = GameEngine.IndustryTrend.values();
-        currentTrend = trends[random.nextInt(trends.length)];
-        
         for (String name : PLAYER_NAMES) {
-            PlayerStats stats = playerStats.getOrDefault(name, new PlayerStats(name));
-            
-            // Find carryover balance from playerHistory
             int carryoverBalance = 0;
             Player histP = null;
             for (Player hp : playerHistory) {
@@ -154,70 +144,22 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             }
-            
-            // Aging & Retirement Logic (DISABLED: Don't remove any player)
-            /*
-            if (histP != null) {
-                histP.age++;
-                // Chance to retire after 50, forced at 65
-                if (histP.age > 50 && (random.nextInt(100) < (histP.age - 50) * 5 || histP.age >= 65)) {
-                    lastEventMsg = "👋 Legendary " + name + " has retired from the industry!";
-                    // Reset as a new newcomer with same name
-                    histP.name = name; // keep name
-                    histP.age = 20 + random.nextInt(5);
-                    histP.balance = 0;
-                    histP.loan = 0;
-                    histP.currentStar = GameEngine.StarPower.NEWCOMER;
-                    carryoverBalance = 0;
-                }
-            }
-            */
-            if (histP != null) {
-                histP.age++;
-            }
 
-            int budget = random.nextInt(91) + baseProductionCost / 2;
-            Player newPlayer;
-            
-            if (carryoverBalance >= budget) {
-                newPlayer = new Player(name, 0, carryoverBalance);
-                newPlayer.balance = carryoverBalance - budget;
-            } else {
-                newPlayer = new Player(name, budget, carryoverBalance);
-                newPlayer.balance = carryoverBalance - budget;
-            }
+            int budget = 50; // Simple fixed production cost
+            Player newPlayer = new Player(name, budget, carryoverBalance);
+            newPlayer.balance = carryoverBalance - budget;
             
             if (histP != null) {
-                newPlayer.age = histP.age;
-                newPlayer.currentStar = histP.currentStar;
-                newPlayer.name = histP.name;
                 newPlayer.nominationCount = histP.nominationCount;
                 newPlayer.oscarWins = histP.oscarWins;
             }
-            
-            newPlayer.oscarWins = stats.oscarWins;
             players.add(newPlayer);
-            
-            stats.yearsActive++;
-            playerStats.put(name, stats);
         }
         
-        // Random Market Crash/Boom every few decades
-        if (currentYear % 15 == 0) {
-            lastEventMsg = "⚠️ GLOBAL ECONOMIC SHIFT! Market dynamics have changed forever.";
-        }
-        
-        // Store initial positions for trend arrows
         lastPositions.clear();
-        List<Player> sorted = new ArrayList<>(players);
-        Collections.sort(sorted, (a, b) -> Float.compare(b.balance, a.balance));
-        for (int i = 0; i < sorted.size(); i++) {
-            lastPositions.put(sorted.get(i).name, i);
-        }
-        
         gameState = "ROUND1";
         topMoviesSection.setVisibility(View.GONE);
-        if (lastEventMsg.isEmpty()) lastEventMsg = "🎬 Year " + currentYear + " begins!";
+        lastEventMsg = "🎬 Year " + currentYear + " begins!";
         updateUI();
     }
 

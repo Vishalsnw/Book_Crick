@@ -78,112 +78,15 @@ public class GameEngine {
 
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year, IndustryTrend trend) {
         RoundResults result = new RoundResults();
-        result.currentTrend = trend;
-        
-        // Add dynamic decade events every 10 years
-        if (year % 10 == 0 && round == 1) {
-            String decadeEvent = DECADE_EVENTS[random.nextInt(DECADE_EVENTS.length)];
-            result.eventDescription = "📅 DECADE SHIFT: " + decadeEvent;
-        }
-
-        // Dynamic Popularity: Start with player's current star power
-        result.cast = player.currentStar;
-        
-        // Chance to naturally upgrade/downgrade based on last performance
-        if (player.lastEarnings > 80 && result.cast.level < 4 && random.nextInt(100) < 20) {
-            result.cast = StarPower.values()[result.cast.level + 1];
-        } else if (player.lastEarnings < 20 && result.cast.level > 0 && random.nextInt(100) < 15) {
-            result.cast = StarPower.values()[result.cast.level - 1];
-        }
-        player.currentStar = result.cast;
-
-        result.baseEarnings = random.nextFloat() * 100.0f; // 0.0 to 100.0
+        result.totalEarnings = random.nextFloat() * 100.0f; // Pure random 0-100
+        result.starRating = 1.0f + (random.nextFloat() * 4.0f);
+        result.isHit = result.totalEarnings > 50;
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
+        result.eventDescription = "Normal release";
+        result.cast = StarPower.NONE;
         
-        // ROI-based success logic (Budget matters)
-        int inflationAdjustment = (year / 10) * 10;
-        int effectiveBudget = 40 + result.cast.budgetIncrease + inflationAdjustment;
-        
-        // Decade-specific modifiers
-        float decadeMultiplier = 1.0f;
-        if (year >= 20 && year < 30) decadeMultiplier = 1.2f; // Golden Era
-        else if (year >= 30) decadeMultiplier = 0.9f; // Saturated Market
-        
-        switch (result.genre) {
-            case "Action": 
-                result.genreMultiplier = 160; 
-                if (trend == IndustryTrend.SOUTH_WAVE) result.genreMultiplier += 30;
-                break;
-            case "Horror": result.genreMultiplier = 140; break;
-            case "Drama": 
-                result.genreMultiplier = 90; 
-                if (year >= 20) result.genreMultiplier += 30; // Drama revival in later decades
-                break;
-            case "Romance": 
-                result.genreMultiplier = 130; 
-                if (trend == IndustryTrend.ROMANCE_REVIVAL) result.genreMultiplier += 20;
-                break;
-            case "Comedy": 
-                result.genreMultiplier = 120; 
-                if (trend == IndustryTrend.COMEDY_BOOM) result.genreMultiplier += 25;
-                break;
-            case "Thriller": 
-                result.genreMultiplier = 150; 
-                if (trend == IndustryTrend.SOUTH_WAVE) result.genreMultiplier += 30;
-                break;
-            case "Sci-Fi": result.genreMultiplier = 170; break;
-            default: result.genreMultiplier = 100;
-        }
-        
-        int seasonalBonus = 0;
-        if (round == 1 || round == 2) {
-            seasonalBonus = 20;
-        } else if (round == 3) {
-            seasonalBonus = -10;
-        }
-        result.seasonalBonus = seasonalBonus;
-        
-        int eventImpact = 0;
-        String eventDesc = (result.eventDescription != null) ? result.eventDescription : "Normal market conditions";
-        if (random.nextInt(3) == 0 && result.eventDescription == null) {
-            int eventIdx = random.nextInt(RANDOM_EVENTS.length);
-            eventDesc = RANDOM_EVENTS[eventIdx];
-            eventImpact = random.nextInt(31) - 15;
-        }
-        result.randomEventImpact = eventImpact;
-        result.eventDescription = eventDesc;
-        
-        int loanInterest = (int)(player.loan * 0.12);
-        result.loanInterest = loanInterest;
-        
-        float total = result.baseEarnings;
-        total = (total * result.genreMultiplier) / 100.0f;
-        total += result.seasonalBonus;
-        total += result.randomEventImpact;
-        total *= result.cast.earningsMultiplier;
-        total *= trend.theaterMultiplier;
-        total *= decadeMultiplier;
-        
-        total -= result.loanInterest;
-        total -= effectiveBudget;
-        
-        if (random.nextInt(15) == 0) {
-            float swing = 0.5f + (random.nextFloat() * 1.0f);
-            total *= swing;
-            if (swing > 1.3f) result.eventDescription = "🚀 BOX OFFICE SURGE! " + result.eventDescription;
-            else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
-        }
-
-        result.totalEarnings = Math.min(100.0f, Math.max(0.0f, total));
-        
-        // ROI Hit Detection: Earnings > Budget * 1.5 is a hit
-        result.isHit = result.totalEarnings > (effectiveBudget * 1.2);
-        
-        result.starRating = 1.0f + (random.nextFloat() * 4.0f);
-        if (result.isHit) result.starRating = Math.max(3.5f, result.starRating);
-
         return result;
     }
 
