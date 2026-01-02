@@ -176,7 +176,7 @@ public class GameEngine {
             else if (swing < 0.7f) result.eventDescription = "📉 BOX OFFICE CRASH! " + result.eventDescription;
         }
 
-        result.totalEarnings = Math.max(0.0f, total);
+        result.totalEarnings = Math.min(100.0f, Math.max(0.0f, total));
         
         // ROI Hit Detection: Earnings > Budget * 1.5 is a hit
         result.isHit = result.totalEarnings > (effectiveBudget * 1.2);

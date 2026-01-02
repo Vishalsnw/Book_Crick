@@ -280,11 +280,15 @@ public class MainActivity extends AppCompatActivity {
             lastEventMsg = roundEvents.get(0);
         }
 
+        // Nomination logic: The 4 players entering Round 4 (Semi-Final) are the nominees
+        // Round 4 is the Semi-Final, Round 5 is the Final.
+        // People reaching Round 4 get a nomination (N)
+        // The person who wins Round 5 (the winner of the final duel) gets the Oscar (🏆)
         if (nextState.equals("FINAL")) {
             // Nomination logic: The 4 players entering Round 4 (Semi-Final) are the nominees
             startOscarAnimation(activePlayers, nextState);
         } else if (nextState.equals("WINNER")) {
-             // Already handled by nomination flow or skip
+             // Round 5 (Final) has concluded. The winner of this round is the Oscar Winner.
              finalizeYear(activePlayers.get(0), nextState);
         } else {
             currentRound++;
