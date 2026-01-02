@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (players.isEmpty() && !playerHistory.isEmpty()) {
             // Restore current year state if available
             for (Player p : playerHistory) {
-                players.add(new Player(p.name, p.loan, p.balance));
+                players.add(new Player(p.name, p.loan, (int)p.balance));
             }
         }
         updateUI();
@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
         
         playerHistory.clear();
         for (Player p : players) {
-            Player historyPlayer = new Player(p.name, p.loan, p.balance);
+            Player historyPlayer = new Player(p.name, p.loan, (int)p.balance);
             historyPlayer.age = p.age;
             historyPlayer.currentStar = p.currentStar;
             historyPlayer.oscarWins = p.oscarWins;
