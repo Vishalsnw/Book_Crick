@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Player> playerHistory = new ArrayList<>();
     private Map<String, PlayerStats> playerStats = new HashMap<>();
     private List<Movie> movieArchive = new ArrayList<>();
+    private StockMarket stockMarket = new StockMarket();
     private int currentYear = 1;
     private int currentRound = 1;
     private String gameState = "START";
@@ -416,6 +417,7 @@ public class MainActivity extends AppCompatActivity {
         
         currentYear++;
         currentRound = 1;
+        stockMarket.updateMarket(players);
         saveData();
         
         gameState = "START";
@@ -499,7 +501,13 @@ public class MainActivity extends AppCompatActivity {
                 int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
                 int noms = p.nominationCount;
                 
-                sb.append(String.format("%-2s | %s%-10s%-3s | ₹%-4.2f | %d | %d\n", rankSymbol, office, name, trendArrow, (float)p.balance, oscars, noms));
+                StockMarket.SharePrice sp = null;
+                for(StockMarket.SharePrice s : stockMarket.stocks) {
+                    if(s.producerName.equals(p.name)) { sp = s; break; }
+                }
+                String stockInfo = sp != null ? String.format(" | ₹%.1f", sp.currentPrice) : "";
+                
+                sb.append(String.format("%-2s | %s%-10s%-3s | ₹%-4.2f | %d | %d%s\n", rankSymbol, office, name, trendArrow, (float)p.balance, oscars, noms, stockInfo));
             }
 
         // Update positions for next time
