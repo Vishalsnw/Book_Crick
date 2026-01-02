@@ -589,7 +589,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Player implements Serializable {
         public String name;
-        public int loan, balance, oscarWins, nominationCount;
+        public int loan, oscarWins, nominationCount;
+        public float balance;
         public float earnings, lastEarnings;
         public boolean active = true;
         public GameEngine.StarPower currentStar = GameEngine.StarPower.NONE;
