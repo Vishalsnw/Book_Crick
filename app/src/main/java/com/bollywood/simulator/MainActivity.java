@@ -61,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
     private final Gson gson = new Gson();
 
     private TextView titleText, statsText, yearBadge, topMoviesText, eventText, nomineeText;
-    private Button actionButton, oscarButton, incomeButton, profileButton, achieveButton;
+    private Button actionButton, oscarButton, incomeButton, profileButton, achieveButton, stockButton;
     private LinearLayout topMoviesSection, oscarAnimationOverlay;
     private Handler animationHandler = new Handler(Looper.getMainLooper());
-
     private static final String PREFS_NAME = "BollywoodPrefs";
 
     @Override
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         oscarButton = findViewById(R.id.oscarButton);
         profileButton = findViewById(R.id.profileButton);
         achieveButton = findViewById(R.id.achieveButton);
+        stockButton = findViewById(R.id.stockButton);
         topMoviesSection = findViewById(R.id.topMoviesSection);
         eventText = findViewById(R.id.eventText);
         oscarAnimationOverlay = findViewById(R.id.oscarAnimationOverlay);
@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         achieveButton.setOnClickListener(v -> startActivity(new Intent(this, AchievementsActivity.class)));
+        stockButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LiveTradingActivity.class);
+            intent.putExtra("stockMarket", stockMarket);
+            startActivity(intent);
+        });
 
         // Only setup initial players if loading didn't restore any
         if (players.isEmpty() && playerHistory.isEmpty()) {
@@ -480,7 +485,17 @@ public class MainActivity extends AppCompatActivity {
 
         StringBuilder sb = new StringBuilder();
         List<Player> sorted = new ArrayList<>(players);
-        Collections.sort(sorted, (a, b) -> Float.compare(b.balance, a.balance));
+        Collections.sort(sorted, (a, b) -> {
+            StockMarket.SharePrice spa = null;
+            StockMarket.SharePrice spb = null;
+            for(StockMarket.SharePrice s : stockMarket.stocks) {
+                if(s.producerName.equals(a.name)) spa = s;
+                if(s.producerName.equals(b.name)) spb = s;
+            }
+            float valA = a.balance + (spa != null ? spa.currentPrice * 10 : 0);
+            float valB = b.balance + (spb != null ? spb.currentPrice * 10 : 0);
+            return Float.compare(valB, valA);
+        });
 
             // Optimized for small screens: Rank | Name | Bal | 🏆 | Nom
             sb.append(String.format("%-2s | %-12s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
