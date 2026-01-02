@@ -307,7 +307,13 @@ public class MainActivity extends AppCompatActivity {
         List<Player> sortedByBalance = new ArrayList<>(players);
         Collections.sort(sortedByBalance, (a, b) -> Float.compare(b.balance, a.balance));
         
-        yearEndNews.add("💰 " + sortedByBalance.get(0).name + " ends the year as the wealthiest producer!");
+        String[] wealthNews = {
+            "💰 %s ends the year as the undisputed King of Box Office!",
+            "💎 Luxury cars and big mansions: %s is the wealthiest producer in town!",
+            "📈 Stock market alert: Shares of %s's production house are soaring!",
+            "🤑 Cash flow! %s is drowning in profits this year."
+        };
+        yearEndNews.add(String.format(wealthNews[random.nextInt(wealthNews.length)], sortedByBalance.get(0).name));
         
         Player mostHits = players.get(0);
         int maxHits = 0;
@@ -325,7 +331,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (maxHits > 0) {
-            yearEndNews.add("🎬 " + mostHits.name + " is being hailed as the 'Hit Machine' of the year with " + maxHits + " hits!");
+            String[] hitNews = {
+                "🎬 Midas Touch! Every movie %s touched this year became a hit!",
+                "🔥 %s is on fire with %d back-to-back blockbusters!",
+                "🌟 The industry is bowing down to the new Hit Machine: %s.",
+                "🎥 Record breaking year! %s delivers %d massive hits."
+            };
+            String news = hitNews[random.nextInt(hitNews.length)];
+            if (news.contains("%d")) {
+                yearEndNews.add(String.format(news, mostHits.name, maxHits));
+            } else {
+                yearEndNews.add(String.format(news, mostHits.name));
+            }
         }
 
         List<Player> lowPerformers = new ArrayList<>();
@@ -334,10 +351,23 @@ public class MainActivity extends AppCompatActivity {
         }
         if (!lowPerformers.isEmpty()) {
             Collections.shuffle(lowPerformers);
-            yearEndNews.add("📉 Financial struggle for " + lowPerformers.get(0).name + " as debts continue to mount.");
+            String[] brokeNews = {
+                "📉 Financial Crisis: %s is struggling to pay back massive loans.",
+                "💸 Empty pockets! %s's production house is facing a liquidity crunch.",
+                "🏚️ From Riches to Rags: Can %s survive another year of flops?",
+                "⚠️ Bankruptcy warning for %s as debt continues to pile up."
+            };
+            yearEndNews.add(String.format(brokeNews[random.nextInt(brokeNews.length)], lowPerformers.get(0).name));
         }
         
-        // Add round-specific news
+        String[] industryNews = {
+            "🎭 Bollywood Trend: Audiences are rejecting star-kids and demanding better scripts!",
+            "🎥 Cinema Strike! Production was halted for a month, but we are back.",
+            "🎟️ Ticket prices hiked! Producers are happy, audiences are not.",
+            "📱 OTT vs Theaters: The war for content heats up!"
+        };
+        yearEndNews.add(industryNews[random.nextInt(industryNews.length)]);
+        
         yearEndNews.add("🏆 " + winner.name + " wins the prestigious Oscar for Year " + currentYear + "!");
 
         lastEventMsg = yearEndNews.get(new Random().nextInt(yearEndNews.size()));

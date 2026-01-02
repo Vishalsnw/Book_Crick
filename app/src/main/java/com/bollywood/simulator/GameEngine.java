@@ -76,15 +76,51 @@ public class GameEngine {
         "🤖 AI Scripting! Production costs -15%"
     };
 
+    private static final String[] RANDOM_EVENTS = {
+        "🎭 Scandal! Actor caught in party brawl - ₹15 penalty",
+        "🎵 Viral Track! Soundtrack trending on reels + ₹20 bonus",
+        "📰 Bad Reviews! Critics call it 'unwatchable' - ₹10 penalty",
+        "🌟 Masterpiece! National award buzz + ₹25 bonus",
+        "🎬 Star Power! A-list superstar signs for a cameo + ₹30 bonus",
+        "😢 Production Delay! Monsoons wash away sets - ₹12 penalty",
+        "📱 PR Stunt! Fake dating rumors drive hype + ₹18 bonus",
+        "💰 Tax Raid! Hidden cash found in office - ₹35 penalty",
+        "🔥 Boycott! Social media outrage over a dialogue - ₹25 penalty",
+        "🎥 Technical Glitch! CGI fails in climax - ₹15 penalty",
+        "✨ Midnight Show! Fans go crazy in single screens + ₹22 bonus",
+        "🍿 Sold Out! Multiplexes adding extra shows + ₹28 bonus",
+        "🛑 Script Leak! Climax revealed on Reddit - ₹18 penalty",
+        "🤝 Global Tie-up! Hollywood studio buys remake rights + ₹40 bonus",
+        "🎙️ Podcast Rant! Lead actor says something controversial - ₹12 penalty"
+    };
+
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year, IndustryTrend trend) {
         RoundResults result = new RoundResults();
-        result.totalEarnings = random.nextFloat() * 100.0f; // Pure random 0-100
+        float total = random.nextFloat() * 100.0f; // Base 0-100
+        
+        // Random Events (25% chance)
+        if (random.nextInt(4) == 0) {
+            int eventIdx = random.nextInt(RANDOM_EVENTS.length);
+            result.eventDescription = RANDOM_EVENTS[eventIdx];
+            if (result.eventDescription.contains("+ ₹")) {
+                try {
+                    total += Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                } catch (Exception e) {}
+            } else if (result.eventDescription.contains("- ₹")) {
+                try {
+                    total -= Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                } catch (Exception e) {}
+            }
+        } else {
+            result.eventDescription = "Smooth release";
+        }
+
+        result.totalEarnings = Math.min(100.0f, Math.max(0.0f, total));
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
         result.isHit = result.totalEarnings > 50;
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
-        result.eventDescription = "Normal release";
         result.cast = StarPower.NONE;
         
         return result;
