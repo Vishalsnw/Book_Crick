@@ -145,9 +145,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            int budget = 50; // Simple fixed production cost
-            Player newPlayer = new Player(name, budget, carryoverBalance);
-            newPlayer.balance = carryoverBalance - budget;
+            int budget = 10 + random.nextInt(91); // Random budget between 10-100
+            Player newPlayer;
+            
+            if (carryoverBalance >= budget) {
+                newPlayer = new Player(name, 0, carryoverBalance);
+                newPlayer.balance = carryoverBalance - budget;
+            } else {
+                newPlayer = new Player(name, budget, carryoverBalance);
+                newPlayer.balance = carryoverBalance - budget;
+            }
             
             if (histP != null) {
                 newPlayer.nominationCount = histP.nominationCount;
