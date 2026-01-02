@@ -16,5 +16,6 @@
         <activity android:name=".OscarListActivity" android:exported="false" />
         <activity android:name=".PlayerProfileActivity" android:exported="false" />
         <activity android:name=".AchievementsActivity" android:exported="false" />
+        <activity android:name=".LiveTradingActivity" android:exported="false" />
     </application>
 </manifest>

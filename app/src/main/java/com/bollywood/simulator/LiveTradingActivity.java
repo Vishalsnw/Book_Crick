@@ -23,8 +23,6 @@ public class LiveTradingActivity extends AppCompatActivity {
         tradingLogs = findViewById(R.id.trading_logs);
         Button backButton = findViewById(R.id.back_button);
 
-        // In a real app, we'd pass this via Intent or a Singleton
-        // For this simulation, we'll assume it's available or create a mock update
         stockMarket = (StockMarket) getIntent().getSerializableExtra("stockMarket");
 
         updateUI();
@@ -33,7 +31,7 @@ public class LiveTradingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 updateUI();
-                handler.postDelayed(this, 2000); // Update every 2 seconds
+                handler.postDelayed(this, 2000);
             }
         };
         handler.post(updateRunnable);
@@ -45,7 +43,7 @@ public class LiveTradingActivity extends AppCompatActivity {
         if (stockMarket == null) return;
 
         float diff = stockMarket.industryIndex - stockMarket.lastIndex;
-        float percent = (diff / stockMarket.lastIndex) * 100;
+        float percent = (stockMarket.lastIndex != 0) ? (diff / stockMarket.lastIndex) * 100 : 0;
         String color = diff >= 0 ? "#00FF00" : "#FF0000";
         String sign = diff >= 0 ? "+" : "";
 
@@ -54,10 +52,12 @@ public class LiveTradingActivity extends AppCompatActivity {
 
         StringBuilder sb = new StringBuilder();
         List<String> logs = stockMarket.tradeLogs;
-        for (String log : logs) {
-            sb.append(log).append("\n");
+        if (logs != null) {
+            for (String log : logs) {
+                sb.append(log).append("\n");
+            }
         }
-        tradingLogs.setText(sb.toString());
+        tradingLogs.setText(sb.length() > 0 ? sb.toString() : "Waiting for market open...");
     }
 
     @Override
