@@ -135,10 +135,17 @@ public class MainActivity extends AppCompatActivity {
         currentRound = 1;
         
         for (String name : PLAYER_NAMES) {
-            int carryoverBalance = 0;
+            float carryoverBalance = 0;
             Player histP = null;
             for (Player hp : playerHistory) {
-                if (hp.name.equals(name)) {
+                // Remove title from history name for comparison if needed
+                String cleanName = hp.name;
+                if (cleanName.contains(" ")) {
+                    String[] parts = cleanName.split(" ");
+                    cleanName = parts[parts.length - 1];
+                }
+
+                if (cleanName.equals(name)) {
                     carryoverBalance = hp.balance;
                     histP = hp;
                     break;
@@ -149,10 +156,10 @@ public class MainActivity extends AppCompatActivity {
             Player newPlayer;
             
             if (carryoverBalance >= budget) {
-                newPlayer = new Player(name, 0, carryoverBalance);
+                newPlayer = new Player(name, 0, (int)carryoverBalance);
                 newPlayer.balance = carryoverBalance - budget;
             } else {
-                newPlayer = new Player(name, budget, carryoverBalance);
+                newPlayer = new Player(name, budget, (int)carryoverBalance);
                 newPlayer.balance = carryoverBalance - budget;
             }
             
@@ -574,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
             this.name = name;
             this.loan = loan;
             this.earnings = 0; // Reset annual earnings
-            this.balance = carryoverBalance; // Initial balance before budget
+            this.balance = (float)carryoverBalance; // Initial balance before budget
             this.oscarWins = 0;
             this.nominationCount = 0;
         }
