@@ -387,6 +387,16 @@ public class MainActivity extends AppCompatActivity {
             historyPlayer.currentStar = p.currentStar;
             historyPlayer.oscarWins = p.oscarWins;
             historyPlayer.nominationCount = p.nominationCount;
+            
+            // Add Titles/Ranks
+            String title = "";
+            if (p.oscarWins >= 5) title = "🏆 LEGEND";
+            else if (p.oscarWins >= 3) title = "🌟 SUPERSTAR";
+            else if (p.balance > 5000) title = "💰 TYCOON";
+            else if (p.balance > 2000) title = "🎬 MOGUL";
+            else if (p.balance < -500) title = "📉 STRUGGLER";
+            historyPlayer.name = (title.isEmpty() ? "" : title + " ") + p.name;
+            
             playerHistory.add(historyPlayer);
         }
         
@@ -454,8 +464,8 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(sorted, (a, b) -> Float.compare(b.balance, a.balance));
 
             // Optimized for small screens: Rank | Name | Bal | 🏆 | Nom
-            sb.append(String.format("%-2s | %-10s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
-            sb.append("--------------------------------------\n");
+            sb.append(String.format("%-2s | %-12s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
+            sb.append("------------------------------------------\n");
             for (int i = 0; i < sorted.size(); i++) {
                 Player p = sorted.get(i);
                 String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
@@ -468,14 +478,21 @@ public class MainActivity extends AppCompatActivity {
                     else if (i > lastPos) trendArrow = " ⬇️";
                 }
                 
-                String name = p.name.length() > 10 ? p.name.substring(0, 8) + ".." : p.name;
+                // Add office milestone icon
+                String office = "";
+                if (p.balance > 5000) office = "🏰";
+                else if (p.balance > 2000) office = "🏢";
+                else if (p.balance > 500) office = "🏘️";
+
+                String name = p.name;
+                if (name.length() > 10) name = name.substring(0, 8) + "..";
                 
                 // Get Oscar and Nom count from stats for accuracy
                 PlayerStats stats = playerStats.get(p.name);
                 int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
                 int noms = p.nominationCount;
                 
-                sb.append(String.format("%-2s | %-10s%-3s | ₹%-4.2f | %d | %d\n", rankSymbol, name, trendArrow, (float)p.balance, oscars, noms));
+                sb.append(String.format("%-2s | %s%-10s%-3s | ₹%-4.2f | %d | %d\n", rankSymbol, office, name, trendArrow, (float)p.balance, oscars, noms));
             }
 
         // Update positions for next time
