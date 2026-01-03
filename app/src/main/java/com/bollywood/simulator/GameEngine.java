@@ -62,7 +62,13 @@ public class GameEngine {
 
     public static RoundResults calculateRoundEarnings(MainActivity.Player player, int round, int year, IndustryTrend trend) {
         RoundResults result = new RoundResults();
-        float total = random.nextFloat() * 100.0f; // Base 0-100
+        
+        // Brand Power Multiplier (Marketing Multiplier proxy)
+        float brandMultiplier = 1.0f;
+        if (player.balance > 1000) brandMultiplier = 1.25f;
+        else if (player.balance < -200) brandMultiplier = 0.75f;
+
+        float base = (random.nextFloat() * 100.0f) * brandMultiplier;
         
         // Random Events (25% chance)
         if (random.nextInt(4) == 0) {
@@ -70,20 +76,20 @@ public class GameEngine {
             result.eventDescription = RANDOM_EVENTS[eventIdx];
             if (result.eventDescription.contains("+ ₹")) {
                 try {
-                    total += Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                    base += Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
                 } catch (Exception e) {}
             } else if (result.eventDescription.contains("- ₹")) {
                 try {
-                    total -= Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                    base -= Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
                 } catch (Exception e) {}
             }
         } else {
             result.eventDescription = "Smooth release";
         }
 
-        result.totalEarnings = Math.min(100.0f, Math.max(0.0f, total));
+        result.totalEarnings = Math.min(150.0f, Math.max(0.0f, base));
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
-        result.isHit = result.totalEarnings > 50;
+        result.isHit = result.totalEarnings > 60;
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];

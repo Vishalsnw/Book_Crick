@@ -31,9 +31,31 @@ public class StockMarket implements Serializable {
     public float lastIndex = 1000f;
     private Random random = new Random();
 
-    public void updateMarket(List<MainActivity.Player> players) {
+    public enum MarketEvent {
+        NORMAL("Stable Market", 1.0f),
+        BULL_RUN("Bull Run! Prices Soaring", 1.5f),
+        BEAR_CRASH("Market Crash! Panic Selling", 0.6f),
+        CENSORSHIP_SCANDAL("Censorship Row! Stocks Dip", 0.8f),
+        TAX_BREAK("Tax Break for Cinema! Growth", 1.2f);
+
+        public final String description;
+        public final float multiplier;
+        MarketEvent(String desc, float mult) { this.description = desc; this.multiplier = mult; }
+    }
+
+    public MarketEvent currentEvent = MarketEvent.NORMAL;
+
+    public void updateMarket(List<MainActivity.Player> players, GameEngine.IndustryTrend trend) {
         if (players == null) return;
         
+        // Randomly trigger market events
+        if (random.nextFloat() < 0.15f) {
+            currentEvent = MarketEvent.values()[random.nextInt(MarketEvent.values().length)];
+            tradeLogs.add(0, "🚨 MARKET ALERT: " + currentEvent.description);
+        } else {
+            currentEvent = MarketEvent.NORMAL;
+        }
+
         float totalMarketCap = 0;
         for (MainActivity.Player p : players) {
             SharePrice stock = findStock(p.name);
@@ -44,48 +66,62 @@ public class StockMarket implements Serializable {
 
             stock.lastPrice = stock.currentPrice;
             
-            // Advanced bot logic: Sentiment based on balance, earnings, and star rating level
-            // Buy if: High Balance (>500), Recent Hit (lastEarnings > 50), High Star Level
-            // Sell if: Debt (balance < -300), Recent Flop (lastEarnings < 20)
             float balanceFactor = p.balance / 1000f;
             float earningsFactor = (p.lastEarnings - 50f) / 50f;
             float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 2.0f;
             
-            float sentiment = balanceFactor + earningsFactor + starFactor;
+            // Genre Trend Impact
+            float genreFactor = 0;
+            if (p.lastEarnings > 0 && trend != null) {
+                // Players whose movies align with industry trend get a stock boost
+                genreFactor = 0.5f;
+            }
+
+            float sentiment = (balanceFactor + earningsFactor + starFactor + genreFactor) * currentEvent.multiplier;
             
-            // Debt penalty: Bots panic sell if debt is high
+            // Dividend Logic: If cash > 1000, pay 5% dividend to boost stock price
+            if (p.balance > 1000) {
+                float dividend = p.balance * 0.05f;
+                p.balance -= dividend;
+                sentiment += 1.0f; // High sentiment boost for dividend paying stocks
+                tradeLogs.add(0, String.format("💰 DIVIDEND: %s paid ₹%.0f to shareholders!", p.name, dividend));
+            }
+
+            // Hostile Takeover / Acquisition Logic
+            if (p.balance < -1000 && stock.currentPrice < 30) {
+                float bailout = 500f;
+                p.balance += bailout;
+                stock.currentPrice *= 0.5f; // Price tanks further due to dilution
+                tradeLogs.add(0, String.format("⚠️ ACQUISITION: %s bailed out by Mega-Corp!", p.name));
+            }
+
             if (p.balance < -500) sentiment -= 3.0f;
             
             float volatility = 0.5f + (random.nextFloat() * 1.5f);
-            
-            // Dynamic Bid/Ask spread based on volatility
             float spread = 0.05f + (random.nextFloat() * 0.3f * volatility);
             stock.bid = Math.max(1f, stock.currentPrice - spread);
             stock.ask = stock.currentPrice + spread;
 
-            // Simulated trade execution with momentum and 300+ bot swarm behavior
             float randomNoise = (random.nextFloat() * 2f - 1f);
             float move = (sentiment * 0.5f + randomNoise) * volatility;
             
             stock.currentPrice = Math.max(5f, stock.currentPrice + move);
-            stock.lastPrice = stock.currentPrice; // Update LTP to current price after trade
+            stock.lastPrice = stock.currentPrice;
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            // Sort stocks by current price (High value at top)
-            java.util.Collections.sort(stocks, (a, b) -> Float.compare(b.currentPrice, a.currentPrice));
-
-            // Logging significant movements (50-300+ bots swarm)
             if (Math.abs(move) > 1.2f) {
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
                 String action = move > 0 ? "BOUGHT" : "SOLD";
-                int activeBots = 100 + random.nextInt(250); // 100 to 350 active traders
+                int activeBots = 100 + random.nextInt(250);
                 String reason = move > 0 ? (p.lastEarnings > 60 ? "HIT STREAK" : "CASH GROWTH") : (p.balance < 0 ? "DEBT PANIC" : "MARKET EXIT");
                 tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
                     time, activeBots, action, p.name, reason, stock.currentPrice));
             }
             totalMarketCap += stock.currentPrice;
         }
+        
+        java.util.Collections.sort(stocks, (a, b) -> Float.compare(b.currentPrice, a.currentPrice));
         
         lastIndex = industryIndex;
         industryIndex = (totalMarketCap / Math.max(1, stocks.size())) * 10;

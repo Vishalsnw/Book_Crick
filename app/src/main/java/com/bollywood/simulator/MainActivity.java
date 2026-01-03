@@ -222,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Update Stock Market after every round
-        stockMarket.updateMarket(players);
+        // Update Stock Market after every round with trend data
+        stockMarket.updateMarket(players, currentTrend);
 
         Collections.sort(activePlayers, (a, b) -> Float.compare(b.lastEarnings, a.lastEarnings));
         
@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
         
         currentYear++;
         currentRound = 1;
-        stockMarket.updateMarket(players);
+        stockMarket.updateMarket(players, currentTrend);
         saveData();
         
         gameState = "START";
