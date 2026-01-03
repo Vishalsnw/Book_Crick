@@ -3,60 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212"
-    android:padding="16dp">
+    android:background="#000000"
+    android:padding="8dp">
 
     <TextView
-        android:id="@+id/index_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bollywood Index (BIX)"
-        android:textColor="#FFD700"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/index_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1000.00 (+0.0%)"
-        android:textColor="#00FF00"
-        android:textSize="24sp" />
-
-    <View
+        android:id="@+id/terminal_header"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="wrap_content"
+        android:text="BNG TERMINAL - BOLLYWOOD EXCHANGE"
+        android:textColor="#00FF00"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:padding="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1A1A1A"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/index_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="INDEX: 1000.00"
+            android:textColor="#00FF00"
+            android:textSize="14sp"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:id="@+id/active_traders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRADERS: 300+"
+            android:textColor="#FFFF00"
+            android:textSize="12sp"
+            android:fontFamily="monospace" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:background="#333333"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:padding="2dp"
+        android:layout_marginTop="4dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="SYMBOL" android:textColor="#CCCCCC" android:textSize="10sp" android:fontFamily="monospace"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="BID" android:textColor="#CCCCCC" android:textSize="10sp" android:fontFamily="monospace" android:gravity="right"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="ASK" android:textColor="#CCCCCC" android:textSize="10sp" android:fontFamily="monospace" android:gravity="right"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="LTP" android:textColor="#CCCCCC" android:textSize="10sp" android:fontFamily="monospace" android:gravity="right"/>
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Live Trading Floor"
-        android:textColor="#AAAAAA"
-        android:textSize="14sp" />
-
-    <ScrollView
-        android:id="@+id/log_scroll"
+        android:id="@+id/trading_logs"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#000000"
-        android:padding="8dp">
-        <TextView
-            android:id="@+id/trading_logs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#00FF00"
-            android:fontFamily="monospace"
-            android:text="Waiting for market open..." />
-    </ScrollView>
+        android:textColor="#00FF00"
+        android:fontFamily="monospace"
+        android:textSize="10sp"
+        android:scrollbars="vertical"
+        android:padding="4dp" />
 
     <Button
         android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back to Headquarters"
-        android:layout_marginTop="8dp" />
+        android:text="EXIT TERMINAL"
+        android:backgroundTint="#333333"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="4dp" />
+
 </LinearLayout>

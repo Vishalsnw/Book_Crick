@@ -2,6 +2,7 @@ package com.bollywood.simulator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -10,12 +11,16 @@ public class StockMarket implements Serializable {
         public String producerName;
         public float currentPrice;
         public float lastPrice;
+        public float bid;
+        public float ask;
         public List<Float> priceHistory = new ArrayList<>();
 
         public SharePrice(String name, float initialPrice) {
             this.producerName = name;
             this.currentPrice = initialPrice;
             this.lastPrice = initialPrice;
+            this.bid = initialPrice - 0.5f;
+            this.ask = initialPrice + 0.5f;
             this.priceHistory.add(initialPrice);
         }
     }
@@ -24,64 +29,49 @@ public class StockMarket implements Serializable {
     public List<String> tradeLogs = new ArrayList<>();
     public float industryIndex = 1000f;
     public float lastIndex = 1000f;
-    public int botCount = 300;
     private Random random = new Random();
 
     public void updateMarket(List<MainActivity.Player> players) {
-        float totalTopPrice = 0;
-        int count = 0;
+        if (players == null) return;
         
+        float totalMarketCap = 0;
         for (MainActivity.Player p : players) {
             SharePrice stock = findStock(p.name);
             if (stock == null) {
-                stock = new SharePrice(p.name, 100f);
+                stock = new SharePrice(p.name, 100f + random.nextInt(50));
                 stocks.add(stock);
             }
 
             stock.lastPrice = stock.currentPrice;
             
-            // Simulation of 300 bots trading
-            float netDemand = 0;
-            int buys = 0;
-            int sells = 0;
+            // High-frequency simulation of 300+ bots
+            float sentiment = (p.balance / 1000f) + (p.lastEarnings / 100f);
+            float volatility = 0.5f + random.nextFloat();
             
-            for (int i = 0; i < botCount; i++) {
-                // Bots buy if player has profit and high balance, sell if in debt
-                float sentiment = (p.balance / 500f) + (p.lastEarnings / 50f) + (random.nextFloat() * 2f - 1f);
-                if (sentiment > 1.2f) {
-                    netDemand += 0.05f;
-                    buys++;
-                } else if (sentiment < -0.8f) {
-                    netDemand -= 0.07f;
-                    sells++;
-                }
-            }
-            
-            float change = netDemand + (random.nextFloat() * 2f - 1f);
-            stock.currentPrice = Math.max(5f, stock.currentPrice + change);
+            // Generate Bid/Ask spread
+            float spread = 0.1f + random.nextFloat() * 0.4f;
+            stock.bid = Math.max(1f, stock.currentPrice - spread);
+            stock.ask = stock.currentPrice + spread;
+
+            // Simulated trade execution
+            float move = (sentiment + (random.nextFloat() * 2f - 1f)) * volatility;
+            stock.currentPrice = Math.max(5f, stock.currentPrice + move);
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (buys > 50 || sells > 50) {
-                String action = buys > sells ? "BUYING" : "SELLING";
-                tradeLogs.add(0, String.format("[%s] Bot swarm %s %s stock at %.2f", 
-                    new java.util.Date().toString().substring(11, 19), action, p.name, stock.currentPrice));
+            if (Math.abs(move) > 2.0f) {
+                String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
+                String type = move > 0 ? "BOUGHT" : "SOLD";
+                tradeLogs.add(0, String.format("[%s] BOT_X%03d %s %s @ %.2f", 
+                    time, random.nextInt(300), type, p.name, stock.currentPrice));
             }
-        }
-        
-        // Calculate BIX (Bollywood Index) - Average of top 10 stocks
-        stocks.sort((a, b) -> Float.compare(b.currentPrice, a.currentPrice));
-        for (int i = 0; i < Math.min(10, stocks.size()); i++) {
-            totalTopPrice += stocks.get(i).currentPrice;
-            count++;
+            totalMarketCap += stock.currentPrice;
         }
         
         lastIndex = industryIndex;
-        if (count > 0) {
-            industryIndex = (totalTopPrice / count) * 10; // Scaled index
-        }
+        industryIndex = (totalMarketCap / Math.max(1, stocks.size())) * 10;
         
-        if (tradeLogs.size() > 50) tradeLogs = tradeLogs.subList(0, 50);
+        if (tradeLogs.size() > 100) tradeLogs = tradeLogs.subList(0, 100);
     }
 
     private SharePrice findStock(String name) {
