@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Player Income/Net Worth List
-        sb.append(String.format("%-3s | %-12s | %-8s | %-3s | %-3s %-2s\n", "R", "Studio/Name", "NetWorth", "🏆", "N", "Tr"));
+        sb.append(String.format("%-3s | %-14s | %-8s | %-3s | %-3s\n", "R", "Studio/Name", "NetWorth", "🏆", "N"));
         sb.append("--------------------------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
@@ -517,25 +517,26 @@ public class MainActivity extends AppCompatActivity {
             float stockValue = (sp != null ? sp.currentPrice * 10 : 0);
             float netWorth = p.balance + stockValue;
 
-            // Position trend arrow
-            String trendArrow = "";
+            // Position trend indicator next to name
+            String trendChar = "";
             if (lastPositions.containsKey(p.name)) {
                 int lastPos = lastPositions.get(p.name);
-                if (i < lastPos) trendArrow = "▲"; 
-                else if (i > lastPos) trendArrow = "▼";
+                if (i < lastPos) trendChar = "▲"; 
+                else if (i > lastPos) trendChar = "▼";
             }
             
             String name = p.name;
             if (name.length() > 10) name = name.substring(0, 9) + "..";
+            String displayName = name + trendChar;
             
             PlayerStats stats = playerStats.get(p.name);
             int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
             int noms = p.nominationCount;
             
             // Format for perfect alignment
-            // Rank(3) | Name(12) | NetWorth(8) | Oscars(3) | Noms(3) | Trend(2)
-            sb.append(String.format("%-3s | %-12s | %-8.0f | %-3d | %-3d %-2s\n",
-                    rankSymbol, name, netWorth, oscars, noms, trendArrow));
+            // Rank(3) | Name+Trend(14) | NetWorth(8) | Oscars(3) | Noms(3)
+            sb.append(String.format("%-3s | %-14s | %-8.0f | %-3d | %-3d\n",
+                    rankSymbol, displayName, netWorth, oscars, noms));
         }
 
         // Update positions for next time
