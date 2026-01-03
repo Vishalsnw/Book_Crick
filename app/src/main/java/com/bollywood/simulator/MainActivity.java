@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Player Income/Net Worth List
-        sb.append(String.format("%-3s | %-14s | %-8s | %-3s | %-3s\n", "R", "Studio/Name", "NetWorth", "🏆", "N"));
+        sb.append(String.format("%-3s | %-12s | %-8s | %-5s\n", "R", "Studio/Name", "NetWorth", "🏆/N"));
         sb.append("--------------------------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
@@ -526,16 +526,14 @@ public class MainActivity extends AppCompatActivity {
             }
             
             String name = p.name;
-            if (name.length() > 10) name = name.substring(0, 9) + "..";
+            if (name.length() > 10) name = name.substring(0, 8) + "..";
             String displayName = name + trendChar;
             
             PlayerStats stats = playerStats.get(p.name);
             int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
             int noms = p.nominationCount;
             
-            // Format for perfect alignment
-            // Rank(3) | Name+Trend(14) | NetWorth(8) | Oscars(3) | Noms(3)
-            sb.append(String.format("%-3s | %-14s | %-8.0f | %-3d | %-3d\n",
+            sb.append(String.format("%-3s | %-12s | %-8.0f | %d/%d\n",
                     rankSymbol, displayName, netWorth, oscars, noms));
         }
 

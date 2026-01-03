@@ -68,7 +68,8 @@ public class GameEngine {
         if (player.balance > 1000) brandMultiplier = 1.25f;
         else if (player.balance < -200) brandMultiplier = 0.75f;
 
-        float base = (random.nextFloat() * 100.0f) * brandMultiplier;
+        // Base earnings can now be negative for high risk/bad luck
+        float base = (random.nextFloat() * 140.0f - 40.0f) * brandMultiplier;
         
         // Random Events (25% chance)
         if (random.nextInt(4) == 0) {
@@ -87,9 +88,10 @@ public class GameEngine {
             result.eventDescription = "Smooth release";
         }
 
-        result.totalEarnings = Math.min(150.0f, Math.max(0.0f, base));
+        // Allow for losses (negative earnings)
+        result.totalEarnings = Math.min(200.0f, Math.max(-100.0f, base));
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
-        result.isHit = result.totalEarnings > 60;
+        result.isHit = result.totalEarnings > 70;
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
