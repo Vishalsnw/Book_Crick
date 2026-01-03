@@ -68,8 +68,12 @@ public class StockMarket implements Serializable {
             float move = (sentiment * 0.5f + randomNoise) * volatility;
             
             stock.currentPrice = Math.max(5f, stock.currentPrice + move);
+            stock.lastPrice = stock.currentPrice; // Update LTP to current price after trade
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
+
+            // Sort stocks by current price (High value at top)
+            java.util.Collections.sort(stocks, (a, b) -> Float.compare(b.currentPrice, a.currentPrice));
 
             // Logging significant movements (50-300+ bots swarm)
             if (Math.abs(move) > 1.2f) {

@@ -222,6 +222,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // Update Stock Market after every round
+        stockMarket.updateMarket(players);
+
         Collections.sort(activePlayers, (a, b) -> Float.compare(b.lastEarnings, a.lastEarnings));
         
         // Advance players based on round logic
@@ -499,47 +502,39 @@ public class MainActivity extends AppCompatActivity {
             return Float.compare(valB, valA);
         });
 
-            // Updated for Net Worth ranking: Rank | Studio | NetVal | 🏆 | N
-            sb.append(String.format("%-2s | %-12s | %-6s | %s | %s\n", "R", "Studio/Name", "NetVal", "🏆", "N"));
-            sb.append("--------------------------------------------------\n");
-            for (int i = 0; i < sorted.size(); i++) {
-                Player p = sorted.get(i);
-                String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
-                
-                // Net worth calculation: Cash + (Shares * Price)
-                StockMarket.SharePrice sp = null;
-                for(StockMarket.SharePrice s : stockMarket.stocks) {
-                    if(s.producerName.equals(p.name)) { sp = s; break; }
-                }
-                float stockValue = (sp != null ? sp.currentPrice * 10 : 0);
-                float netWorth = p.balance + stockValue;
-
-                // Position trend arrow
-                String trendArrow = "";
-                if (lastPositions.containsKey(p.name)) {
-                    int lastPos = lastPositions.get(p.name);
-                    if (i < lastPos) trendArrow = " ⬆️";
-                    else if (i > lastPos) trendArrow = " ⬇️";
-                }
-                
-                // Add office milestone icon
-                String office = "";
-                if (netWorth > 5000) office = "🏰";
-                else if (netWorth > 2000) office = "🏢";
-                else if (netWorth > 500) office = "🏘️";
-
-                String name = p.name;
-                if (name.length() > 8) name = name.substring(0, 7) + "..";
-                
-                PlayerStats stats = playerStats.get(p.name);
-                int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
-                int noms = p.nominationCount;
-                
-                String stockPriceStr = sp != null ? String.format("₹%.0f", sp.currentPrice) : "";
-                
-                sb.append(String.format("%-2s | %s%-10s | %-6.0f | %-2d | %-2d %s%s\n",
-                        rankSymbol, office, name, netWorth, oscars, noms, trendArrow, stockPriceStr));
+        // Player Income/Net Worth List
+        sb.append(String.format("%-2s | %-12s | %-8s | %s | %s\n", "R", "Studio/Name", "Net Worth", "🏆", "N"));
+        sb.append("--------------------------------------------------\n");
+        for (int i = 0; i < sorted.size(); i++) {
+            Player p = sorted.get(i);
+            String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
+            
+            // Net worth calculation: Cash + (Shares * Price)
+            StockMarket.SharePrice sp = null;
+            for(StockMarket.SharePrice s : stockMarket.stocks) {
+                if(s.producerName.equals(p.name)) { sp = s; break; }
             }
+            float stockValue = (sp != null ? sp.currentPrice * 10 : 0);
+            float netWorth = p.balance + stockValue;
+
+            // Position trend arrow
+            String trendArrow = "";
+            if (lastPositions.containsKey(p.name)) {
+                int lastPos = lastPositions.get(p.name);
+                if (i < lastPos) trendArrow = " ⬆️";
+                else if (i > lastPos) trendArrow = " ⬇️";
+            }
+            
+            String name = p.name;
+            if (name.length() > 10) name = name.substring(0, 9) + "..";
+            
+            PlayerStats stats = playerStats.get(p.name);
+            int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
+            int noms = p.nominationCount;
+            
+            sb.append(String.format("%-2s | %-12s | %-8.0f | %-2d | %-2d %s\n",
+                    rankSymbol, name, netWorth, oscars, noms, trendArrow));
+        }
 
         // Update positions for next time
         lastPositions.clear();
