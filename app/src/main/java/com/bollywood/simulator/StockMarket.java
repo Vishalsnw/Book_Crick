@@ -69,7 +69,8 @@ public class StockMarket implements Serializable {
         for (MainActivity.Player p : players) {
             SharePrice stock = findStock(p.name);
             if (stock == null) {
-                stock = new SharePrice(p.name, 100f + random.nextInt(50));
+                // Higher initial price to give room for realistic dips
+                stock = new SharePrice(p.name, 150f + random.nextInt(50));
                 stocks.add(stock);
             }
 
@@ -77,68 +78,45 @@ public class StockMarket implements Serializable {
             
             // Smarter bot logic: Weighted factors and momentum
             float balanceFactor = p.balance / 1000f;
-            float earningsFactor = (p.lastEarnings - 50f) / 50f;
-            float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 2.0f;
+            // Dampen earnings factor for Round 1 (where earnings are usually small/random)
+            float earningsFactor = (p.lastEarnings - 40f) / 60f;
+            float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 4.0f;
             
             // Smarter Sentiment: Considering cumulative performance (momentum)
             float momentum = 0f;
-            if (p.lastEarnings > 80) momentum = 0.5f; // Hit momentum
-            else if (p.lastEarnings < 20) momentum = -0.5f; // Flop momentum
+            if (p.lastEarnings > 80) momentum = 0.3f; 
+            else if (p.lastEarnings < 20) momentum = -0.3f;
 
-            // Advanced AI Strategy: Value investing vs Trend following
-            // High value (low price but high balance) vs Growth (high earnings)
-            float valueFactor = (p.balance > 500 && stock.currentPrice < 80) ? 0.8f : 0f;
+            // Initial sentiment boost to prevent Day 1 sell-off
+            float initialHype = (stock.priceHistory.size() < 3) ? 0.8f : 0f;
             
-            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum + valueFactor) * currentEvent.multiplier;
+            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum + initialHype) * currentEvent.multiplier;
             
-            // Genre Trend Impact
-            if (p.lastEarnings > 60 && trend != null) {
-                sentiment += 0.6f; // Stronger trend following
-            }
+            // Floor sentiment at 0 during Round 1 unless performance is truly terrible
+            if (stock.priceHistory.size() < 2) sentiment = Math.max(0f, sentiment);
 
-            // Bots now anticipate future performance: "Star in the making"
-            if (p.nominationCount > 2 && p.oscarWins == 0) {
-                sentiment += 0.4f; // Speculation on upcoming Oscar win
-            }
+            if (p.balance < -500) sentiment -= 2.0f;
             
-            // Dividend Logic: If cash > 1000, pay 5% dividend to boost stock price
-            if (p.balance > 1000) {
-                float dividend = p.balance * 0.05f;
-                p.balance -= dividend;
-                sentiment += 1.0f; // High sentiment boost for dividend paying stocks
-                tradeLogs.add(0, String.format("💰 DIVIDEND: %s paid ₹%.0f to shareholders!", p.name, dividend));
-            }
-
-            // Hostile Takeover / Acquisition Logic
-            if (p.balance < -1000 && stock.currentPrice < 30) {
-                float bailout = 500f;
-                p.balance += bailout;
-                stock.currentPrice *= 0.5f; // Price tanks further due to dilution
-                tradeLogs.add(0, String.format("⚠️ ACQUISITION: %s bailed out by Mega-Corp!", p.name));
-            }
-
-            if (p.balance < -500) sentiment -= 3.0f;
-            
-            float volatility = 0.5f + (random.nextFloat() * 1.5f);
-            float spread = 0.05f + (random.nextFloat() * 0.3f * volatility);
+            float volatility = 0.3f + (random.nextFloat() * 0.8f);
+            float spread = 0.05f + (random.nextFloat() * 0.2f * volatility);
             stock.bid = Math.max(1f, stock.currentPrice - spread);
             stock.ask = stock.currentPrice + spread;
 
             // Volatility control: Reduce the impact of single rounds on stock price
-            float randomNoise = (random.nextFloat() * 1.5f - 0.75f);
-            float move = (sentiment * 0.2f + randomNoise) * volatility;
+            float randomNoise = (random.nextFloat() * 1.0f - 0.5f);
+            float move = (sentiment * 0.15f + randomNoise) * volatility;
             
-            // Floor the price but dampen the movement
-            stock.currentPrice = Math.max(10f, stock.currentPrice + move);
+            // Price floor and movement damping
+            stock.currentPrice = Math.max(20f, stock.currentPrice + move);
             stock.lastPrice = stock.currentPrice;
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (Math.abs(move) > 2.0f) { // Only log significant moves
+            if (Math.abs(move) > 2.5f) { 
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
                 String action = move > 0 ? "BOUGHT" : "SOLD";
-                int activeBots = 50 + random.nextInt(150); // Reduced bot count for realism
-                String reason = move > 0 ? (p.lastEarnings > 50 ? "STEADY GAINS" : "VALUE BUY") : (p.balance < -100 ? "PROFIT BOOKING" : "MARKET EXIT");
+                int activeBots = 50 + random.nextInt(150);
+                String reason = move > 0 ? "BULLISH" : "BEARISH";
                 tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
                     time, activeBots, action, p.name, reason, stock.currentPrice));
             }
@@ -148,7 +126,8 @@ public class StockMarket implements Serializable {
         java.util.Collections.sort(stocks, (a, b) -> Float.compare(b.currentPrice, a.currentPrice));
         
         lastIndex = industryIndex;
-        industryIndex = (totalMarketCap / Math.max(1, stocks.size())) * 10;
+        // Use a more stable index calculation (Average price instead of sum-multiplied)
+        industryIndex = (totalMarketCap / Math.max(1, stocks.size())) * 5;
         
         if (tradeLogs.size() > 100) tradeLogs = tradeLogs.subList(0, 100);
     }
