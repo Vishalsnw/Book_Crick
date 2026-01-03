@@ -64,8 +64,8 @@ public class LiveTradingActivity extends AppCompatActivity {
 
         StringBuilder sb = new StringBuilder();
         // Show Terminal-style Quote Board
-        sb.append(String.format("%-10s | %8s | %8s | %8s\n", "SYMBOL", "BID", "ASK", "LTP"));
-        sb.append("--------------------------------------------\n");
+        sb.append(String.format("%-10s | %8s | %8s | %8s | %2s\n", "SYMBOL", "BID", "ASK", "LTP", "Tr"));
+        sb.append("--------------------------------------------------\n");
         
         List<StockMarket.SharePrice> displayList = stockMarket.stocks;
         for (int i = 0; i < Math.min(15, displayList.size()); i++) {
@@ -73,8 +73,16 @@ public class LiveTradingActivity extends AppCompatActivity {
             String name = s.producerName;
             if (name.length() > 8) name = name.substring(0, 8);
             
-            sb.append(String.format("%-10s | %8.2f | %8.2f | %8.2f\n", 
-                name, s.bid, s.ask, s.currentPrice));
+            // Trend logic for stock list
+            String trendStr = "";
+            if (s.priceHistory.size() >= 2) {
+                float last = s.priceHistory.get(s.priceHistory.size() - 2);
+                if (s.currentPrice > last) trendStr = "▲";
+                else if (s.currentPrice < last) trendStr = "▼";
+            }
+
+            sb.append(String.format("%-10s | %8.2f | %8.2f | %8.2f | %2s\n", 
+                name, s.bid, s.ask, s.currentPrice, trendStr));
         }
 
         sb.append("\n--- RECENT TRADES ---\n");

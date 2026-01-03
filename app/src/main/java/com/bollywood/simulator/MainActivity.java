@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Player Income/Net Worth List
-        sb.append(String.format("%-2s | %-12s | %-8s | %s | %s\n", "R", "Studio/Name", "Net Worth", "🏆", "N"));
+        sb.append(String.format("%-3s | %-12s | %-8s | %-3s | %-3s %-2s\n", "R", "Studio/Name", "NetWorth", "🏆", "N", "Tr"));
         sb.append("--------------------------------------------------\n");
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i);
@@ -521,8 +521,8 @@ public class MainActivity extends AppCompatActivity {
             String trendArrow = "";
             if (lastPositions.containsKey(p.name)) {
                 int lastPos = lastPositions.get(p.name);
-                if (i < lastPos) trendArrow = " ⬆️";
-                else if (i > lastPos) trendArrow = " ⬇️";
+                if (i < lastPos) trendArrow = "▲"; 
+                else if (i > lastPos) trendArrow = "▼";
             }
             
             String name = p.name;
@@ -532,7 +532,9 @@ public class MainActivity extends AppCompatActivity {
             int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
             int noms = p.nominationCount;
             
-            sb.append(String.format("%-2s | %-12s | %-8.0f | %-2d | %-2d %s\n",
+            // Format for perfect alignment
+            // Rank(3) | Name(12) | NetWorth(8) | Oscars(3) | Noms(3) | Trend(2)
+            sb.append(String.format("%-3s | %-12s | %-8.0f | %-3d | %-3d %-2s\n",
                     rankSymbol, name, netWorth, oscars, noms, trendArrow));
         }
 
@@ -548,17 +550,32 @@ public class MainActivity extends AppCompatActivity {
     private void saveData() {
         try {
             File file = new File(getFilesDir(), "save_data.json");
-            FileOutputStream fos = new FileOutputStream(file);
-            Map<String, Object> data = new HashMap<>();
-            data.put(KEY_OSCARS_SAVE, oscarWinners);
-            data.put(KEY_YEAR_SAVE, currentYear);
-            data.put(KEY_PLAYERS_SAVE, playerHistory);
-            data.put(KEY_STATS_SAVE, playerStats);
-            data.put(KEY_MOVIES_SAVE, movieArchive);
-            fos.write(gson.toJson(data).getBytes());
+            Map<String, Object> allData = new HashMap<>();
+            allData.put(KEY_OSCARS_SAVE, oscarWinners);
+            allData.put(KEY_YEAR_SAVE, currentYear);
+            allData.put(KEY_PLAYERS_SAVE, players); // Save current session players directly
+            allData.put(KEY_STATS_SAVE, playerStats);
+            allData.put(KEY_MOVIES_SAVE, movieArchive);
+            allData.put("stock_market", stockMarket);
+
+            String json = gson.toJson(allData);
+            
+            // Use a temporary file for atomic write to prevent corruption
+            File tempFile = new File(getFilesDir(), "save_data.json.tmp");
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            fos.write(json.getBytes());
             fos.close();
+            
+            if (tempFile.renameTo(file)) {
+                // Success
+            } else {
+                // Fallback if rename fails
+                FileOutputStream fos2 = new FileOutputStream(file);
+                fos2.write(json.getBytes());
+                fos2.close();
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            android.util.Log.e("MainActivity", "Error saving data", e);
         }
     }
 
@@ -566,40 +583,51 @@ public class MainActivity extends AppCompatActivity {
         try {
             File file = new File(getFilesDir(), "save_data.json");
             if (!file.exists()) return;
-            
+
             FileInputStream fis = new FileInputStream(file);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             StringBuilder sb = new StringBuilder();
             String line;
-            while ((line = br.readLine()) != null) sb.append(line);
+            while ((line = reader.readLine()) != null) sb.append(line);
             fis.close();
 
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             Map<String, Object> data = gson.fromJson(sb.toString(), type);
             
+            if (data == null) return;
+
             if (data.containsKey(KEY_OSCARS_SAVE)) {
-                oscarWinners = gson.fromJson(gson.toJson(data.get(KEY_OSCARS_SAVE)), new TypeToken<ArrayList<String>>(){}.getType());
+                String oscarsJson = gson.toJson(data.get(KEY_OSCARS_SAVE));
+                oscarWinners = gson.fromJson(oscarsJson, new TypeToken<ArrayList<String>>(){}.getType());
             }
             if (data.containsKey(KEY_YEAR_SAVE)) {
                 Object yearObj = data.get(KEY_YEAR_SAVE);
-                if (yearObj instanceof Double) {
-                    currentYear = ((Double) yearObj).intValue();
-                } else if (yearObj instanceof Integer) {
-                    currentYear = (Integer) yearObj;
-                }
+                if (yearObj instanceof Double) currentYear = ((Double) yearObj).intValue();
+                else if (yearObj instanceof Integer) currentYear = (Integer) yearObj;
             }
             if (data.containsKey(KEY_PLAYERS_SAVE)) {
-                playerHistory = gson.fromJson(gson.toJson(data.get(KEY_PLAYERS_SAVE)), new TypeToken<ArrayList<Player>>(){}.getType());
+                String playersJson = gson.toJson(data.get(KEY_PLAYERS_SAVE));
+                List<Player> loadedPlayers = gson.fromJson(playersJson, new TypeToken<List<Player>>(){}.getType());
+                if (loadedPlayers != null) {
+                    players = loadedPlayers;
+                }
             }
             if (data.containsKey(KEY_STATS_SAVE)) {
-                playerStats = gson.fromJson(gson.toJson(data.get(KEY_STATS_SAVE)), new TypeToken<HashMap<String, PlayerStats>>(){}.getType());
+                String statsJson = gson.toJson(data.get(KEY_STATS_SAVE));
+                playerStats = gson.fromJson(statsJson, new TypeToken<Map<String, PlayerStats>>(){}.getType());
             }
             if (data.containsKey(KEY_MOVIES_SAVE)) {
-                movieArchive = gson.fromJson(gson.toJson(data.get(KEY_MOVIES_SAVE)), new TypeToken<ArrayList<Movie>>(){}.getType());
+                String moviesJson = gson.toJson(data.get(KEY_MOVIES_SAVE));
+                movieArchive = gson.fromJson(moviesJson, new TypeToken<List<Movie>>(){}.getType());
+            }
+            if (data.containsKey("stock_market")) {
+                String stockJson = gson.toJson(data.get("stock_market"));
+                StockMarket loadedMarket = gson.fromJson(stockJson, StockMarket.class);
+                if (loadedMarket != null) stockMarket = loadedMarket;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            android.util.Log.e("MainActivity", "Error loading data", e);
+            // Don't crash, just reset or ignore
         }
     }
 

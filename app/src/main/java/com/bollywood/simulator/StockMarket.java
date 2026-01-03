@@ -29,7 +29,12 @@ public class StockMarket implements Serializable {
     public List<String> tradeLogs = new ArrayList<>();
     public float industryIndex = 1000f;
     public float lastIndex = 1000f;
-    private Random random = new Random();
+    private transient Random random = new Random();
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        random = new Random();
+    }
 
     public enum MarketEvent {
         NORMAL("Stable Market", 1.0f),
