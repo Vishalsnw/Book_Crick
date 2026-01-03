@@ -124,19 +124,21 @@ public class StockMarket implements Serializable {
             stock.bid = Math.max(1f, stock.currentPrice - spread);
             stock.ask = stock.currentPrice + spread;
 
-            float randomNoise = (random.nextFloat() * 2f - 1f);
-            float move = (sentiment * 0.5f + randomNoise) * volatility;
+            // Volatility control: Reduce the impact of single rounds on stock price
+            float randomNoise = (random.nextFloat() * 1.5f - 0.75f);
+            float move = (sentiment * 0.2f + randomNoise) * volatility;
             
-            stock.currentPrice = Math.max(5f, stock.currentPrice + move);
+            // Floor the price but dampen the movement
+            stock.currentPrice = Math.max(10f, stock.currentPrice + move);
             stock.lastPrice = stock.currentPrice;
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (Math.abs(move) > 1.2f) {
+            if (Math.abs(move) > 2.0f) { // Only log significant moves
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
                 String action = move > 0 ? "BOUGHT" : "SOLD";
-                int activeBots = 100 + random.nextInt(250);
-                String reason = move > 0 ? (p.lastEarnings > 60 ? "HIT STREAK" : "CASH GROWTH") : (p.balance < 0 ? "DEBT PANIC" : "MARKET EXIT");
+                int activeBots = 50 + random.nextInt(150); // Reduced bot count for realism
+                String reason = move > 0 ? (p.lastEarnings > 50 ? "STEADY GAINS" : "VALUE BUY") : (p.balance < -100 ? "PROFIT BOOKING" : "MARKET EXIT");
                 tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
                     time, activeBots, action, p.name, reason, stock.currentPrice));
             }

@@ -68,30 +68,35 @@ public class GameEngine {
         if (player.balance > 1000) brandMultiplier = 1.25f;
         else if (player.balance < -200) brandMultiplier = 0.75f;
 
-        // Base earnings can now be negative for high risk/bad luck
-        float base = (random.nextFloat() * 140.0f - 40.0f) * brandMultiplier;
+        // Base earnings: Reduced range and higher floor to prevent extreme swings
+        // Previous was (random.nextFloat() * 140.0f - 40.0f)
+        float base = (random.nextFloat() * 80.0f - 20.0f) * brandMultiplier;
         
         // Random Events (25% chance)
         if (random.nextInt(4) == 0) {
             int eventIdx = random.nextInt(RANDOM_EVENTS.length);
             result.eventDescription = RANDOM_EVENTS[eventIdx];
+            float eventImpact = 0;
             if (result.eventDescription.contains("+ ₹")) {
                 try {
-                    base += Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                    eventImpact = Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
                 } catch (Exception e) {}
             } else if (result.eventDescription.contains("- ₹")) {
                 try {
-                    base -= Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
+                    eventImpact = -Integer.parseInt(result.eventDescription.split("₹")[1].split(" ")[0]);
                 } catch (Exception e) {}
             }
+            // Dampen event impact (only 50% of the listed value to prevent massive swings)
+            base += (eventImpact * 0.5f);
         } else {
             result.eventDescription = "Smooth release";
         }
 
-        // Allow for losses (negative earnings)
-        result.totalEarnings = Math.min(200.0f, Math.max(-100.0f, base));
+        // Allow for losses (negative earnings) but cap them more strictly
+        // Range: -50 to 120 (more stable than -100 to 200)
+        result.totalEarnings = Math.min(120.0f, Math.max(-50.0f, base));
         result.starRating = 1.0f + (random.nextFloat() * 4.0f);
-        result.isHit = result.totalEarnings > 70;
+        result.isHit = result.totalEarnings > 50;
         
         String[] genres = {"Action", "Drama", "Romance", "Horror", "Comedy", "Thriller", "Sci-Fi"};
         result.genre = genres[random.nextInt(genres.length)];
