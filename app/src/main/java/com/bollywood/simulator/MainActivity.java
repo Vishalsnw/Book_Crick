@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private final Random random = new Random();
     private final Gson gson = new Gson();
 
-    private TextView titleText, statsText, yearBadge, topMoviesText, eventText, nomineeText;
+    private TextView titleText, statsText, yearBadge, topMoviesText, eventText, nomineeText, marketIndexMain;
     private Button actionButton, oscarButton, incomeButton, profileButton, achieveButton, stockButton;
     private LinearLayout topMoviesSection, oscarAnimationOverlay;
     private Handler animationHandler = new Handler(Looper.getMainLooper());
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         titleText = findViewById(R.id.titleText);
         statsText = findViewById(R.id.statsText);
         yearBadge = findViewById(R.id.yearBadge);
+        marketIndexMain = findViewById(R.id.marketIndexMain);
         topMoviesText = findViewById(R.id.topMoviesText);
         actionButton = findViewById(R.id.actionButton);
         oscarButton = findViewById(R.id.oscarButton);
@@ -99,9 +100,11 @@ public class MainActivity extends AppCompatActivity {
         });
         achieveButton.setOnClickListener(v -> startActivity(new Intent(this, AchievementsActivity.class)));
         stockButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LiveTradingActivity.class);
-            intent.putExtra("stockMarket", stockMarket);
-            startActivity(intent);
+            if (stockMarket != null) {
+                Intent intent = new Intent(this, LiveTradingActivity.class);
+                intent.putExtra("stockMarket", stockMarket);
+                startActivity(intent);
+            }
         });
 
         // Only setup initial players if loading didn't restore any
@@ -194,12 +197,17 @@ public class MainActivity extends AppCompatActivity {
             Player p = players.get(i);
             // Every active player produces a movie in their respective round
             if (p != null && p.active) {
+                // IMPORTANT: In this simulation, each player makes only ONE movie per year.
+                // If they are knocked out, they don't participate in future rounds of that year.
+                // We ensure earnings are added only once per year per player by resetting earnings in startNewYear
+                // and adding to it as they progress. If they are knocked out, p.active becomes false.
+                
                 GameEngine.RoundResults results = GameEngine.calculateRoundEarnings(p, currentRound, currentYear, currentTrend);
                 
                 if (results != null) {
                     p.lastEarnings = results.totalEarnings;
-                    p.earnings += results.totalEarnings; // This is cumulative for the year
-                    p.balance += results.totalEarnings; // This is cumulative for their career
+                    p.earnings += results.totalEarnings; // Cumulative for the year
+                    p.balance += results.totalEarnings; // Cumulative for career/networth
                     
                     activePlayers.add(p);
                     roundMovies.add(new MovieRecord(p.name, results.totalEarnings, results.starRating, results.cast));
@@ -470,6 +478,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI() {
         yearBadge.setText("Year " + currentYear);
+        
+        if (marketIndexMain != null && stockMarket != null) {
+            float diff = stockMarket.industryIndex - stockMarket.lastIndex;
+            String sign = diff >= 0 ? "+" : "";
+            marketIndexMain.setText(String.format("INDEX: %.2f (%s%.2f)", stockMarket.industryIndex, sign, diff));
+            marketIndexMain.setTextColor(diff >= 0 ? Color.GREEN : Color.RED);
+        }
         
         if (!lastEventMsg.isEmpty()) {
             eventText.setText("NEWS: " + lastEventMsg + "\n(Trend: " + currentTrend.description + ")");
