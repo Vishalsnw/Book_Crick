@@ -66,18 +66,31 @@ public class StockMarket implements Serializable {
 
             stock.lastPrice = stock.currentPrice;
             
+            // Smarter bot logic: Weighted factors and momentum
             float balanceFactor = p.balance / 1000f;
             float earningsFactor = (p.lastEarnings - 50f) / 50f;
             float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 2.0f;
             
+            // Smarter Sentiment: Considering cumulative performance (momentum)
+            float momentum = 0f;
+            if (p.lastEarnings > 80) momentum = 0.5f; // Hit momentum
+            else if (p.lastEarnings < 20) momentum = -0.5f; // Flop momentum
+
+            // Advanced AI Strategy: Value investing vs Trend following
+            // High value (low price but high balance) vs Growth (high earnings)
+            float valueFactor = (p.balance > 500 && stock.currentPrice < 80) ? 0.8f : 0f;
+            
+            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum + valueFactor) * currentEvent.multiplier;
+            
             // Genre Trend Impact
-            float genreFactor = 0;
-            if (p.lastEarnings > 0 && trend != null) {
-                // Players whose movies align with industry trend get a stock boost
-                genreFactor = 0.5f;
+            if (p.lastEarnings > 60 && trend != null) {
+                sentiment += 0.6f; // Stronger trend following
             }
 
-            float sentiment = (balanceFactor + earningsFactor + starFactor + genreFactor) * currentEvent.multiplier;
+            // Bots now anticipate future performance: "Star in the making"
+            if (p.nominationCount > 2 && p.oscarWins == 0) {
+                sentiment += 0.4f; // Speculation on upcoming Oscar win
+            }
             
             // Dividend Logic: If cash > 1000, pay 5% dividend to boost stock price
             if (p.balance > 1000) {
