@@ -44,26 +44,41 @@ public class StockMarket implements Serializable {
 
             stock.lastPrice = stock.currentPrice;
             
-            // High-frequency simulation of 300+ bots
-            float sentiment = (p.balance / 1000f) + (p.lastEarnings / 100f);
-            float volatility = 0.5f + random.nextFloat();
+            // Advanced bot logic: Sentiment based on balance, earnings, and star rating level
+            // Buy if: High Balance (>500), Recent Hit (lastEarnings > 50), High Star Level
+            // Sell if: Debt (balance < -300), Recent Flop (lastEarnings < 20)
+            float balanceFactor = p.balance / 1000f;
+            float earningsFactor = (p.lastEarnings - 50f) / 50f;
+            float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 2.0f;
             
-            // Generate Bid/Ask spread
-            float spread = 0.1f + random.nextFloat() * 0.4f;
+            float sentiment = balanceFactor + earningsFactor + starFactor;
+            
+            // Debt penalty: Bots panic sell if debt is high
+            if (p.balance < -500) sentiment -= 3.0f;
+            
+            float volatility = 0.5f + (random.nextFloat() * 1.5f);
+            
+            // Dynamic Bid/Ask spread based on volatility
+            float spread = 0.05f + (random.nextFloat() * 0.3f * volatility);
             stock.bid = Math.max(1f, stock.currentPrice - spread);
             stock.ask = stock.currentPrice + spread;
 
-            // Simulated trade execution
-            float move = (sentiment + (random.nextFloat() * 2f - 1f)) * volatility;
+            // Simulated trade execution with momentum and 300+ bot swarm behavior
+            float randomNoise = (random.nextFloat() * 2f - 1f);
+            float move = (sentiment * 0.5f + randomNoise) * volatility;
+            
             stock.currentPrice = Math.max(5f, stock.currentPrice + move);
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (Math.abs(move) > 2.0f) {
+            // Logging significant movements (50-300+ bots swarm)
+            if (Math.abs(move) > 1.2f) {
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
-                String type = move > 0 ? "BOUGHT" : "SOLD";
-                tradeLogs.add(0, String.format("[%s] BOT_X%03d %s %s @ %.2f", 
-                    time, random.nextInt(300), type, p.name, stock.currentPrice));
+                String action = move > 0 ? "BOUGHT" : "SOLD";
+                int activeBots = 100 + random.nextInt(250); // 100 to 350 active traders
+                String reason = move > 0 ? (p.lastEarnings > 60 ? "HIT STREAK" : "CASH GROWTH") : (p.balance < 0 ? "DEBT PANIC" : "MARKET EXIT");
+                tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
+                    time, activeBots, action, p.name, reason, stock.currentPrice));
             }
             totalMarketCap += stock.currentPrice;
         }

@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         players.clear();
         currentRound = 1;
         
+        lastEventMsg = "📢 SYSTEM: Rank is now based on NET WORTH (Cash + Studio Shares)!\n🤖 BOTS: 300+ AI Traders are now active on the Exchange.";
+        
         for (String name : PLAYER_NAMES) {
             float carryoverBalance = 0;
             Player histP = null;
@@ -497,13 +499,21 @@ public class MainActivity extends AppCompatActivity {
             return Float.compare(valB, valA);
         });
 
-            // Optimized for small screens: Rank | Name | Bal | 🏆 | Nom
-            sb.append(String.format("%-2s | %-12s | %-4s | %s | %s\n", "R", "Name", "Bal", "🏆", "N"));
-            sb.append("------------------------------------------\n");
+            // Updated for Net Worth ranking: Rank | Studio | NetVal | 🏆 | N
+            sb.append(String.format("%-2s | %-12s | %-6s | %s | %s\n", "R", "Studio/Name", "NetVal", "🏆", "N"));
+            sb.append("--------------------------------------------------\n");
             for (int i = 0; i < sorted.size(); i++) {
                 Player p = sorted.get(i);
                 String rankSymbol = (i == 0) ? "🥇" : (i == 1) ? "🥈" : (i == 2) ? "🥉" : String.format("%02d", i + 1);
                 
+                // Net worth calculation: Cash + (Shares * Price)
+                StockMarket.SharePrice sp = null;
+                for(StockMarket.SharePrice s : stockMarket.stocks) {
+                    if(s.producerName.equals(p.name)) { sp = s; break; }
+                }
+                float stockValue = (sp != null ? sp.currentPrice * 10 : 0);
+                float netWorth = p.balance + stockValue;
+
                 // Position trend arrow
                 String trendArrow = "";
                 if (lastPositions.containsKey(p.name)) {
@@ -514,25 +524,21 @@ public class MainActivity extends AppCompatActivity {
                 
                 // Add office milestone icon
                 String office = "";
-                if (p.balance > 5000) office = "🏰";
-                else if (p.balance > 2000) office = "🏢";
-                else if (p.balance > 500) office = "🏘️";
+                if (netWorth > 5000) office = "🏰";
+                else if (netWorth > 2000) office = "🏢";
+                else if (netWorth > 500) office = "🏘️";
 
                 String name = p.name;
-                if (name.length() > 10) name = name.substring(0, 8) + "..";
+                if (name.length() > 8) name = name.substring(0, 7) + "..";
                 
-                // Get Oscar and Nom count from stats for accuracy
                 PlayerStats stats = playerStats.get(p.name);
                 int oscars = (stats != null) ? stats.oscarWins : p.oscarWins;
                 int noms = p.nominationCount;
                 
-                StockMarket.SharePrice sp = null;
-                for(StockMarket.SharePrice s : stockMarket.stocks) {
-                    if(s.producerName.equals(p.name)) { sp = s; break; }
-                }
-                String stockInfo = sp != null ? String.format(" | ₹%.1f", sp.currentPrice) : "";
+                String stockPriceStr = sp != null ? String.format("₹%.0f", sp.currentPrice) : "";
                 
-                sb.append(String.format("%-2s | %s%-10s%-3s | ₹%-4.2f | %d | %d%s\n", rankSymbol, office, name, trendArrow, (float)p.balance, oscars, noms, stockInfo));
+                sb.append(String.format("%-2s | %s%-10s | %-6.0f | %-2d | %-2d %s%s\n",
+                        rankSymbol, office, name, netWorth, oscars, noms, trendArrow, stockPriceStr));
             }
 
         // Update positions for next time
