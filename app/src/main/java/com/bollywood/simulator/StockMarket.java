@@ -27,8 +27,8 @@ public class StockMarket implements Serializable {
 
     public List<SharePrice> stocks = new ArrayList<>();
     public List<String> tradeLogs = new ArrayList<>();
-    public float industryIndex = 0f;
-    public float lastIndex = 0f;
+    public float industryIndex = 1000f;
+    public float lastIndex = 1000f;
     private float baseMarketCap = 0f;
     private transient Random random = new Random();
 
@@ -90,7 +90,9 @@ public class StockMarket implements Serializable {
             else if (p.lastEarnings < 20) momentum = -0.3f;
 
             // Bots start neutral and decide based on performance
-            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum) * currentEvent.multiplier;
+            // Force buying at the very beginning to ensure market starts active
+            float initialBuyForce = (isFirstInitialization) ? 0.8f : 0f;
+            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum + initialBuyForce) * currentEvent.multiplier;
             
             if (p.balance < -500) sentiment -= 2.0f;
             
@@ -108,11 +110,12 @@ public class StockMarket implements Serializable {
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (Math.abs(move) > 2.0f) { 
+            // Log more activity (lower threshold)
+            if (Math.abs(move) > 0.5f) { 
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
                 String action = move > 0 ? "BOUGHT" : "SOLD";
                 int activeBots = 50 + random.nextInt(150);
-                String reason = move > 0 ? "GOOD RESULTS" : "PERFORMANCE DIP";
+                String reason = isFirstInitialization ? "IPO ENTRY" : (move > 0 ? "GOOD RESULTS" : "PERFORMANCE DIP");
                 tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
                     time, activeBots, action, p.name, reason, stock.currentPrice));
             }
@@ -123,13 +126,13 @@ public class StockMarket implements Serializable {
         
         lastIndex = industryIndex;
         
-        // Proper Index Logic: Start at 0 and track growth relative to initial market cap
+        // Proper Index Logic: Start at 1000 and track growth relative to initial market cap
         if (isFirstInitialization || baseMarketCap == 0) {
             baseMarketCap = totalMarketCap;
-            industryIndex = 0f;
+            industryIndex = 1000f;
         } else {
-            // Index represents net growth/dip of the entire market from inception
-            industryIndex = (totalMarketCap - baseMarketCap) / baseMarketCap * 1000;
+            // Index represents relative change from 1000 base
+            industryIndex = (totalMarketCap / baseMarketCap) * 1000f;
         }
         
         if (tradeLogs.size() > 100) tradeLogs = tradeLogs.subList(0, 100);
