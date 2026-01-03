@@ -27,8 +27,9 @@ public class StockMarket implements Serializable {
 
     public List<SharePrice> stocks = new ArrayList<>();
     public List<String> tradeLogs = new ArrayList<>();
-    public float industryIndex = 1000f;
-    public float lastIndex = 1000f;
+    public float industryIndex = 0f;
+    public float lastIndex = 0f;
+    private float baseMarketCap = 0f;
     private transient Random random = new Random();
 
     public StockMarket() {
@@ -66,11 +67,13 @@ public class StockMarket implements Serializable {
         }
 
         float totalMarketCap = 0;
+        boolean isFirstInitialization = stocks.isEmpty();
+
         for (MainActivity.Player p : players) {
             SharePrice stock = findStock(p.name);
             if (stock == null) {
-                // Higher initial price to give room for realistic dips
-                stock = new SharePrice(p.name, 150f + random.nextInt(50));
+                // Companies start with a nominal price of 100
+                stock = new SharePrice(p.name, 100f);
                 stocks.add(stock);
             }
 
@@ -78,23 +81,17 @@ public class StockMarket implements Serializable {
             
             // Smarter bot logic: Weighted factors and momentum
             float balanceFactor = p.balance / 1000f;
-            // Dampen earnings factor for Round 1 (where earnings are usually small/random)
             float earningsFactor = (p.lastEarnings - 40f) / 60f;
             float starFactor = (p.currentStar != null ? (float)p.currentStar.level : 0f) / 4.0f;
             
-            // Smarter Sentiment: Considering cumulative performance (momentum)
+            // Sentiment tracking
             float momentum = 0f;
             if (p.lastEarnings > 80) momentum = 0.3f; 
             else if (p.lastEarnings < 20) momentum = -0.3f;
 
-            // Initial sentiment boost to prevent Day 1 sell-off
-            float initialHype = (stock.priceHistory.size() < 3) ? 0.8f : 0f;
+            // Bots start neutral and decide based on performance
+            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum) * currentEvent.multiplier;
             
-            float sentiment = (balanceFactor + earningsFactor + starFactor + momentum + initialHype) * currentEvent.multiplier;
-            
-            // Floor sentiment at 0 during Round 1 unless performance is truly terrible
-            if (stock.priceHistory.size() < 2) sentiment = Math.max(0f, sentiment);
-
             if (p.balance < -500) sentiment -= 2.0f;
             
             float volatility = 0.3f + (random.nextFloat() * 0.8f);
@@ -102,21 +99,20 @@ public class StockMarket implements Serializable {
             stock.bid = Math.max(1f, stock.currentPrice - spread);
             stock.ask = stock.currentPrice + spread;
 
-            // Volatility control: Reduce the impact of single rounds on stock price
+            // Price movements are bot-driven based on performance sentiment
             float randomNoise = (random.nextFloat() * 1.0f - 0.5f);
-            float move = (sentiment * 0.15f + randomNoise) * volatility;
+            float move = (sentiment * 0.2f + randomNoise) * volatility;
             
-            // Price floor and movement damping
-            stock.currentPrice = Math.max(20f, stock.currentPrice + move);
-            stock.lastPrice = stock.currentPrice;
+            // Apply move
+            stock.currentPrice = Math.max(10f, stock.currentPrice + move);
             stock.priceHistory.add(stock.currentPrice);
             if (stock.priceHistory.size() > 20) stock.priceHistory.remove(0);
 
-            if (Math.abs(move) > 2.5f) { 
+            if (Math.abs(move) > 2.0f) { 
                 String time = new java.text.SimpleDateFormat("HH:mm:ss").format(new Date());
                 String action = move > 0 ? "BOUGHT" : "SOLD";
                 int activeBots = 50 + random.nextInt(150);
-                String reason = move > 0 ? "BULLISH" : "BEARISH";
+                String reason = move > 0 ? "GOOD RESULTS" : "PERFORMANCE DIP";
                 tradeLogs.add(0, String.format("[%s] %d BOTS %s %s (%s) @ ₹%.2f", 
                     time, activeBots, action, p.name, reason, stock.currentPrice));
             }
@@ -126,8 +122,15 @@ public class StockMarket implements Serializable {
         java.util.Collections.sort(stocks, (a, b) -> Float.compare(b.currentPrice, a.currentPrice));
         
         lastIndex = industryIndex;
-        // Use a more stable index calculation (Average price instead of sum-multiplied)
-        industryIndex = (totalMarketCap / Math.max(1, stocks.size())) * 5;
+        
+        // Proper Index Logic: Start at 0 and track growth relative to initial market cap
+        if (isFirstInitialization || baseMarketCap == 0) {
+            baseMarketCap = totalMarketCap;
+            industryIndex = 0f;
+        } else {
+            // Index represents net growth/dip of the entire market from inception
+            industryIndex = (totalMarketCap - baseMarketCap) / baseMarketCap * 1000;
+        }
         
         if (tradeLogs.size() > 100) tradeLogs = tradeLogs.subList(0, 100);
     }
